@@ -38,7 +38,6 @@ RUN \
 # Fetch the files
 #ADD http://www.atlassian.com/software/jira/downloads/binary/atlassian-$AppName-$AppVer-$Arch.bin /opt/
 ADD atlassian-$AppName-$AppVer-$Arch.bin /opt
-ADD *.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/
 ADD ./install_cmds.sh /install_cmds.sh
 ADD ./node.json /etc/chef/node.json
 ADD ./response.varfile /opt/response.varfile
@@ -47,6 +46,10 @@ ADD ./install_cmds.sh /install_cmds.sh
 
 ## Now Install Atlassian Jira
 RUN /install_cmds.sh
+
+# add patch
+ADD atlassian-extras-3.2.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/lib/atlassian-extras-3.2.jar
+ADD atlassian-universal-plugin-manager-plugin-2.22.2.jar /opt/atlassian/jira/atlassian-jira/WEB-INF/atlassian-bundled-plugins/atlassian-universal-plugin-manager-plugin-2.22.2.jar
 
 # Start the service
 CMD ["sh", "/init.sh"]
