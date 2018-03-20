@@ -39,7 +39,7 @@ WORKDIR /tmp
 ENV JENKINS_FOLDER /usr/share/jenkins
 
 # Build Args
-ARG BLUEOCEAN_VERSION=1.3.5
+ARG BLUEOCEAN_VERSION=1.4.2
 ARG JENKINS_STAGING=/usr/share/jenkins/ref/
 ARG CURL_RETRY=20
 ARG CURL_RETRY_MAX_TIME=900
@@ -78,39 +78,39 @@ RUN /usr/local/bin/install-plugins.sh       \
   blueocean-web:${BLUEOCEAN_VERSION}        \
   blueocean:${BLUEOCEAN_VERSION}            \
   android-emulator:3.0           \
-  android-lint:2.5               \
-  ant:1.7                        \
+  android-lint:2.6               \
+  ant:1.8                        \
   ace-editor:1.1                 \
   analysis-core:1.93             \
-  ansible:0.6.2                  \
+  ansible:0.8                    \
   ansicolor:0.5.2                \
   antisamy-markup-formatter:1.5  \
-  artifactory:2.14.0             \
+  artifactory:2.15.0             \
   audit-trail:2.2                \
   authentication-tokens:1.3      \
-  azure-credentials:1.4.0        \
-  azure-vm-agents:0.6.0          \
+  azure-credentials:1.5.0        \
+  azure-vm-agents:0.6.2          \
   branch-api:2.0.18              \
-  build-failure-analyzer:1.19.1  \
-  build-name-setter:1.6.7        \
+  build-failure-analyzer:1.19.2  \
+  build-name-setter:1.6.9        \
   build-pipeline-plugin:1.5.8    \
   build-timeout:1.19             \
   build-token-root:1.4           \
-  cloudbees-folder:6.3           \
+  cloudbees-folder:6.4           \
   cloverphp:0.5                  \
   conditional-buildstep:1.3.6    \
-  config-file-provider:2.16.4    \
+  config-file-provider:2.18      \
   copy-to-slave:1.4.4            \
   copyartifact:1.39              \
-  cvs:2.13                       \
+  cvs:2.14                       \
   dashboard-view:2.9.11          \
   delivery-pipeline-plugin:1.1.0 \
   description-setter:1.10        \
   dingding-notifications:1.4     \
   docker-build-publish:1.3.2     \
-  docker-workflow:1.14           \
-  durable-task:1.17              \
-  ec2:1.38                       \
+  docker-workflow:1.15.1         \
+  durable-task:1.22              \
+  ec2:1.39                       \
   email-ext:2.61                 \
   embeddable-build-status:1.9    \
   envinject:2.1.5                \
@@ -118,10 +118,10 @@ RUN /usr/local/bin/install-plugins.sh       \
   external-monitor-job:1.7       \
   favorite:2.3.1                 \
   ghprb:1.39.0                   \
-  git:3.7.0                      \
-  git-client:2.7.0               \
+  git:3.8.0                      \
+  git-client:2.7.1               \
   git-server:1.7                 \
-  github:1.28.1                  \
+  github:1.29.0                  \
   github-api:1.90                \
   github-organization-folder:1.6 \
   gitlab:1.5.2                   \
@@ -137,17 +137,17 @@ RUN /usr/local/bin/install-plugins.sh       \
   jobConfigHistory:2.18          \
   jquery:1.12.4-0                \
   kpp-management-plugin:1.0.0    \
-  kubernetes:1.1.3               \
+  kubernetes:1.3.3               \
   kubernetes-ci:1.3              \
-  kubernetes-cd:0.1.4            \
+  kubernetes-cd:0.1.5            \
   kubernetes-pipeline-steps:1.5  \
-  ldap:1.18                      \
+  ldap:1.20                      \
   mapdb-api:1.0.9.0              \
   marathon:1.6.0                 \
   matrix-auth:2.2                \
   matrix-project:1.12            \
-  maven-plugin:3.0               \
-  mesos:0.15.0                   \
+  maven-plugin:3.1               \
+  mesos:0.15.1                   \
   metrics:3.1.2.10               \
   momentjs:1.1.1                 \
   monitoring:1.70.0              \
@@ -183,9 +183,9 @@ RUN /usr/local/bin/install-plugins.sh       \
   ssh-agent:1.15                 \
   ssh-slaves:1.25                \
   slave-setup:1.10               \
-  subversion:2.10.2              \
+  subversion:2.10.3              \
   timestamper:1.8.9              \
-  translation:1.15               \
+  translation:1.16               \
   uno-choice:2.1                 \
   variant:1.1                    \
   view-job-filters:1.27          \
@@ -193,14 +193,14 @@ RUN /usr/local/bin/install-plugins.sh       \
   workflow-aggregator:2.5        \
   workflow-api:2.24              \
   workflow-basic-steps:2.6       \
-  workflow-cps:2.42              \
+  workflow-cps:2.45              \
   workflow-cps-global-lib:2.9    \
   workflow-durable-task-step:2.17 \
-  workflow-job:2.16              \
-  workflow-multibranch:2.16      \
+  workflow-job:2.17              \
+  workflow-multibranch:2.17      \
   workflow-scm-step:2.6          \
   workflow-step-api:2.14         \
-  workflow-support:2.16          \
+  workflow-support:2.17          \
   ws-cleanup:0.34                \
   xcode-plugin:2.0.0
 
