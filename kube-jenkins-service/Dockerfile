@@ -81,7 +81,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   android-lint:2.6               \
   ant:1.8                        \
   ace-editor:1.1                 \
-  analysis-core:1.93             \
+  analysis-core:1.96             \
   ansible:0.8                    \
   ansicolor:0.5.2                \
   antisamy-markup-formatter:1.5  \
@@ -124,14 +124,14 @@ RUN /usr/local/bin/install-plugins.sh       \
   github:1.29.0                  \
   github-api:1.90                \
   github-organization-folder:1.6 \
-  gitlab:1.5.2                   \
+  gitlab:1.5.3                   \
   gitlab-hook:1.4.2              \
   gitlab-oauth:1.3               \
   gradle:1.28                    \
   greenballs:1.15                \
   handlebars:1.1.1               \
   ivy:1.28                       \
-  jackson2-api:2.8.10.1          \
+  jackson2-api:2.8.11.1          \
   jenkins-multijob-plugin:1.29   \
   job-dsl:1.68                   \
   jobConfigHistory:2.18          \
@@ -148,7 +148,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   matrix-project:1.12            \
   maven-plugin:3.1               \
   mesos:0.15.1                   \
-  metrics:3.1.2.10               \
+  metrics:3.1.2.11               \
   momentjs:1.1.1                 \
   monitoring:1.71.0              \
   msbuild:1.29                   \
@@ -160,16 +160,16 @@ RUN /usr/local/bin/install-plugins.sh       \
   pipeline-github-lib:1.0        \
   pipeline-input-step:2.8        \
   pipeline-milestone-step:1.3.1  \
-  pipeline-model-api:1.2.6       \
+  pipeline-model-api:1.2.7       \
   pipeline-model-definition:1.2.6 \
   pipeline-model-extensions:1.2.6 \
   pipeline-rest-api:2.9          \
   pipeline-stage-step:2.3        \
   pipeline-stage-view:2.9        \
   plain-credentials:1.4          \
-  postbuildscript:2.2.1          \
-  publish-over-cifs:0.6          \
-  publish-over-ftp:1.13          \
+  postbuildscript:2.5.1          \
+  publish-over-cifs:0.9          \
+  publish-over-ftp:1.15          \
   publish-over-ssh:1.19.1        \
   puppet:1.1                     \
   rebuild:1.27                   \
@@ -177,11 +177,11 @@ RUN /usr/local/bin/install-plugins.sh       \
   run-condition:1.0              \
   s3:0.11.0                      \
   saferestart:0.3                \
-  saml:1.0.4                     \
+  saml:1.0.5                     \
   saltstack:3.1.6                \
   scm-api:2.2.6                  \
   ssh-agent:1.15                 \
-  ssh-slaves:1.25                \
+  ssh-slaves:1.26                \
   slave-setup:1.10               \
   subversion:2.10.3              \
   timestamper:1.8.9              \
@@ -191,7 +191,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   view-job-filters:1.27          \
   windows-slaves:1.3.1           \
   workflow-aggregator:2.5        \
-  workflow-api:2.24              \
+  workflow-api:2.26              \
   workflow-basic-steps:2.6       \
   workflow-cps:2.45              \
   workflow-cps-global-lib:2.9    \
