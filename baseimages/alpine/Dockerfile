@@ -15,9 +15,20 @@ ENV \
 RUN set -ex \
     && apk update \
     && apk upgrade \
-    && apk add tzdata \
+    && apk add \
+           bash \
+           tzdata \
+           vim \
+           tini \
+           su-exec \
+           gzip \
+           tar \
+           wget \
+           curl \
     && echo "${TIMEZONE}" > /etc/TZ \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    # Network fix
+    echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf \
     && rm -f /var/cache/apk/*.tar.gz
 
-CMD ["/bin/sh"]
+CMD ["/bin/bash"]
