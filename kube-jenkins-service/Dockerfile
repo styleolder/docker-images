@@ -117,7 +117,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   extended-read-permission:2.0   \
   external-monitor-job:1.7       \
   favorite:2.3.1                 \
-  ghprb:1.39.0                   \
+  ghprb:1.40.0                   \
   git:3.8.0                      \
   git-client:2.7.1               \
   git-server:1.7                 \
@@ -156,13 +156,13 @@ RUN /usr/local/bin/install-plugins.sh       \
   node-iterator-api:1.5.0        \
   pam-auth:1.3                   \
   parameterized-trigger:2.35.2   \
-  pipeline-build-step:2.6        \
+  pipeline-build-step:2.7        \
   pipeline-github-lib:1.0        \
   pipeline-input-step:2.8        \
   pipeline-milestone-step:1.3.1  \
   pipeline-model-api:1.2.7       \
-  pipeline-model-definition:1.2.6 \
-  pipeline-model-extensions:1.2.6 \
+  pipeline-model-definition:1.2.7 \
+  pipeline-model-extensions:1.2.7 \
   pipeline-rest-api:2.9          \
   pipeline-stage-step:2.3        \
   pipeline-stage-view:2.9        \
@@ -183,7 +183,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   ssh-agent:1.15                 \
   ssh-slaves:1.26                \
   slave-setup:1.10               \
-  subversion:2.10.3              \
+  subversion:2.10.4              \
   timestamper:1.8.9              \
   translation:1.16               \
   uno-choice:2.1                 \
@@ -195,12 +195,12 @@ RUN /usr/local/bin/install-plugins.sh       \
   workflow-basic-steps:2.6       \
   workflow-cps:2.45              \
   workflow-cps-global-lib:2.9    \
-  workflow-durable-task-step:2.17 \
+  workflow-durable-task-step:2.19 \
   workflow-job:2.17              \
   workflow-multibranch:2.17      \
   workflow-scm-step:2.6          \
   workflow-step-api:2.14         \
-  workflow-support:2.17          \
+  workflow-support:2.18          \
   ws-cleanup:0.34                \
   xcode-plugin:2.0.0
 
