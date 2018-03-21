@@ -18,7 +18,7 @@ RUN \
     echo "${TIMEZONE}" > /etc/timezone \
     && echo "$LANG UTF-8" > /etc/locale.gen \
     && apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog locales \ 
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog vim-tiny locales \ 
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && update-locale LANG=$LANG \
     && locale-gen $LANG \
@@ -132,8 +132,8 @@ RUN /usr/local/bin/install-plugins.sh       \
   handlebars:1.1.1               \
   ivy:1.28                       \
   jackson2-api:2.8.10.1          \
-  jenkins-multijob-plugin:1.28   \
-  job-dsl:1.66                   \
+  jenkins-multijob-plugin:1.29   \
+  job-dsl:1.68                   \
   jobConfigHistory:2.18          \
   jquery:1.12.4-0                \
   kpp-management-plugin:1.0.0    \
@@ -150,7 +150,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   mesos:0.15.1                   \
   metrics:3.1.2.10               \
   momentjs:1.1.1                 \
-  monitoring:1.70.0              \
+  monitoring:1.71.0              \
   msbuild:1.29                   \
   nant:1.4.3                     \
   node-iterator-api:1.5.0        \
@@ -160,7 +160,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   pipeline-github-lib:1.0        \
   pipeline-input-step:2.8        \
   pipeline-milestone-step:1.3.1  \
-  pipeline-model-api:1.2.5       \
+  pipeline-model-api:1.2.6       \
   pipeline-model-definition:1.2.6 \
   pipeline-model-extensions:1.2.6 \
   pipeline-rest-api:2.9          \
@@ -170,15 +170,15 @@ RUN /usr/local/bin/install-plugins.sh       \
   postbuildscript:2.2.1          \
   publish-over-cifs:0.6          \
   publish-over-ftp:1.13          \
-  publish-over-ssh:1.18          \
+  publish-over-ssh:1.19.1        \
   puppet:1.1                     \
   rebuild:1.27                   \
-  role-strategy:2.6.1            \
+  role-strategy:2.7.0            \
   run-condition:1.0              \
-  s3:0.10.12                     \
+  s3:0.11.0                      \
   saferestart:0.3                \
   saml:1.0.4                     \
-  saltstack:3.1.3                \
+  saltstack:3.1.6                \
   scm-api:2.2.6                  \
   ssh-agent:1.15                 \
   ssh-slaves:1.25                \
