@@ -81,7 +81,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   android-lint:2.6               \
   ant:1.8                        \
   ace-editor:1.1                 \
-  analysis-core:1.96             \
+  analysis-core:1.95             \
   ansible:0.8                    \
   ansicolor:0.5.2                \
   antisamy-markup-formatter:1.5  \
