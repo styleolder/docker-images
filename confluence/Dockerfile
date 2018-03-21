@@ -2,20 +2,36 @@
 FROM blacklabelops/java:server-jre.8
 MAINTAINER 若虚 <slpcat@qq.com>
 
+# Container variables
+ENV \
+    TERM="xterm" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    TIMEZONE="Asia/Shanghai"
+
+# Set timezone and locales
+RUN set -ex \
+    && apk update \
+    && apk upgrade \
+    && apk add tzdata \
+    && echo "${TIMEZONE}" > /etc/TZ \
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+
 ARG CONFLUENCE_VERSION=6.7.1
 # permissions
 ARG CONTAINER_UID=1000
 ARG CONTAINER_GID=1000
 # Image Build Date By Buildsystem
 ARG BUILD_DATE=undefined
-# Language Settings
-ARG LANG_LANGUAGE=en
-ARG LANG_COUNTRY=US
 
 # Setup useful environment variables
 ENV CONF_HOME=/var/atlassian/confluence \
     CONF_INSTALL=/opt/atlassian/confluence \
-    MYSQL_DRIVER_VERSION=5.1.44
+    MYSQL_DRIVER_VERSION=5.1.39
+
+#copy installer
+COPY atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz /tmp/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz
 
 # Install Atlassian Confluence
 RUN export CONTAINER_USER=confluence                &&  \
@@ -43,13 +59,11 @@ RUN export CONTAINER_USER=confluence                &&  \
     # Installing true type fonts
     update-ms-fonts                                 && \
     fc-cache -f                                     && \
-    # Setting Locale
-    /usr/glibc-compat/bin/localedef -i ${LANG_LANGUAGE}_${LANG_COUNTRY} -f UTF-8 ${LANG_LANGUAGE}_${LANG_COUNTRY}.UTF-8 && \
     # Installing Confluence
     mkdir -p ${CONF_HOME} \
     && chown -R confluence:confluence ${CONF_HOME} \
     && mkdir -p ${CONF_INSTALL}/conf \
-    && wget -O /tmp/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz && \
+    #&& wget -O /tmp/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz http://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz && \
     tar xzf /tmp/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz --strip-components=1 -C ${CONF_INSTALL} && \
     echo "confluence.home=${CONF_HOME}" > ${CONF_INSTALL}/confluence/WEB-INF/classes/confluence-init.properties && \
     # Install database drivers
@@ -88,8 +102,6 @@ RUN export CONTAINER_USER=confluence                &&  \
 
 # Image Metadata
 LABEL com.blacklabelops.application.confluence.version=$CONFLUENCE_VERSION \
-      com.blacklabelops.application.confluence.setting.language=$LANG_LANGUAGE \
-      com.blacklabelops.application.confluence.setting.country=$LANG_COUNTRY \
       com.blacklabelops.application.confluence.userid=$CONTAINER_UID \
       com.blacklabelops.application.confluence.groupid=$CONTAINER_GID \
       com.blacklabelops.application.version.jdbc-mysql=$MYSQL_DRIVER_VERSION \
