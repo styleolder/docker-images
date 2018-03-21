@@ -1,3 +1,4 @@
 *.jar
+*.tar.gz
 *.bin
 */www_root/
