@@ -113,7 +113,6 @@ RUN /usr/local/bin/install-plugins.sh       \
   ec2:1.39                       \
   email-ext:2.61                 \
   embeddable-build-status:1.9    \
-  envinject:2.1.5                \
   extended-read-permission:2.0   \
   external-monitor-job:1.7       \
   favorite:2.3.1                 \
