@@ -104,7 +104,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   copyartifact:1.39              \
   cvs:2.14                       \
   dashboard-view:2.9.11          \
-  delivery-pipeline-plugin:1.1.0 \
+  delivery-pipeline-plugin:1.1.1 \
   description-setter:1.10        \
   dingding-notifications:1.4     \
   docker-build-publish:1.3.2     \
