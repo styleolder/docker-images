@@ -11,6 +11,8 @@ ENV \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
+
 # Set timezone and locales
 RUN set -ex \
     && apk update \
