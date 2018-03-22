@@ -11,7 +11,7 @@ ENV \
     #DOCKER_EXTRA_OPTS="--insecure-registry=gitlab.default.svc.cluster.local:5000" \
     SSH_KNOWN_HOSTS=github.com
 
-RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
+RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
     && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
     && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
 
