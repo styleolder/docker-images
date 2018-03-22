@@ -11,7 +11,7 @@ ENV \
     #LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
-RUN sed -i's/download.opensuse.org/mirrors.aliyun.com\/opensuse/' /etc/zypp/repos.d/*
+RUN sed -i 's/download.opensuse.org/mirrors.aliyun.com\/opensuse/' /etc/zypp/repos.d/*
 
 RUN  \
     zypper refresh -f && \
