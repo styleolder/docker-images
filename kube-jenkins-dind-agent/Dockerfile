@@ -8,7 +8,7 @@ ENV \
     LC_ALL=en_US.UTF-8 \
     TIMEZONE=Asia/Shanghai \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
-    DOCKER_EXTRA_OPTS="--insecure-registry=gitlab.default.svc.cluster.local:5000" \
+    #DOCKER_EXTRA_OPTS="--insecure-registry=gitlab.default.svc.cluster.local:5000" \
     SSH_KNOWN_HOSTS=github.com
 
 # Set timezone and locales
@@ -16,7 +16,7 @@ RUN \
     echo "${TIMEZONE}" > /etc/timezone \
     && echo "$LANG UTF-8" > /etc/locale.gen \
     && apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog locales \ 
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog vim-tiny locales \ 
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && update-locale LANG=$LANG \
     && locale-gen $LANG \
@@ -49,6 +49,8 @@ RUN \
    stable" \
    && apt-get update -y \
    && apt-get install -y docker-ce=17.09.1~ce-0~debian
+
+COPY daemon.json /etc/docker/daemon.json
 
 # jenkins slave
 ENV HOME /home/jenkins
