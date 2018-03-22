@@ -11,7 +11,7 @@ ENV \
     TIMEZONE="Asia/Shanghai"
 
 # set timezone
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 RUN  \
     pacman -Syu

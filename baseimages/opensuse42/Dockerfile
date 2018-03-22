@@ -18,6 +18,6 @@ RUN  \
     zypper clean
 
 # set timezone
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 CMD ["/bin/bash"]

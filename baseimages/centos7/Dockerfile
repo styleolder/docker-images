@@ -14,7 +14,7 @@ ENV \
 COPY epel.repo /etc/yum.repos.d/
 
 # set timezone
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 RUN  \
     yum update -y && \
