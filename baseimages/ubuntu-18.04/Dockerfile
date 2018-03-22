@@ -1,9 +1,6 @@
 FROM ubuntu:18.04
 MAINTAINER 若虚 <slpcat@qq.com>
 
-RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
-    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
-
 # Container variables
 ENV \ 
     TERM="xterm" \
@@ -14,6 +11,9 @@ ENV \
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
     sed -i 's/security.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 # Set timezone and locales
 RUN \
