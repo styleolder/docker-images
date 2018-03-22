@@ -52,7 +52,7 @@ RUN \
    $(lsb_release -cs) \
    stable" \
    && apt-get update -y \
-   && apt-get install -y docker-ce=17.09.1~ce-0~debian
+   && apt-get install -y docker-ce
 
 COPY daemon.json /etc/docker/daemon.json
 
