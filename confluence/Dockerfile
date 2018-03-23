@@ -30,7 +30,7 @@ ARG BUILD_DATE=undefined
 # Setup useful environment variables
 ENV CONF_HOME=/var/atlassian/confluence \
     CONF_INSTALL=/opt/atlassian/confluence \
-    MYSQL_DRIVER_VERSION=5.1.39
+    MYSQL_DRIVER_VERSION=5.1.44
 
 #copy installer
 COPY atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz /tmp/atlassian-confluence-${CONFLUENCE_VERSION}.tar.gz
