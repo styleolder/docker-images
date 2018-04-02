@@ -68,8 +68,8 @@ spec:
             mountPath: "/var/opt/gitlab"
       volumes:
         - name: gitlab-etc
-          persistentVolumeClaim:
-            claimName: gitlab-etc-claim
+          configMap:
+            name: gitlab-etc-configmap
         - name: gitlab-log
           persistentVolumeClaim:
             claimName: gitlab-log-claim
