@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: redis-master
+  namespace: devops
+  labels:
+    name: redis-master
+spec:
+  serviceName: redis-master
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis-master
+        redis-master: "true"
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: redis
+        image: harbor.frognew.com/rg/redis:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6379
+        env:
+        - name: MASTER
+          value: "true"
+        - name: REDIS_PASS
+          valueFrom:
+            secretKeyRef:
+              name: devopssecret
+              key: redisAuthPass
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis-master-volume
+          mountPath: /data
+      imagePullSecrets: 
+        - name: regsecret
+  volumeClaimTemplates:
+  - metadata:
+      name: redis-master-volume
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 5Gi
