@@ -10,4 +10,4 @@ spec:
     targetPort: 3306
   type: NodePort
   selector:
-    name: mysql-server
+    name: mysql
