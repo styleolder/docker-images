@@ -19,7 +19,7 @@ RUN  \
     yum update -y && \
     yum clean all
 
-ENV KONG_VERSION 0.13.0
+ENV KONG_VERSION 0.11.2
 
 RUN yum install -y wget https://bintray.com/kong/kong-community-edition-rpm/download_file?file_path=centos/7/kong-community-edition-$KONG_VERSION.el7.noarch.rpm && \
     yum clean all
