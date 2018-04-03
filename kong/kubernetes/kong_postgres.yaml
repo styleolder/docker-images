@@ -66,12 +66,17 @@ spec:
     app: kong
 
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kong-rc
+  labels:
+    app: kong
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: kong
   template:
     metadata:
       labels:
@@ -80,14 +85,24 @@ spec:
     spec:
       containers:
       - name: kong
-        image: kong
+        image: slpcat/kong
         env:
           - name: KONG_ADMIN_LISTEN
-            value: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
-          - name: KONG_PG_PASSWORD
-            value: kong
+            value: "0.0.0.0:8001"
+          - name: KONG_DATABASE
+            value: "postgres"
           - name: KONG_PG_HOST
-            value: postgres
+            value: "pgsqlhost"
+          - name: KONG_PG_PORT
+            value: "5432"
+          - name: KONG_PG_DATABASE
+            value: "kong"
+          - name: KONG_PG_USER
+            value: "kong"
+          - name: KONG_PG_PASSWORD
+            value: "password"
+          - name: KONG_DNS_ORDER
+            value: "A,SRV,LAST,CNAME"
           - name: KONG_PROXY_ACCESS_LOG
             value: "/dev/stdout"
           - name: KONG_ADMIN_ACCESS_LOG
