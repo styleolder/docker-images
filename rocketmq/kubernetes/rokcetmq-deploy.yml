@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rocketmq
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: rocketmq
+    spec:
+      containers:
+      - name: rocketmq
+        image: slpcat/rocketmq
+        ports:
+        - containerPort: 10911
+      volumeMounts:
+      - name: config-volume
+        mountPath: /opt/rocketmq/bin
+      volumes:
+        - name: config-volume
+          configMap:
+            name: runbroker.sh

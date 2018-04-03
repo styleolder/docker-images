@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+      app: rocketmq
+  name: rocketmq
+spec:
+  ports:
+  - port: 9876
+    targetPort: 9876
+    name: namesrv
+  - port: 10911
+    targetPort: 10911
+    name: broker
+  selector:
+    app: rocketmq

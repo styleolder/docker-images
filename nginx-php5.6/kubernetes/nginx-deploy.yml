@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-nginx
@@ -8,6 +8,9 @@ spec:
     metadata:
       labels:
         run: my-nginx
+    annotations:
+      security.alpha.kubernetes.io/sysctls: kernel.shm_rmid_forced=1
+      security.alpha.kubernetes.io/unsafe-sysctls: net.ipv4.route.min_pmtu=1000,kernel.msgmax=1 2 3
     spec:
       containers:
       - name: my-nginx

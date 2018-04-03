@@ -11,8 +11,7 @@ ENV JAVA_OPT=" -Duser.home=/opt/rocketmq"
 RUN groupadd rocketmq && \
     useradd -g rocketmq -s /bin/bash -c RocketMQ rocketmq  && \
     mkdir /home/rocketmq && \
-    chown -R rocketmq:rocketmq /home/rocketmq/ && \
-    mkdir -p /opt/rocketmq && \
+    chown -R rocketmq:rocketmq /home/rocketmq
 
 # install from source
 #RUN cd /opt && \
@@ -29,6 +28,6 @@ RUN cd /opt && \
     chown -R rocketmq:rocketmq /opt/rocketmq
 
 USER rocketmq
-WORKDIR /opt/rocketmq
+WORKDIR /opt/rocketmq/bin
 EXPOSE 9876 10909 10911
-CMD  ["sh", "-c", ". ./bin/play.sh; while sleep 10; do echo RocketMQ, GO ROCK; done"]
+CMD  ["sh", "-c", ". ./play.sh; while sleep 10; do echo RocketMQ, GO ROCK; done"]
