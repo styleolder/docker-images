@@ -30,8 +30,6 @@ RUN \
 
 ENV JAVA_OPTS="-Drocketmq.namesrv.addr=127.0.0.1:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
 
-RUN \
-
 # install from source
 RUN \
     mkdir -p /opt/rocketmq && \
