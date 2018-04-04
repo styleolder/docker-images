@@ -47,7 +47,7 @@ RUN \
     mvn clean package -Dmaven.test.skip=true && \
     mv target/rocketmq-console-ng-1.0.0.jar /opt/rocketmq && \
     rm -rf /opt/rocketmq-externals && \
-    rm -rf /root/.m2 
+    rm -rf ~/.m2 
 
 WORKDIR /opt/rocketmq
 EXPOSE 8080
