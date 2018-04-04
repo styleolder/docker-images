@@ -1,5 +1,5 @@
 #FROM  maven:3.5.3
-FROM java:8
+FROM openjdk:8-jdk-stretch
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -10,7 +10,7 @@ ENV \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
-RUN echo 'deb http://mirrors.aliyun.com/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list \
+RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
     && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
     && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
 
