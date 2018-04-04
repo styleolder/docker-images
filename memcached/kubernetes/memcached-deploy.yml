@@ -1,0 +1,39 @@
+#仅限于缓存用途，没有持久存储
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached
+  labels:
+    app: memcached
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached
+  template:
+    metadata:
+      labels:
+        name: memcached
+        app: memcached
+    spec:
+      containers:
+      - name: memcached
+        image: slpcat/memcached
+        resources:
+          # keep request = limit to keep this container in guaranteed class
+          requests:
+            cpu: 500m
+            memory: 1Gi
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+        ports:
+          - name: memcached
+            containerPort: 11211
+      #volumeMounts:
+      #- name: config-volume
+      #  mountPath: /opt/memcached/bin
+      #volumes:
+      #  - name: config-volume
+      #    configMap:
+      #      name: runbroker.sh
