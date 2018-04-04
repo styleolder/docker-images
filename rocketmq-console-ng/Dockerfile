@@ -30,24 +30,19 @@ RUN \
 
 ENV JAVA_OPTS="-Drocketmq.namesrv.addr=127.0.0.1:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
 
-RUN groupadd rocketmq && \
-    useradd -g rocketmq -s /bin/bash -c RocketMQ rocketmq  && \
-    mkdir /home/rocketmq && \
-    chown -R rocketmq:rocketmq /home/rocketmq && \
-    mkdir -p /opt/rocketmq && \
-    chown -R rocketmq:rocketmq /opt/rocketmq
+RUN \
 
 # install from source
-USER rocketmq
-RUN cd /opt/rocketmq && \
+RUN \
+    mkdir -p /opt/rocketmq && \
+    cd /opt/rocketmq && \
     git clone https://github.com/apache/rocketmq-externals.git
 
 WORKDIR /opt/rocketmq/rocketmq-externals/rocketmq-console
 RUN \
     mvn clean package -Dmaven.test.skip=true && \
     mv target/rocketmq-console-ng-1.0.0.jar /opt/rocketmq && \
-    rm -rf /opt/rocketmq-externals && \
-    rm -rf ~/.m2 
+    rm -rf /opt/rocketmq-externals
 
 WORKDIR /opt/rocketmq
 EXPOSE 8080
