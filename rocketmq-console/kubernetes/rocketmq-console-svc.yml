@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+      app: rocketmq-console
+  name: rocketmq-console-svc
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: web
+  selector:
+    app: rocketmq-console

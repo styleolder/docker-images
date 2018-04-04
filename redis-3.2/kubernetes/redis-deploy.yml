@@ -1,23 +1,24 @@
+#仅限于缓存用途，没有持久存储
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rocketmq
+  name: redis
   labels:
-    app: rocketmq
+    app: redis
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: rocketmq
+      app: redis
   template:
     metadata:
       labels:
-        name: rocketmq
-        app: rocketmq
+        name: redis
+        app: redis
     spec:
       containers:
-      - name: rocketmq
-        image: slpcat/rocketmq
+      - name: redis
+        image: slpcat/redis
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
@@ -27,15 +28,11 @@ spec:
             cpu: 8000m
             memory: 16Gi
         ports:
-          - name: namesrv
-            containerPort: 9876
-          - name: vip
-            containerPort: 10909
-          - name: broker
-            containerPort: 10911
+          - name: redis
+            containerPort: 6379
       #volumeMounts:
       #- name: config-volume
-      #  mountPath: /opt/rocketmq/bin
+      #  mountPath: /opt/redis/bin
       #volumes:
       #  - name: config-volume
       #    configMap:
