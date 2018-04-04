@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: redis
-        image: slpcat/redis
+        image: slpcat/redis-3.2
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
