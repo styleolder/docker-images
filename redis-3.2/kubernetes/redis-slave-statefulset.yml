@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: redis
-  namespace: devops
+  namespace: default
   labels:
     name: redis
 spec:
@@ -14,9 +14,11 @@ spec:
         app: redis
     spec:
       terminationGracePeriodSeconds: 10
+      imagePullSecrets: 
+        - name: regsecret
       containers:
       - name: redis
-        image: harbor.frognew.com/rg/redis:1.0
+        image: slpcat/redis-3.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 6379
@@ -24,7 +26,7 @@ spec:
         - name: REDIS_PASS
           valueFrom:
             secretKeyRef:
-              name: devopssecret
+              name: redis-secret
               key: redisAuthPass
         resources:
           requests:
@@ -35,9 +37,7 @@ spec:
             cpu: "500m"
         volumeMounts:
         - name: redis-volume
-          mountPath: /data
-      imagePullSecrets: 
-        - name: regsecret
+          mountPath: /var/lib/redis
   volumeClaimTemplates:
   - metadata:
       name: redis-volume

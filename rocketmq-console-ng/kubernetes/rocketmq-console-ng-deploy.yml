@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rocketmq-console-ng
+  labels:
+    app: rocketmq-console-ng
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rocketmq-console-ng
+  template:
+    metadata:
+      labels:
+        name: rocketmq-console-ng
+        app: rocketmq-console-ng
+    spec:
+      containers:
+      - name: rocketmq-console-ng
+        image: styletang/rocketmq-console-ng
+        ports:
+          - name: web
+            containerPort: 8080
+        env:
+          - name: JAVA_OPTS
+            value: "-Drocketmq.namesrv.addr=rocketmq-svc:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+      #volumeMounts:
+      #- name: config-volume
+      #  mountPath: /opt/rocketmq-console/bin
+      #volumes:
+      #  - name: config-volume
+      #    configMap:
+      #      name: runbroker.sh

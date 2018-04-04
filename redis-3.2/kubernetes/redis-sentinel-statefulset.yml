@@ -2,7 +2,7 @@ apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
   name: redis-sentinel
-  namespace: devops
+  namespace: default
 spec:
   serviceName: redis-sentinel
   replicas: 3
@@ -12,9 +12,11 @@ spec:
         redis-sentinel: "true"
     spec:
       terminationGracePeriodSeconds: 10
+      imagePullSecrets: 
+        - name: regsecret
       containers:
       - name: redis-sentinel
-        image: harbor.frognew.com/rg/redis:1.0
+        image: slpcat/redis-3.2
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 26379
@@ -25,7 +27,5 @@ spec:
           - name: REDIS_PASS
             valueFrom:
               secretKeyRef:
-                name: devopssecret
+                name: redis-secret
                 key: redisAuthPass
-      imagePullSecrets: 
-        - name: regsecret
