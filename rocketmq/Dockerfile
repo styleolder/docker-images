@@ -27,7 +27,7 @@ RUN \
 
 # Install required packages
 RUN \
-    apt-get dist-upgrade -y
+    apt-get upgrade -y
 
 # Rocketmq version
 ENV ROCKETMQ_VERSION="4.1.0"
