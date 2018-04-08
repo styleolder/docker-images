@@ -39,6 +39,7 @@ RUN apt-get update -y       \
        iptables             \
        jq                   \
        openjdk-8-jdk-headless  \
+       maven                \
        unzip                \
        zip                  \
        gnupg2               \

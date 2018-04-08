@@ -6,6 +6,8 @@ metadata:
   labels:
     name: redis-svc
 spec:
+  #headless service
+  #clusterIP: None
   ports:
     - port: 6379
   selector:
