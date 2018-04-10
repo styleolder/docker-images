@@ -1,3 +1,4 @@
+#upstream https://github.com/jenkinsci/docker-jnlp-slave
 FROM debian:stretch
 MAINTAINER 若虚 <slpcat@qq.com>
 
