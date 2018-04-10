@@ -25,12 +25,15 @@ RUN \
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
-RUN mkdir -p "$CATALINA_HOME"
+ENV JAVA_HOME /usr/java/jdk1.8.0_161
+RUN mkdir -p "$CATALINA_HOME" 
+
 WORKDIR $CATALINA_HOME
 
 # let "Tomcat Native" live somewhere isolated
 ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
+RUN yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre-devel apr-devel openssl-devel
 
 # runtime dependencies for Tomcat Native Libraries
 # Tomcat Native 1.2+ requires a newer version of OpenSSL than debian:jessie has available
@@ -38,26 +41,26 @@ ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
 # > configure: error: Your version of OpenSSL is not compatible with this version of tcnative
 # see http://tomcat.10.x6.nabble.com/VOTE-Release-Apache-Tomcat-8-0-32-tp5046007p5046024.html (and following discussion)
 # and https://github.com/docker-library/tomcat/pull/31
-ENV OPENSSL_VERSION 1.1.0h
+#ENV OPENSSL_VERSION 1.1.0h
 
-RUN \
-    yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre-devel apr-devel && \
-    wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
-    tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
-    cd openssl-${OPENSSL_VERSION} && \
-    ./Configure linux-x86_64 shared no-ssl2 no-ssl3 no-comp enable-ec_nistp_64_gcc_128 -Wl,-rpath,/usr/local/lib64 && \
-    make -j "$(nproc)" && \
-    make install && \
-    #mv /usr/bin/openssl /usr/bin/openssl.bak
-    #mv /usr/include/openssl /usr/include/openssl.bak
-    ln -s /usr/local/bin/openssl /usr/bin/openssl && \
-    ln -s /usr/local/include/openssl /usr/include/openssl && \
-    export CFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
-    export CXXFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
-    #update ldconfig
-    echo "/usr/local/lib" >> /etc/ld.so.conf && \
-    echo "/usr/local/lib64" >> /etc/ld.so.conf && \
-    ldconfig -V
+#RUN \
+#    yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre-devel apr-devel && \
+#    wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
+#    tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
+#    cd openssl-${OPENSSL_VERSION} && \
+#    ./Configure linux-x86_64 shared no-ssl2 no-ssl3 no-comp enable-ec_nistp_64_gcc_128 -Wl,-rpath,/usr/local/lib64 && \
+#    make -j "$(nproc)" && \
+#    make install && \
+#    #mv /usr/bin/openssl /usr/bin/openssl.bak
+#    #mv /usr/include/openssl /usr/include/openssl.bak
+#    ln -s /usr/local/bin/openssl /usr/bin/openssl && \
+#    ln -s /usr/local/include/openssl /usr/include/openssl && \
+#    export CFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
+#    export CXXFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
+#    #update ldconfig
+#    echo "/usr/local/lib" >> /etc/ld.so.conf && \
+#    echo "/usr/local/lib64" >> /etc/ld.so.conf && \
+#    ldconfig -V
 
 # see https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/KEYS
 # see also "update.sh" (https://github.com/docker-library/tomcat/blob/master/update.sh)
@@ -123,6 +126,7 @@ RUN set -eux; \
 			--libdir="$TOMCAT_NATIVE_LIBDIR" \
 			--prefix="$CATALINA_HOME" \
 			--with-apr="$(which apr-1-config)" \
+                        --with-java-home="$JAVA_HOME" \
 			--with-ssl=yes; \
 		make -j "$(nproc)"; \
 		make install; \
