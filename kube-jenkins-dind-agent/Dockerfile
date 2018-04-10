@@ -8,7 +8,8 @@ ENV \
     LANGUAGE=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     TIMEZONE=Asia/Shanghai \
-    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+    #openjdk8
+    #JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
     #DOCKER_EXTRA_OPTS="--insecure-registry=gitlab.default.svc.cluster.local:5000" \
     SSH_KNOWN_HOSTS=github.com
 
@@ -27,24 +28,34 @@ RUN \
     && locale-gen $LANG \
     && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
+#openjdk8 apt-get install -y openjdk-8-jdk-headless
+# Add Oracle Java PPA
+RUN \
+    apt-get -y update && \
+    apt-get -y install software-properties-common apt-transport-https ca-certificates && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt-get -y update && \
+    # Auto-accept the Oracle License
+    echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+    echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
+    apt-get -y install libpq-dev oracle-java8-installer && \
+    # Clean up
+    rm -f /var/cache/oracle-jdk8-installer/jdk-*.tar.g
+
 RUN apt-get update -y       \
     && apt-get upgrade -y   \
     && apt-get install -y   \
-       apt-transport-https  \
        build-essential      \
        bzip2                \
-       ca-certificates      \
        curl                 \
        sudo                 \
        git                  \
        iptables             \
        jq                   \
-       openjdk-8-jdk-headless  \
        maven                \
        unzip                \
        zip                  \
-       gnupg2               \
-       software-properties-common
+       gnupg2               
 
 #Install Docker in Docker
 RUN \
