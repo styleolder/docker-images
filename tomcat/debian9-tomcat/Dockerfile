@@ -46,7 +46,7 @@ RUN \
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
-ENV JAVA_HOME /usr/java/jdk1.8.0_161
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
 
