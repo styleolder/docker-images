@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example-web
+  name: tomcat8
   namespace: default
   labels:
-    app: example-web
+    app: tomcat8
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: example-web
+      app: tomcat8
 #  minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
   strategy:
     rollingUpdate:  ##由于replicas为3,则整个升级,pod个数在2-4个之间
@@ -18,19 +18,19 @@ spec:
   template:
     metadata:
       labels:
-        app: example-web
+        app: tomcat8
     spec:
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       imagePullSecrets:
       - name: registrykey-ali-ext
       containers:
-      - name: example-web
+      - name: tomcat8
         image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           httpGet:
             path: /
-            port: 80
+            port: 8080
             scheme: HTTP
           initialDelaySeconds: 60 ## equals to the maximum startup time of the application + couple of seconds
           timeoutSeconds: 5
@@ -39,7 +39,7 @@ spec:
         readinessProbe: #kubernetes认为该pod是启动成功的
           httpGet:
             path: /
-            port: 80
+            port: 8080
             scheme: HTTP
           initialDelaySeconds: 30 ## equals to minimum startup time of the application
           timeoutSeconds: 5
@@ -48,14 +48,14 @@ spec:
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
-            cpu: 50m
-            memory: 64Mi
-          limits:
             cpu: 500m
             memory: 512Mi
+          limits:
+            cpu: 2000m
+            memory: 4096Mi
         env:
           - name: PROFILE
             value: "test"
         ports:
           - name: http
-            containerPort: 80
+            containerPort: 8080
