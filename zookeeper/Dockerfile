@@ -1,5 +1,5 @@
-# upstream https://github.com/31z4/zookeeper-docker/blob/af9250c7208973b74ed0ef6ca61052bdf853ce20/3.4.11/Dockerfile
-FROM openjdk:8-jre-alpine
+#upstream https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper
+FROM ubuntu:16.04
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -10,72 +10,79 @@ ENV \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
+    && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
 # Set timezone and locales
-RUN set -ex \
-    && apk update \
-    && apk upgrade \
-    && apk add \
-           bash \
-           tzdata \
-           vim \
-           tini \
-           su-exec \
-           gzip \
-           tar \
-           wget \
-           curl \
-    && echo "${TIMEZONE}" > /etc/TZ \
+RUN \
+    echo "${TIMEZONE}" > /etc/timezone \
+    && echo "$LANG UTF-8" > /etc/locale.gen \
+    && apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog tzdata \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    # Network fix
-    && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+    && update-locale LANG=$LANG \
+    && locale-gen $LANG \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
-ENV ZOO_USER=zookeeper \
-    ZOO_CONF_DIR=/conf \
-    ZOO_DATA_DIR=/data \
-    ZOO_DATA_LOG_DIR=/datalog \
-    ZOO_PORT=2181 \
-    ZOO_TICK_TIME=2000 \
-    ZOO_INIT_LIMIT=5 \
-    ZOO_SYNC_LIMIT=2 \
-    ZOO_MAX_CLIENT_CNXNS=60
+# Install required packages
+RUN \
+    apt-get dist-upgrade -y
 
-# Add a user and make dirs
-RUN set -ex; \
-    adduser -D "$ZOO_USER"; \
-    mkdir -p "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR"; \
-    chown "$ZOO_USER:$ZOO_USER" "$ZOO_DATA_LOG_DIR" "$ZOO_DATA_DIR" "$ZOO_CONF_DIR"
+ENV ZK_USER=zookeeper \
+    ZK_DATA_DIR=/var/lib/zookeeper/data \
+    ZK_DATA_LOG_DIR=/var/lib/zookeeper/log \
+    ZK_LOG_DIR=/var/log/zookeeper \
+    JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
-ARG GPG_KEY=D0BC8D8A4E90A40AFDFC43B3E22A746A68E327C1
-ARG DISTRO_NAME=zookeeper-3.4.11
+ARG GPG_KEY=C823E3E5B12AF29C67F81976F5CECB3CB5E9BD2D
+ARG ZK_DIST=zookeeper-3.4.10
 
-# Download Apache Zookeeper, verify its PGP signature, untar and clean up
-RUN set -ex; \
-    apk add --no-cache --virtual .build-deps \
-        ca-certificates \
-        gnupg \
-        libressl; \
-    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz"; \
-    wget -q "https://www.apache.org/dist/zookeeper/$DISTRO_NAME/$DISTRO_NAME.tar.gz.asc"; \
-    export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-key "$GPG_KEY" || \
-    gpg --keyserver pgp.mit.edu --recv-keys "$GPG_KEY" || \
-    gpg --keyserver keyserver.pgp.com --recv-keys "$GPG_KEY"; \
-    gpg --batch --verify "$DISTRO_NAME.tar.gz.asc" "$DISTRO_NAME.tar.gz"; \
-    tar -xzf "$DISTRO_NAME.tar.gz"; \
-    mv "$DISTRO_NAME/conf/"* "$ZOO_CONF_DIR"; \
-    rm -rf "$GNUPGHOME" "$DISTRO_NAME.tar.gz" "$DISTRO_NAME.tar.gz.asc"; \
-    apk del .build-deps
+RUN set -x \
+    && apt-get update \
+    && apt-get install -y openjdk-8-jre-headless wget netcat-openbsd \
+    && wget -q "http://www.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz" \
+    && wget -q "http://www.apache.org/dist/zookeeper/$ZK_DIST/$ZK_DIST.tar.gz.asc" \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-key "$GPG_KEY" \
+    && gpg --batch --verify "$ZK_DIST.tar.gz.asc" "$ZK_DIST.tar.gz" \
+    && tar -xzf "$ZK_DIST.tar.gz" -C /opt \
+    && rm -r "$GNUPGHOME" "$ZK_DIST.tar.gz" "$ZK_DIST.tar.gz.asc" \
+    && ln -s /opt/$ZK_DIST /opt/zookeeper \
+    && rm -rf /opt/zookeeper/CHANGES.txt \
+    /opt/zookeeper/README.txt \
+    /opt/zookeeper/NOTICE.txt \
+    /opt/zookeeper/CHANGES.txt \
+    /opt/zookeeper/README_packaging.txt \
+    /opt/zookeeper/build.xml \
+    /opt/zookeeper/config \
+    /opt/zookeeper/contrib \
+    /opt/zookeeper/dist-maven \
+    /opt/zookeeper/docs \
+    /opt/zookeeper/ivy.xml \
+    /opt/zookeeper/ivysettings.xml \
+    /opt/zookeeper/recipes \
+    /opt/zookeeper/src \
+    /opt/zookeeper/$ZK_DIST.jar.asc \
+    /opt/zookeeper/$ZK_DIST.jar.md5 \
+    /opt/zookeeper/$ZK_DIST.jar.sha1 \
+    && apt-get autoremove -y wget \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR $DISTRO_NAME
-VOLUME ["$ZOO_DATA_DIR", "$ZOO_DATA_LOG_DIR"]
+# Copy configuration generator script to bin
+COPY zkGenConfig.sh zkOk.sh zkMetrics.sh /opt/zookeeper/bin/
 
-EXPOSE $ZOO_PORT 2888 3888
-
-ENV PATH=$PATH:/$DISTRO_NAME/bin \
-    ZOOCFGDIR=$ZOO_CONF_DIR
-
-COPY docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["zkServer.sh", "start-foreground"]
+# Create a user for the zookeeper process and configure file system ownership
+# for necessary directories and symlink the distribution as a user executable
+RUN set -x \
+    && useradd $ZK_USER \
+    && [ `id -u $ZK_USER` -eq 1000 ] \
+    && [ `id -g $ZK_USER` -eq 1000 ] \
+    && mkdir -p $ZK_DATA_DIR $ZK_DATA_LOG_DIR $ZK_LOG_DIR /usr/share/zookeeper /tmp/zookeeper /usr/etc/ \
+    && chown -R "$ZK_USER:$ZK_USER" /opt/$ZK_DIST $ZK_DATA_DIR $ZK_LOG_DIR $ZK_DATA_LOG_DIR /tmp/zookeeper \
+    && ln -s /opt/zookeeper/conf/ /usr/etc/zookeeper \
+    && ln -s /opt/zookeeper/bin/* /usr/bin \
+    && ln -s /opt/zookeeper/$ZK_DIST.jar /usr/share/zookeeper/ \
+    && ln -s /opt/zookeeper/lib/* /usr/share/zookeeper
