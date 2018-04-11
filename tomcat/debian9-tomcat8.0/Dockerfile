@@ -1,6 +1,5 @@
 #upstream https://github.com/docker-library/tomcat/tree/master/8.5/jre8
-FROM centos:7
-
+FROM debian:stretch
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -8,32 +7,52 @@ ENV \
     TERM="xterm" \
     LANG="en_US.UTF-8" \
     LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
-COPY epel.repo /etc/yum.repos.d/
-COPY java.sh /etc/profile.d/
+RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
+    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
 
-# set timezone
-RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
-
+# Set timezone and locales
 RUN \
-    yum update -y && \
-    yum install -y wget && \
-    wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm && \
-    rpm -ivh jdk-8u161-linux-x64.rpm && \
-    rm jdk-8u161-linux-x64.rpm
+    echo "${TIMEZONE}" > /etc/timezone \
+    && echo "$LANG UTF-8" > /etc/locale.gen \
+    && apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog vim-tiny locales openssl\
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && update-locale LANG=$LANG \
+    && locale-gen $LANG \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
+# Install required packages
+RUN \
+    apt-get dist-upgrade -y
+
+# Add Oracle Java PPA
+RUN \
+    apt-get -y update && \
+    apt-get -y install software-properties-common apt-transport-https gnupg2 ca-certificates && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
+    apt-get -y update && \
+    # Auto-accept the Oracle License
+    #echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+    #echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    apt-get -y install libpq-dev oracle-java8-installer && \
+    # Clean up
+    rm -f /var/cache/oracle-jdk8-installer/jdk-*.tar.g
 
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
-ENV JAVA_HOME /usr/java/jdk1.8.0_161
-RUN mkdir -p "$CATALINA_HOME" 
-
+ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+RUN mkdir -p "$CATALINA_HOME"
 WORKDIR $CATALINA_HOME
 
 # let "Tomcat Native" live somewhere isolated
 ENV TOMCAT_NATIVE_LIBDIR $CATALINA_HOME/native-jni-lib
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$TOMCAT_NATIVE_LIBDIR
-RUN yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre-devel apr-devel openssl-devel
 
 # runtime dependencies for Tomcat Native Libraries
 # Tomcat Native 1.2+ requires a newer version of OpenSSL than debian:jessie has available
@@ -41,34 +60,45 @@ RUN yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre
 # > configure: error: Your version of OpenSSL is not compatible with this version of tcnative
 # see http://tomcat.10.x6.nabble.com/VOTE-Release-Apache-Tomcat-8-0-32-tp5046007p5046024.html (and following discussion)
 # and https://github.com/docker-library/tomcat/pull/31
-#ENV OPENSSL_VERSION 1.1.0h
+ENV OPENSSL_VERSION 1.1.0f-3+deb9u2
+RUN set -ex; \
+	currentVersion="$(dpkg-query --show --showformat '${Version}\n' openssl)"; \
+	if dpkg --compare-versions "$currentVersion" '<<' "$OPENSSL_VERSION"; then \
+		if ! grep -q stretch /etc/apt/sources.list; then \
+# only add stretch if we're not already building from within stretch
+			{ \
+				echo 'deb http://deb.debian.org/debian stretch main'; \
+				echo 'deb http://security.debian.org stretch/updates main'; \
+				echo 'deb http://deb.debian.org/debian stretch-updates main'; \
+			} > /etc/apt/sources.list.d/stretch.list; \
+			{ \
+# add a negative "Pin-Priority" so that we never ever get packages from stretch unless we explicitly request them
+				echo 'Package: *'; \
+				echo 'Pin: release n=stretch*'; \
+				echo 'Pin-Priority: -10'; \
+				echo; \
+# ... except OpenSSL, which is the reason we're here
+				echo 'Package: openssl libssl*'; \
+				echo "Pin: version $OPENSSL_VERSION"; \
+				echo 'Pin-Priority: 990'; \
+			} > /etc/apt/preferences.d/stretch-openssl; \
+		fi; \
+		apt-get update; \
+		apt-get install -y --no-install-recommends openssl="$OPENSSL_VERSION"; \
+		rm -rf /var/lib/apt/lists/*; \
+	fi
 
-#RUN \
-#    yum install -y gcc gcc-c++ autoconf automake make which zlib zlib-devel pcre-devel apr-devel && \
-#    wget https://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz && \
-#    tar xzf openssl-${OPENSSL_VERSION}.tar.gz && \
-#    cd openssl-${OPENSSL_VERSION} && \
-#    ./Configure linux-x86_64 shared no-ssl2 no-ssl3 no-comp enable-ec_nistp_64_gcc_128 -Wl,-rpath,/usr/local/lib64 && \
-#    make -j "$(nproc)" && \
-#    make install && \
-#    #mv /usr/bin/openssl /usr/bin/openssl.bak
-#    #mv /usr/include/openssl /usr/include/openssl.bak
-#    ln -s /usr/local/bin/openssl /usr/bin/openssl && \
-#    ln -s /usr/local/include/openssl /usr/include/openssl && \
-#    export CFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
-#    export CXXFLAGS="-I/usr/local/include/ -L/usr/local/lib -L/usr/local/lib64 -Wl,-rpath,/usr/local/lib64 -lssl -lcrypto" && \
-#    #update ldconfig
-#    echo "/usr/local/lib" >> /etc/ld.so.conf && \
-#    echo "/usr/local/lib64" >> /etc/ld.so.conf && \
-#    ldconfig -V
+RUN apt-get update && apt-get install -y --no-install-recommends \
+		libapr1 \
+	&& rm -rf /var/lib/apt/lists/*
 
 # see https://www.apache.org/dist/tomcat/tomcat-$TOMCAT_MAJOR/KEYS
 # see also "update.sh" (https://github.com/docker-library/tomcat/blob/master/update.sh)
 ENV GPG_KEYS 05AB33110949707C93A279E3D3EFE6B686867BA6 07E48665A34DCAFAE522E5E6266191C37C037D42 47309207D818FFD8DCD3F83F1931D684307A10A5 541FBE7D8F78B25E055DDEE13C370389288584E7 61B832AC2F1C5A90F0F9B00A1C506407564C17A3 713DA88BE50911535FE716F5208B0AB1D63011C7 79F7026C690BAA50B92CD8B66A3AD3F4F22C4FED 9BA44C2621385CB966EBA586F72C284D731FABEE A27677289986DB50844682F8ACB77FC2E86E29AC A9C5DF4D22E99998D9875A5110C01C5A2F6059E7 DCFD35E0BF8CA7344752DE8B6FB21E8933C60243 F3A04C595DB5B6A5F1ECA43E3B7BBB100D811BBE F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23
 
 ENV TOMCAT_MAJOR 8
-ENV TOMCAT_VERSION 8.5.30
-ENV TOMCAT_SHA512 f7e84fed604dc183dc1bdad07f3b025547d95d024ccfb05da68f5f45256f3082af6ba28c7f0148ae4ee43637248a0074c92bb12198ab58331d0c4f04906b86b6
+ENV TOMCAT_VERSION 8.0.50
+ENV TOMCAT_SHA512 c8923e610f1d3f7f13d5d0cc765a97ef1b5b34a527b57dfb7058f0bd65555cec748b83198859e6bba41b29cc3d5071ed05618097edc5d6cfad2f380f8230e7f5
 
 ENV TOMCAT_TGZ_URLS \
 # https://issues.apache.org/jira/browse/INFRA-8753?focusedCommentId=14735394#comment-14735394
@@ -87,10 +117,18 @@ ENV TOMCAT_ASC_URLS \
 
 RUN set -eux; \
 	\
+	savedAptMark="$(apt-mark showmanual)"; \
+	apt-get update; \
+	\
+	apt-get install -y --no-install-recommends gnupg dirmngr; \
+	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
 		gpg --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	done; \
+	\
+	apt-get install -y --no-install-recommends wget ca-certificates; \
+	\
 	success=; \
 	for url in $TOMCAT_TGZ_URLS; do \
 		if wget -O tomcat.tar.gz "$url"; then \
@@ -119,20 +157,35 @@ RUN set -eux; \
 	\
 	nativeBuildDir="$(mktemp -d)"; \
 	tar -xvf bin/tomcat-native.tar.gz -C "$nativeBuildDir" --strip-components=1; \
+	apt-get install -y --no-install-recommends \
+		dpkg-dev \
+		gcc \
+		libapr1-dev \
+		libssl-dev \
+		make \
+	; \
 	( \
 		export CATALINA_HOME="$PWD"; \
 		cd "$nativeBuildDir/native"; \
+		gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 		./configure \
+			--build="$gnuArch" \
 			--libdir="$TOMCAT_NATIVE_LIBDIR" \
 			--prefix="$CATALINA_HOME" \
 			--with-apr="$(which apr-1-config)" \
-                        --with-java-home="$JAVA_HOME" \
+			--with-java-home="$JAVA_HOME" \
 			--with-ssl=yes; \
 		make -j "$(nproc)"; \
 		make install; \
 	); \
 	rm -rf "$nativeBuildDir"; \
 	rm bin/tomcat-native.tar.gz; \
+	\
+# reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
+	apt-mark auto '.*' > /dev/null; \
+	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
+	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+	rm -rf /var/lib/apt/lists/*; \
 	\
 # sh removes env vars it doesn't support (ones with periods)
 # https://github.com/docker-library/tomcat/issues/77
