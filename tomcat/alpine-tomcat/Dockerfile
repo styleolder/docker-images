@@ -67,6 +67,7 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
 ENV JAVA_VERSION=8 \
     JAVA_UPDATE=161 \
     JAVA_BUILD=12 \
+    JAVA_ALPINE_VERSION=8.161.12-r0 \
     JAVA_PATH=2f38c3b165be4555a1fa6e98c45e0808 \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
