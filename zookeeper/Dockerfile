@@ -1,10 +1,35 @@
 # upstream https://github.com/31z4/zookeeper-docker/blob/af9250c7208973b74ed0ef6ca61052bdf853ce20/3.4.11/Dockerfile
 FROM openjdk:8-jre-alpine
+MAINTAINER 若虚 <slpcat@qq.com>
 
-# Install required packages
-RUN apk add --no-cache \
-    bash \
-    su-exec
+# Container variables
+ENV \
+    TERM="xterm" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    TIMEZONE="Asia/Shanghai"
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/' /etc/apk/repositories
+
+# Set timezone and locales
+RUN set -ex \
+    && apk update \
+    && apk upgrade \
+    && apk add \
+           bash \
+           tzdata \
+           vim \
+           tini \
+           su-exec \
+           gzip \
+           tar \
+           wget \
+           curl \
+    && echo "${TIMEZONE}" > /etc/TZ \
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    # Network fix
+    && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
 ENV ZOO_USER=zookeeper \
     ZOO_CONF_DIR=/conf \
