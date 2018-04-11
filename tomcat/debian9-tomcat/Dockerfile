@@ -29,6 +29,21 @@ RUN \
 RUN \
     apt-get dist-upgrade -y
 
+# Add Oracle Java PPA
+RUN \
+    apt-get -y update && \
+    apt-get -y install software-properties-common apt-transport-https gnupg2 ca-certificates && \
+    add-apt-repository -y ppa:webupd8team/java && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
+    apt-get -y update && \
+    # Auto-accept the Oracle License
+    #echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
+    #echo "debconf shared/accepted-oracle-license-v1-1 seen true" | debconf-set-selections && \
+    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
+    apt-get -y install libpq-dev oracle-java8-installer && \
+    # Clean up
+    rm -f /var/cache/oracle-jdk8-installer/jdk-*.tar.g
+
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $CATALINA_HOME/bin:$PATH
 RUN mkdir -p "$CATALINA_HOME"
