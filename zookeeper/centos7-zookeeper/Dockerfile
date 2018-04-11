@@ -1,4 +1,5 @@
 #upstream https://github.com/kubernetes/contrib/tree/master/statefulsets/zookeeper
+FROM centos:7
 
 MAINTAINER 若虚 <slpcat@qq.com>
 
