@@ -162,7 +162,6 @@ RUN set -eux; \
 		libapr1-dev \
 		libssl-dev \
 		make \
-		"openjdk-${JAVA_VERSION%%[.~bu-]*}-jdk=$JAVA_DEBIAN_VERSION" \
 	; \
 	( \
 		export CATALINA_HOME="$PWD"; \
@@ -173,7 +172,7 @@ RUN set -eux; \
 			--libdir="$TOMCAT_NATIVE_LIBDIR" \
 			--prefix="$CATALINA_HOME" \
 			--with-apr="$(which apr-1-config)" \
-			--with-java-home="$(docker-java-home)" \
+			--with-java-home="$JAVA_HOME" \
 			--with-ssl=yes; \
 		make -j "$(nproc)"; \
 		make install; \

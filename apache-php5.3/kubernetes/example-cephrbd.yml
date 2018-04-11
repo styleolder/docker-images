@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ceph-rbd-pv1 #TODO: set pv name
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 10Gi #size
+  persistentVolumeReclaimPolicy: Delete #TODO: speicfy reclaim policy Delete of Retain
+  rbd:
+    image: kubernetes-dynamic-pvc-92c9a35e-eadb-11e7-80f5-0a58ac10081b #TODO: specify image id of ceph rbd
+    keyring: /etc/ceph/keyring
+    monitors:
+    - ceph-mon.ceph.svc.cluster.local:6789 #TODO: specify monitoring endpoint of ceph cluster
+    pool: rbd
+    secretRef:
+      name: pvc-ceph-client-key # Ceph client secret
+    user: admin                 # Ceph user
+  storageClassName: general

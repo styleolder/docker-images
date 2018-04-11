@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ResourceQuota # restrict resource quota for cpu, memory, storage, pvc, replicationcontroller, pods, service, secret, configmap
+metadata:
+  name: quota
+#  namespace: users-namespace # specify your namespace to apply resource quota
+spec:
+  hard:
+    cpu: "20" # adjust limits of cpu for your namespace
+    memory: 12Gi # adjust memory upper limits for your namesapce
+    requests.storage: 1024G # adjust request of storage size for your namespace
+    persistentvolumeclaims: "100" # adjust number of pvc for your namespace
+    pods: "100" #adjust number of Pod in your namespace
+    replicationcontrollers: "10" # adjust number of ReplicationController in your namespace
+    services: "10" # adjust number of service for your namespace
+    secrets: "100" # adjust number of secrets for your namespace
+    configmaps: "100" # adjust number of configmap for your namespace

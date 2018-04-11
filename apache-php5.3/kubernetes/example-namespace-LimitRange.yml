@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: users-namespace
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota
+  namespace: users-namespace
+spec:
+  hard:
+    cpu: "20"
+    memory: 12Gi
+    pods: "10"
+    replicationcontrollers: "20"
+    resourcequotas: "10"
+    services: "5"
+
+---
+# init limits for each container [request, limit]
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limits
+  namespace: users-namespace
+spec:
+  limits:
+  - default:
+      cpu: 4
+      memory: 4Gi
+    defaultRequest:
+      cpu: 100m
+      memory: 256Mi
+    type: Container

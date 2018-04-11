@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: example-web
 spec:
+  #headless service
+  #clusterIP: None
   ports:
   - name: http
     protocol: TCP
