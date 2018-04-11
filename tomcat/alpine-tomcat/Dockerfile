@@ -164,7 +164,7 @@ RUN set -eux; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
-		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+		gpg --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	done; \
 	\
 	success=; \
