@@ -1,10 +1,30 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+      app: rocketmq
+  name: rocketmq-svc
+spec:
+  ports:
+  - port: 9876
+    targetPort: 9876
+    name: namesrv
+  - port: 10911
+    targetPort: 10911
+    name: broker
+  clusterIP: None
+  selector:
+    app: rocketmq
+---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: rocketmq
   labels:
     app: rocketmq
 spec:
+  serviceName: rocketmq-svc
   replicas: 1
   selector:
     matchLabels:
@@ -33,10 +53,14 @@ spec:
             containerPort: 10909
           - name: broker
             containerPort: 10911
-      #volumeMounts:
-      #- name: config-volume
-      #  mountPath: /opt/rocketmq/bin
-      #volumes:
-      #  - name: config-volume
-      #    configMap:
-      #      name: runbroker.sh
+        volumeMounts:
+        - name: rocketmq-store
+          mountPath: /opt/rocketmq/store
+  volumeClaimTemplates:
+  - metadata:
+      name: rocketmq-store
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
