@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zkui
+  name: kafka-manager
   namespace: default
   labels:
-    app: zkui
+    app: kafka-manager
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zkui
+      app: kafka-manager
 #  minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
   strategy:
     rollingUpdate:  ##由于replicas为3,则整个升级,pod个数在2-4个之间
@@ -18,7 +18,7 @@ spec:
   template:
     metadata:
       labels:
-        app: zkui
+        app: kafka-manager
     spec:
       #nodeSelector:  #	指派特定的节点
       #  env: test-team
@@ -26,10 +26,27 @@ spec:
       imagePullSecrets:
       - name: registrykey-ali-ext
       containers:
-      - name: zkui
-        image: maauso/zkui
-        #image: slpcat/zkui
+      - name: kafka-manager
+        image: sheepkiller/kafka-manager
         imagePullPolicy: Always
+        livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
+          httpGet:
+            path: /
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 60 ## equals to the maximum startup time of the application + couple of seconds
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
+        readinessProbe: #kubernetes认为该pod是启动成功的
+          httpGet:
+            path: /
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 30 ## equals to minimum startup time of the application
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 5
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
@@ -37,13 +54,15 @@ spec:
             memory: 64Mi
           limits:
             cpu: 1000m
-            memory: 4Gi
+            memory: 2Gi
         securityContext:
           capabilities: {}
           privileged: false
         env:
-          - name: ZKLIST
+          - name: ZK_HOSTS
             value: "zk-0.zk-svc.default.svc.cluster.local:2181,zk-1.zk-svc.default.svc.cluster.local:2181,zk-2.zk-svc.default.svc.cluster.local:2181"
+          - name: APPLICATION_SECRET
+            value: "letmein"
         ports:
-          - name: zkui
-            containerPort: 9090
+          - name: http
+            containerPort: 9000
