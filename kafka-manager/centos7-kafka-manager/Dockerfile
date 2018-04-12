@@ -37,7 +37,7 @@ RUN yum install -y git wget unzip which && \
     git clone https://github.com/yahoo/kafka-manager && \
     cd /tmp/kafka-manager && \
     git checkout ${KM_REVISION} && \
-    sed -i 's/http:\/\/repo.typesafe.com\/typesafe\/ivy-releases/http:\/\/maven.aliyun.com\/nexus\/content\/groups\/public/ sbt && \
+    sed -i 's/http:\/\/repo.typesafe.com\/typesafe\/ivy-releases/http:\/\/maven.aliyun.com\/nexus\/content\/groups\/public/' sbt && \
     echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
     ./sbt clean dist && \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
