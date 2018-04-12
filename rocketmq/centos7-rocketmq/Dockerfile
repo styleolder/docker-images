@@ -31,7 +31,6 @@ ENV JAVA_OPT=" -Duser.home=/opt/rocketmq"
 
 RUN groupadd rocketmq && \
     useradd -g rocketmq -s /bin/bash -c RocketMQ rocketmq  && \
-    mkdir /home/rocketmq && \
     chown -R rocketmq:rocketmq /home/rocketmq
 
 # install from source
