@@ -24,7 +24,8 @@ spec:
         #sysctl net.core.somaxconn need privileges
         #security.alpha.kubernetes.io/unsafe-sysctls: net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=20,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_max_tw_bucket=262144,kernel.msgmax=1 2 3
     spec:
-      #nodeSelector:  #	指派特定的节点
+      #nodeName: k8s.node1 #指定调度节点为k8s.node1
+      #nodeSelector:  #指派特定的节点
       #  env: test-team
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       imagePullSecrets:
