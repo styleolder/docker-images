@@ -12,7 +12,7 @@ spec:
       app: example-web
 #  minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
   strategy:
-    rollingUpdate:  ##由于replicas为3,则整个升级,pod个数在2-4个之间
+    rollingUpdate:  #由于replicas为3,则整个升级,pod个数在2-4个之间
       maxSurge: 1      #滚动升级时会先启动1个pod
       maxUnavailable: 1 #滚动升级时允许的最大Unavailable的pod个数
   template:
@@ -20,12 +20,13 @@ spec:
       labels:
         app: example-web
       annotations:
+        #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
         security.alpha.kubernetes.io/sysctls: net.ipv4.ip_local_port_range=10000 65535,kernel.shm_rmid_forced=1
         #sysctl net.core.somaxconn need privileges
-        #security.alpha.kubernetes.io/unsafe-sysctls: net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=20,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_max_tw_bucket=262144,kernel.msgmax=1 2 3
+        #security.alpha.kubernetes.io/unsafe-sysctls: net.core.somaxconn=65535,net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=30,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_max_tw_bucket=262144,kernel.msgmax=1 2 3
     spec:
       #nodeName: k8s.node1 #指定调度节点为k8s.node1
-      #nodeSelector:  #指派特定的节点
+      #nodeSelector:  #调度特定的节点
       #  env: test-team
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       imagePullSecrets:
@@ -53,12 +54,12 @@ spec:
           successThreshold: 1
           failureThreshold: 5
         resources:
-          # keep request = limit to keep this container in guaranteed class
           requests:
             cpu: 50m
             memory: 64Mi
           limits:
             cpu: 500m
+            #nvidia.com/gpu: 1
             memory: 512Mi
         securityContext:
           capabilities: {}
@@ -69,3 +70,4 @@ spec:
         ports:
           - name: http
             containerPort: 80
+      qosClass: BestEffort #Guaranteed Burstable BestEffort
