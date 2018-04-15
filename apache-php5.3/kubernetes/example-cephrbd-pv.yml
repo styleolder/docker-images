@@ -12,6 +12,7 @@ spec:
     monitors:
       - 10.10.10.1:6789
       - 10.10.10.2:6789
+      - 10.10.10.3:6789
     #The name of the RADOS pool, if not provided, default rbd pool is used.
     pool: rbd
     #The image name that rbd has created.
