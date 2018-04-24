@@ -1,0 +1,191 @@
+Ceph on Kubernetes
+ceph作为Kubernetes持久存储服务，以pod形式运行,支持自动创建持久卷供其他pod使用
+使用限制与要求
+内核版本 >= 4.5
+public and cluster networks 必须相同，并且是kubernetes的集群内部网络，本例使用kubespray安装脚本的默认网络10.233.0.0/16If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
+ceph-mgr can only run with 1 replica
+rbd块设备，cephfs仅支持集群内访问
+rgw对象存储支持集群内部和外部同时访问
+
+生产环境安装过程
+规划
+3-5个宿主机节点作为mon，直接使用宿主机目录作为持久存储
+osd数据盘使用宿主机无分区裸盘
+宿主机节点安装ceph客户端
+宿主机节点dns解析使用集群dns服务器
+ /etc/resolv.conf
+domain <EXISTING_DOMAIN>
+search <EXISTING_DOMAIN>
+
+search svc.cluster.local #Your kubernetes cluster ip domain
+
+nameserver 10.96.0.10     #The cluster IP of skyDNS
+nameserver <EXISTING_RESOLVER_IP>
+
+客户端（控制台）要求
+In addition to kubectl, jinja2 or sigil is required for template handling and must be installed in your system PATH. Instructions can be found here for jinja2 https://github.com/mattrobenolt/jinja2-cli or here for sigil https://github.com/gliderlabs/sigil.
+
+verride the default network settings
+export osd_cluster_network=192.168.0.0/16
+export osd_public_network=192.168.0.0/16
+
+Generate keys and configuration
+
+cd generator
+./generate_secrets.sh all `./generate_secrets.sh fsid`
+
+kubectl create namespace ceph
+
+kubectl create secret generic ceph-conf-combined --from-file=ceph.conf --from-file=ceph.client.admin.keyring --from-file=ceph.mon.keyring --namespace=ceph
+kubectl create secret generic ceph-bootstrap-rgw-keyring --from-file=ceph.keyring=ceph.rgw.keyring --namespace=ceph
+kubectl create secret generic ceph-bootstrap-mds-keyring --from-file=ceph.keyring=ceph.mds.keyring --namespace=ceph
+kubectl create secret generic ceph-bootstrap-osd-keyring --from-file=ceph.keyring=ceph.osd.keyring --namespace=ceph
+kubectl create secret generic ceph-bootstrap-rbd-keyring --from-file=ceph.keyring=ceph.rbd.keyring --namespace=ceph
+kubectl create secret generic ceph-client-key --from-file=ceph-client-key --namespace=ceph
+
+cd ..
+
+Deploy Ceph Components
+
+kubectl create \
+-f ceph-mds-v1-dp.yaml \
+-f ceph-mon-v1-svc.yaml \
+-f ceph-mon-v1-dp.yaml \
+-f ceph-mon-check-v1-dp.yaml \
+-f ceph-osd-v1-ds.yaml \
+--namespace=ceph
+
+$ kubectl get all --namespace=ceph
+NAME                   DESIRED      CURRENT       AGE
+ceph-mds               1            1             24s
+ceph-mon-check         1            1             24s
+NAME                   CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+ceph-mon               None         <none>        6789/TCP   24s
+NAME                   READY        STATUS        RESTARTS   AGE
+ceph-mds-6kz0n         0/1          Pending       0          24s
+ceph-mon-check-deek9   1/1          Running       0          24s
+
+Label your storage nodes
+
+You must label your storage nodes in order to run Ceph pods on them.
+
+kubectl label node <nodename> node-type=storage
+If you want all nodes in your Kubernetes cluster to be a part of your Ceph cluster, label them all.
+
+kubectl label nodes node-type=storage --all
+Eventually all pods will be running, including a mon and osd per every labeled node.
+
+$ kubectl get pods --namespace=ceph
+NAME                   READY     STATUS    RESTARTS   AGE
+ceph-mds-6kz0n         1/1       Running   0          4m
+ceph-mon-8wxmd         1/1       Running   2          2m
+ceph-mon-c8pd0         1/1       Running   1          2m
+ceph-mon-cbno2         1/1       Running   1          2m
+ceph-mon-check-deek9   1/1       Running   0          4m
+ceph-mon-f9yvj         1/1       Running   1          2m
+ceph-osd-3zljh         1/1       Running   2          2m
+ceph-osd-d44er         1/1       Running   2          2m
+ceph-osd-ieio7         1/1       Running   2          2m
+ceph-osd-j1gyd         1/1       Running   2          2m
+Persistent OSD disk
+
+Alternatively, you can use persistent OSD disks using the following steps.
+
+After creating mon deployment, rather than creating OSD daemonset, choose a disk on the storage node and prepare OSD disks. As illustrated in ceph-osd-prepare-v1-ds.yaml and ceph-osd-activate-v1-ds.yaml, the daemonset prepares and activates /dev/sdc
+
+kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+Run kubectl get all --namespace=ceph and watch daemonset ceph-osd-prepared is completed. Then delete the ceph-osd-prepare daemonset and create ceph-osd-activate daemonset:
+
+kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
+Creating RBD Storage Class
+
+First, create a RBD provisioner pod:
+
+$ kubectl create -f https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/ceph/rbd/deploy/non-rbac/deployment.yaml --namespace=ceph
+Then, if there is no Ceph admin secret with type kubernetes.io/rbd, create one:
+
+$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
+Create a RBD storage class using the following rbd-class.yaml:
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: slow
+provisioner: ceph.com/rbd
+parameters:
+    monitors: ceph-mon.ceph.svc.cluster.local:6789
+    adminId: admin
+    adminSecretName: ceph-secret-admin
+    adminSecretNamespace: "ceph"
+    userId: admin
+    userSecretName: ceph-secret-admin # must be present in claim namespace
+    pool: hddpool # ceph osd pool to map this class to
+Now, try create a claim:
+
+$ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
+If everything works, expect something like the following:
+
+$ kubectl describe pvc claim1
+Name:           claim1
+Namespace:      default
+StorageClass:
+Status:         Bound
+Volume:         pvc-a9247186-6e59-11e7-b7b6-00259003b6e8
+Labels:         <none>
+Capacity:       3Gi
+Access Modes:   RWO
+Events:
+  FirstSeen     LastSeen        Count   From                                                                                    SubObjectPath   Type            Reason                  Message
+  ---------     --------        -----   ----                                                                                    -------------   --------        ------                  -------
+  6m            6m              2       {persistentvolume-controller }                                                                 Normal           ExternalProvisioning    cannot find provisioner "ceph.com/rbd", expecting that a volume for the claim is provisioned either manually or via external software
+  6m            6m              1       {ceph.com/rbd rbd-provisioner-217120805-9dc84 57e293c8-6e59-11e7-a834-ca4351e8550d }           Normal           Provisioning            External provisioner is provisioning volume for claim "default/claim1"
+  6m            6m              1       {ceph.com/rbd rbd-provisioner-217120805-9dc84 57e293c8-6e59-11e7-a834-ca4351e8550d }           Normal           ProvisioningSucceeded   Successfully provisioned volume pvc-a9247186-6e59-11e7-b7b6-00259003b6e8
+Mounting CephFS in a pod
+
+First you must add the admin client key to your current namespace (or the namespace of your pod).
+
+kubectl create secret generic ceph-client-key --type="kubernetes.io/rbd" --from-file=./generator/ceph-client-key
+Now, if skyDNS is set as a resolver for your host nodes then execute the below command as is. Otherwise modify the ceph-mon.ceph host to match the IP address of one of your ceph-mon pods.
+
+kubectl create -f ceph-cephfs-test.yaml --namespace=ceph
+You should be able to see the filesystem mounted now
+
+kubectl exec -it --namespace=ceph ceph-cephfs-test df
+Mounting a Ceph RBD in a pod
+
+First we have to create an RBD volume.
+
+# This gets a random MON pod.
+export PODNAME=`kubectl get pods --selector="app=ceph,daemon=mon" --output=template --template="{{with index .items 0}}{{.metadata.name}}{{end}}" --namespace=ceph`
+
+kubectl exec -it $PODNAME --namespace=ceph -- rbd create ceph-rbd-test --size 20G
+
+kubectl exec -it $PODNAME --namespace=ceph -- rbd info ceph-rbd-test
+The same caveats apply for RBDs as Ceph FS volumes. Edit the pod accordingly. Once you're set:
+
+kubectl create -f ceph-rbd-test.yaml --namespace=ceph
+And again you should see your mount, but with 20 gigs free
+
+kubectl exec -it --namespace=ceph ceph-rbd-test -- df -h
+Common Modifications
+
+Durable Storage
+
+By default emptyDir is used for everything. If you have durable storage on your nodes, replace the emptyDirs with a hostPath to that storage.
+
+Enabling Jewel RBD features
+
+We disable new RBD features by default since most operating systems cannot mount volumes using these features. You can override this by setting the following before running jinja2/sigil or the convenience scripts.
+
+export client_rbd_default_features=61
+If you have older nodes in your cluster that may need to mount a volume that has been created with these newer features, you must remove the features from the volume by running these commands from a Ceph pod:
+
+rbd feature disable <VOLUME NAME> fast-diff
+rbd feature disable <VOLUME NAME> deep-flatten
+rbd feature disable <VOLUME NAME> object-map
+rbd feature disable <VOLUME NAME> exclusive-lock
+
+参考：
+1.https://github.com/ceph/ceph-container/tree/master/examples/kubernetes
+2.http://docs.ceph.com/docs/master/start/kube-helm/
