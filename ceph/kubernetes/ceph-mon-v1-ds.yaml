@@ -8,6 +8,10 @@ metadata:
   name: ceph-mon
   namespace: ceph
 spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mon
   template:
     metadata:
       name: ceph-mon
@@ -17,7 +21,7 @@ spec:
         daemon: mon
     spec:
       nodeSelector:
-        ceph-mon: enabled
+        node-type: storage
       serviceAccount: default
       volumes:
         - name: ceph-conf
@@ -35,6 +39,9 @@ spec:
         - name: ceph-bootstrap-rbd-keyring
           secret:
             secretName: ceph-bootstrap-rbd-keyring
+        - name: ceph-mon-data
+          hostPath:
+            path: /var/lib/ceph/mon
       containers:
         - name: ceph-mon
           image: ceph/daemon:latest

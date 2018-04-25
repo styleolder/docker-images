@@ -6,6 +6,7 @@ public and cluster networks 必须相同，并且是kubernetes的集群内部网
 ceph-mgr can only run with 1 replica
 rbd块设备，cephfs仅支持集群内访问
 rgw对象存储支持集群内部和外部同时访问
+不兼容istio
 
 生产环境安装过程
 规划
@@ -17,7 +18,8 @@ osd数据盘使用宿主机无分区裸盘
 domain <EXISTING_DOMAIN>
 search <EXISTING_DOMAIN>
 
-search svc.cluster.local #Your kubernetes cluster ip domain
+#search svc.cluster.local #Your kubernetes cluster ip domain
+search ceph.svc.cluster.local svc.cluster.local cluster.local
 
 nameserver 10.96.0.10     #The cluster IP of skyDNS
 nameserver <EXISTING_RESOLVER_IP>
@@ -46,6 +48,48 @@ kubectl create secret generic ceph-client-key --from-file=ceph-client-key --name
 cd ..
 
 Deploy Ceph Components
+生产环境部署组件
+mds
+ceph-mds-v1-dp.yaml
+
+mon
+ceph-mon-v1-svc.yaml
+ceph-mon-v1-ds.yaml
+ceph-mon-check-v1-dp.yam
+
+osd
+每个盘对应一个pod,本示例使用/dev/sdc
+ceph-osd-v1-ds.yam
+kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
+
+rgw
+ceph-rgw-v1-dp.yaml
+ceph-rgw-v1-svc.yaml
+
+
+mgr
+ceph-mgr-v1-dp.yaml
+ceph-mgr-dashboard-v1-svc.yam
+ceph-mgr-prometheus-v1-svc.yaml
+
+外部持久卷
+https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
+创建RBD provisioner
+
+RBD storage class
+rbd-class.yaml
+
+创建pvc
+
+
+Mounting CephFS in a pod
+must add the admin client key
+
+using Ceph RBD in a pod
+
+
 
 kubectl create \
 -f ceph-mds-v1-dp.yaml \

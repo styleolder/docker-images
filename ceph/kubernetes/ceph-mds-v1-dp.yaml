@@ -9,6 +9,10 @@ metadata:
   namespace: ceph
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: mds
   template:
     metadata:
       name: ceph-mds
@@ -18,7 +22,7 @@ spec:
         daemon: mds
     spec:
       nodeSelector:
-        ceph-mds: enabled
+        node-type: storage
       serviceAccount: default
       volumes:
         - name: ceph-conf
