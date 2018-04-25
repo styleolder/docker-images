@@ -8,6 +8,10 @@ metadata:
     app: ceph
     daemon: osd
 spec:
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: osd
   template:
     metadata:
       labels:
@@ -15,7 +19,7 @@ spec:
         daemon: osd
     spec:
       nodeSelector:
-        ceph-osd: enabled
+        node-type: storage
       volumes:
         - name: devices
           hostPath:
