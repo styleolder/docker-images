@@ -93,11 +93,16 @@ Eventually all pods will be running, including a mon and osd per every labeled n
 
 kubernetes使用外部持久卷
 https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
-创建RBD provisioner
 
-创建RBD storage class
-rbd-class.yaml
-Creating RBD Storage Class
+创建RBD provisioner 使用namespace=ceph
+先创建rbac授权
+rbd-provisioner
+创建RBD provisioner pod
+rbd-provisioner/deployment.yaml
+
+创建RBD存储类
+rbd-provisioner/storage-class.yaml
+
 
 First, create a RBD provisioner pod:
 
@@ -107,18 +112,16 @@ Then, if there is no Ceph admin secret with type kubernetes.io/rbd, create one:
 $ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
 Create a RBD storage class using the following rbd-class.yaml:
 
-创建pvc
+POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可
+创建pvc 示例
 $ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
 
-Now, try create a claim:
+POD里面挂载pvc卷,通常是有状态副本集statefulset.示例
 
+rbd-pvc-pod.yaml
 
-POD里面挂载CephFS
+POD里面挂载CephFS,通常是有状态副本集statefulset.示例
 must add the admin client key
-
-using Ceph RBD in a pod
-
-
 
 kubectl create \
 -f ceph-mds-v1-dp.yaml \
