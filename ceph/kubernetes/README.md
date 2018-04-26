@@ -104,6 +104,13 @@ rbd-provisioner/serviceaccount.yaml
 
 创建RBD provisioner pod
 创建ceph key 相关secret (admin client key)
+ceph-secret-admin
+$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
+
+ceph-rbd-kube
+kubectl --namespace=ceph create secret generic ceph-rbd-kube \
+  --from-literal="key=$(grep key ceph.client.kube.keyring  | awk '{ print $3 }')" \
+  --type=kubernetes.io/rbd
 
 rbd-provisioner/deployment.yaml
 
