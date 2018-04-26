@@ -17,4 +17,5 @@ RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 RUN  \
     yum update -y && \
+    yum install -y iproute2 && \
     yum clean all
