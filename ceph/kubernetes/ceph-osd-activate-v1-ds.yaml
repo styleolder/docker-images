@@ -48,7 +48,8 @@ spec:
             path: /var/lib/ceph/osd
       containers:
         - name: osd-pod
-          image: ceph/daemon:latest
+          #image: ceph/daemon:latest
+          image: ceph/daemon:v3.0.3-stable-3.0-luminous-ubuntu-16.04-x86_64
           imagePullPolicy: Always
           volumeMounts:
             - name: devices

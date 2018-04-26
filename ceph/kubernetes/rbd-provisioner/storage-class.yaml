@@ -2,6 +2,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: rbd
+  annotations:
+     storageclass.beta.kubernetes.io/is-default-class: "true"
 provisioner: ceph.com/rbd
 parameters:
   monitors: ceph-mon.ceph.svc.cluster.local
@@ -14,4 +16,4 @@ parameters:
   userSecretName: ceph-rbd-kube
   imageFormat: "2"
   imageFeatures: layering
-  fsType: xfs
+  fsType: ext4

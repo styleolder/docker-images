@@ -96,8 +96,15 @@ https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/de
 
 创建RBD provisioner 使用namespace=ceph
 先创建rbac授权
-rbd-provisioner
+rbd-provisioner/clusterrolebinding.yaml
+rbd-provisioner/clusterrole.yaml
+rbd-provisioner/rolebinding.yaml
+rbd-provisioner/role.yaml
+rbd-provisioner/serviceaccount.yaml
+
 创建RBD provisioner pod
+创建ceph key 相关secret (admin client key)
+
 rbd-provisioner/deployment.yaml
 
 创建RBD存储类
@@ -119,6 +126,19 @@ $ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master
 POD里面挂载pvc卷,通常是有状态副本集statefulset.示例
 
 rbd-pvc-pod.yaml
+
+生产环境推荐使用有状态副本集statefulset自动创建pvc
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      #ceph rbd storageclass
+      storageClassName: rbd
+      resources:
+        requests:
+          storage: 10Gi
 
 POD里面挂载CephFS,通常是有状态副本集statefulset.示例
 must add the admin client key
@@ -210,3 +230,4 @@ By default emptyDir is used for everything. If you have durable storage on your 
 参考：
 1.https://github.com/ceph/ceph-container/tree/master/examples/kubernetes
 2.http://docs.ceph.com/docs/master/start/kube-helm/
+3.https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd

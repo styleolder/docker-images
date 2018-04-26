@@ -44,7 +44,8 @@ spec:
             path: /var/lib/ceph/mon
       containers:
         - name: ceph-mon
-          image: ceph/daemon:latest
+          #image: ceph/daemon:latest
+          image: ceph/daemon:v3.0.3-stable-3.0-luminous-ubuntu-16.04-x86_64
           imagePullPolicy: Always
           lifecycle:
             preStop:
