@@ -69,8 +69,9 @@ RUN \
     sed -i "s/external_url 'GENERATED_EXTERNAL_URL'/# external_url 'GENERATED_EXTERNAL_URL'/" /opt/gitlab/etc/gitlab.rb.template \
     && sed -i /file-max/d /opt/gitlab/embedded/bin/runsvdir-start \
     && sed -i s/^ulimit/#ulimit/ /opt/gitlab/embedded/bin/runsvdir-start \
-    && sed -i /sysctl/,+2d /opt/gitlab/embedded/cookbooks/gitlab/recipes/unicorn.rb
-    #&& sed -i /sysctl/,+2d /opt/gitlab/embedded/cookbooks/gitlab/recipes/postgresql.rb
+    && sed -i /sysctl/,+2d /opt/gitlab/embedded/cookbooks/gitlab/recipes/unicorn.rb \
+    && sed -i /sysctl/,+2d /opt/gitlab/embedded/cookbooks/postgresql/recipes/enable.rb \
+    && rm -f /opt/gitlab/embedded/cookbooks/package/resources/sysctl.rb 
 
 # Expose web & ssh
 EXPOSE 80/tcp 443/tcp 22/tcp
