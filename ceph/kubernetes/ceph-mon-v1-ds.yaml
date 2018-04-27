@@ -75,6 +75,8 @@ spec:
           volumeMounts:
             - name: ceph-conf
               mountPath: /etc/ceph
+            - name: ceph-mon-data
+              mountPath: /var/lib/ceph/mon
             - name: ceph-bootstrap-osd-keyring
               mountPath: /var/lib/ceph/bootstrap-osd
             - name: ceph-bootstrap-mds-keyring
