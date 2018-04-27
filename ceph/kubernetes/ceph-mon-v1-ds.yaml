@@ -22,6 +22,7 @@ spec:
     spec:
       nodeSelector:
         node-type: storage
+        #ceph-mon: enabled
       serviceAccount: default
       volumes:
         - name: ceph-conf
@@ -60,10 +61,17 @@ spec:
               value: MON
             - name: KV_TYPE
               value: k8s
+            #NETWORK_AUTO_DETECT can't work with calico to get CEPH_PUBLIC_NETWORK
             - name: NETWORK_AUTO_DETECT
-              value: "4"
+              value: "0"
             - name: CLUSTER
               value: ceph
+            - name: CEPH_PUBLIC_NETWORK
+              value: 10.233.0.0/16
+            - name: MON_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
           volumeMounts:
             - name: ceph-conf
               mountPath: /etc/ceph
