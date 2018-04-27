@@ -18,4 +18,4 @@ spec:
     targetPort: 5000
   type: NodePort
   selector:
-    name: gitlab-ce
+    app: gitlab-ce
