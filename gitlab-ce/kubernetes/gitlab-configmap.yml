@@ -6,6 +6,10 @@ metadata:
 data:
   gitlab.rb: |-
     external_url 'http://git.example.com'
+    manage_accounts['enable'] = true
+    manage_storage_directories['manage_etc'] = false
+    registry_external_url 'http://registry.example.com'
+    gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '10.233.0.0/16']
     gitlab_rails['gitlab_ssh_host'] = 'git.example.com'
     gitlab_rails['time_zone'] = 'Beijing'
     gitlab_rails['gitlab_email_enabled'] = true
@@ -21,9 +25,6 @@ data:
     gitlab_rails['smtp_authentication'] = "login"
     gitlab_rails['smtp_enable_starttls_auto'] = true
     gitlab_rails['smtp_tls'] = true
-    manage_accounts['enable'] = true
-    manage_storage_directories['manage_etc'] = false
-    registry_external_url 'http://registry.example.com'
     gitlab_rails['initial_root_password'] = "5iveL!fe"
     gitlab_rails['registry_enabled'] = true
     gitlab_rails['registry_host'] = "registry.exmpale.com"

@@ -26,7 +26,7 @@ spec:
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           httpGet:
-            path: /
+            path: /-/liveness
             port: 80
             scheme: HTTP
           initialDelaySeconds: 60 ## equals to the maximum startup time of the application + couple of seconds
@@ -35,7 +35,7 @@ spec:
           failureThreshold: 5
         readinessProbe: #kubernetes认为该pod是启动成功的
           httpGet:
-            path: /
+            path: /-/readines
             port: 80
             scheme: HTTP
           initialDelaySeconds: 30 ## equals to minimum startup time of the application
