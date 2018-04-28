@@ -21,7 +21,10 @@ data:
     gitlab_rails['smtp_authentication'] = "login"
     gitlab_rails['smtp_enable_starttls_auto'] = true
     gitlab_rails['smtp_tls'] = true
+    manage_accounts['enable'] = true
+    manage_storage_directories['manage_etc'] = false
     registry_external_url 'http://registry.example.com'
+    gitlab_rails['initial_root_password'] = "5iveL!fe"
     gitlab_rails['registry_enabled'] = true
     gitlab_rails['registry_host'] = "registry.exmpale.com"
     gitlab_rails['registry_port'] = "5000"
