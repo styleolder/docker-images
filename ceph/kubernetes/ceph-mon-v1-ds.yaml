@@ -68,6 +68,10 @@ spec:
               value: ceph
             - name: CEPH_PUBLIC_NETWORK
               value: 10.233.0.0/16
+            - name: MON_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             - name: MON_IP
               valueFrom:
                 fieldRef:
