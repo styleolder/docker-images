@@ -5,6 +5,7 @@ metadata:
   annotations:
      storageclass.beta.kubernetes.io/is-default-class: "true"
 provisioner: ceph.com/rbd
+reclaimPolicy: Retain
 parameters:
   monitors: ceph-mon.ceph.svc.cluster.local
   pool: kube
