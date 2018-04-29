@@ -47,9 +47,10 @@ RUN \
     apt-get dist-upgrade -y
 
 # install ceph client
+COPY ceph.gpg /etc/apt/trusted.gpg.d/ceph.gpg
+
 RUN \
-    cp ceph.gpg /etc/apt/trusted.gpg.d/ceph.gpg \
-    && echo "deb http://mirrors.aliyun.com/ceph/debian-${CEPH_VERSION}/ xenial main" >> /etc/apt/sources.list \
+    echo "deb http://mirrors.aliyun.com/ceph/debian-${CEPH_VERSION}/ xenial main" >> /etc/apt/sources.list \
     && apt-get update -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y ceph-common
 
