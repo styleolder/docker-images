@@ -18,6 +18,7 @@ spec:
         app: gitlab-ce
     spec:
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
+      #从私有仓库下载镜像
       #imagePullSecrets:
       #- name: registrykey-ali-ext
       containers:
@@ -68,6 +69,10 @@ spec:
         - name: gitlab-etc
           configMap:
             name: gitlab-etc-configmap
+            #Add ConfigMap data to a specific path in the Volume
+            items:
+            - key: gitlab.rb
+              path: gitlab.rb
   volumeClaimTemplates:
   - metadata:
       name: gitlab-data

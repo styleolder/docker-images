@@ -23,7 +23,7 @@ spec:
         # cf. https://github.com/kubernetes-incubator/external-storage/issues/608
         #image: "quay.io/external_storage/rbd-provisioner:latest"
         #image: anatolyrugalev/rbd-provisioner:latest
-        images: slpcat/rbd-provisioner
+        image: slpcat/rbd-provisioner
         env:
         - name: PROVISIONER_NAME
           value: ceph.com/rbd

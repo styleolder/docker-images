@@ -30,10 +30,14 @@ spec:
         ports:
           - name: redis
             containerPort: 6379
-      #volumeMounts:
-      #- name: config-volume
-      #  mountPath: /opt/redis/bin
-      #volumes:
-      #  - name: config-volume
-      #    configMap:
-      #      name: runbroker.sh
+        volumeMounts:
+        - name: redis-config
+          mountPath: "/etc/redis"
+      volumes:
+        - name: redis-config
+          configMap:
+            name: redis-etc-configmap
+            #Add ConfigMap data to a specific path in the Volume
+            items:
+            - key: redis.conf
+              path: redis.conf

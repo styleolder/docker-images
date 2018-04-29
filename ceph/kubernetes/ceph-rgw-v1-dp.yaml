@@ -1,6 +1,6 @@
 ---
 kind: Deployment
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 metadata:
   labels:
     app: ceph
@@ -9,6 +9,10 @@ metadata:
   namespace: ceph
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: ceph
+      daemon: rgw
   template:
     metadata:
       name: ceph-rgw
