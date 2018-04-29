@@ -31,6 +31,5 @@ spec:
       - name: ceph-conf
         secret:
           secretName: ceph-conf-combined
-      imagePullSecrets:
-      - name: regsecret
-
+      #imagePullSecrets:
+      #- name: regsecret

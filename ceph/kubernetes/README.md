@@ -1,12 +1,12 @@
 Ceph on Kubernetes
-ceph作为Kubernetes持久存储服务，以pod形式运行,支持自动创建持久卷供其他pod使用
+ceph作为Kubernetes持久存储服务，以pod形式运行,提供rbd存储类，支持自动创建持久卷供其他pod使用
 使用限制与要求
 kubernetes 节点内核版本 >= 4.5
 public and cluster networks 必须相同，并且是kubernetes的集群内部网络，本例使用kubespray安装脚本的默认网络10.233.0.0/16If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
 ceph-mgr can only run with 1 replica
 rbd块设备，cephfs仅支持集群内访问
 rgw对象存储支持集群内部和外部同时访问
-因为主机名问题，暂时不兼容istio
+因为主机名检测问题，暂时不兼容istio
 
 生产环境安装过程
 规划
@@ -48,9 +48,16 @@ kubectl create secret generic ceph-client-key --from-file=ceph-client-key --name
 cd ..
 
 生产环境部署ceph组件
+生成授权
 kubectl create -f ceph-rbac.yaml
+
 mds
 ceph-mds-v1-dp.yaml
+
+mgr
+ceph-mgr-v1-dp.yaml
+ceph-mgr-dashboard-v1-svc.yam
+ceph-mgr-prometheus-v1-svc.yaml
 
 mon
 2n+1台 宿主机节点需要标签
@@ -60,28 +67,20 @@ ceph-mon-check-v1-dp.yam
 
 osd 使用持久存储
 每个盘对应一个pod,本示例使用/dev/vdb
+先初始化磁盘
 After creating mon deployment, rather than creating OSD daemonset, choose a disk on the storage node and prepare OSD disks. As illustrated in ceph-osd-prepare-v1-ds.yaml and ceph-osd-activate-v1-ds.yaml, the daemonset prepares and activates /dev/sdc
 
 kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
 Run kubectl get all --namespace=ceph and watch daemonset ceph-osd-prepared is completed. Then delete the ceph-osd-prepare daemonset and create ceph-osd-activate daemonset:
 
 kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
-kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
 
-ceph-osd-v1-ds.yam
-kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
-kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+初始化完毕，激活磁盘
 kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
 
 rgw
 ceph-rgw-v1-dp.yaml
 ceph-rgw-v1-svc.yaml
-
-
-mgr
-ceph-mgr-v1-dp.yaml
-ceph-mgr-dashboard-v1-svc.yam
-ceph-mgr-prometheus-v1-svc.yaml
 
 给存储节点打上标签(必须)
 
@@ -93,38 +92,32 @@ Eventually all pods will be running, including a mon and osd per every labeled n
 
 kubernetes使用外部持久卷
 https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
+进入mon pod
+创建存储池
+ceph osd pool create kube 64
+创建keyring
+ceph auth get-or-create client.kube mon 'allow r' osd \
+  'allow class-read object_prefix rbd_children, allow rwx pool=kube' \
+  -o ceph.client.kube.keyring
+根据生成的keyring创建secret
+kubectl --namespace=ceph create secret generic ceph-rbd-kube \
+  --from-literal="key=$(grep key ceph.client.kube.keyring  | awk '{ print $3 }')" \
+  --type=kubernetes.io/rbd
 
 创建RBD provisioner 使用namespace=ceph
-先创建rbac授权
+创建rbac授权
 rbd-provisioner/clusterrolebinding.yaml
 rbd-provisioner/clusterrole.yaml
 rbd-provisioner/rolebinding.yaml
 rbd-provisioner/role.yaml
 rbd-provisioner/serviceaccount.yaml
-
 创建RBD provisioner pod
-创建ceph key 相关secret (admin client key)
-ceph-secret-admin
-$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
-
-ceph-rbd-kube
-kubectl --namespace=ceph create secret generic ceph-rbd-kube \
-  --from-literal="key=$(grep key ceph.client.kube.keyring  | awk '{ print $3 }')" \
-  --type=kubernetes.io/rbd
-
 rbd-provisioner/deployment.yaml
-
 创建RBD存储类
+$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
 rbd-provisioner/storage-class.yaml
 
 
-First, create a RBD provisioner pod:
-
-$ kubectl create -f https://raw.githubusercontent.com/kubernetes-incubator/external-storage/master/ceph/rbd/deploy/non-rbac/deployment.yaml --namespace=ceph
-Then, if there is no Ceph admin secret with type kubernetes.io/rbd, create one:
-
-$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
-Create a RBD storage class using the following rbd-class.yaml:
 
 POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可
 创建pvc 示例
