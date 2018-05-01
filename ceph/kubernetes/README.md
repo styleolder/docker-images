@@ -68,11 +68,9 @@ ceph-mon-check-v1-dp.yam
 osd 使用持久存储
 每个盘对应一个pod,本示例使用/dev/vdb
 先初始化磁盘
-After creating mon deployment, rather than creating OSD daemonset, choose a disk on the storage node and prepare OSD disks. As illustrated in ceph-osd-prepare-v1-ds.yaml and ceph-osd-activate-v1-ds.yaml, the daemonset prepares and activates /dev/sdc
 
 kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
-Run kubectl get all --namespace=ceph and watch daemonset ceph-osd-prepared is completed. Then delete the ceph-osd-prepare daemonset and create ceph-osd-activate daemonset:
-
+初始化成功后删除pod
 kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
 
 初始化完毕，激活磁盘
@@ -93,6 +91,7 @@ Eventually all pods will be running, including a mon and osd per every labeled n
 kubernetes使用外部持久卷
 https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
 进入mon pod
+kubectl exec -it ceph-mon bash
 创建存储池
 ceph osd pool create kube 64
 创建keyring
@@ -106,20 +105,18 @@ kubectl --namespace=ceph create secret generic ceph-rbd-kube \
 
 创建RBD provisioner 使用namespace=ceph
 创建rbac授权
-rbd-provisioner/clusterrolebinding.yaml
-rbd-provisioner/clusterrole.yaml
-rbd-provisioner/rolebinding.yaml
-rbd-provisioner/role.yaml
-rbd-provisioner/serviceaccount.yaml
+kubectl create -f rbd-provisioner/clusterrolebinding.yaml
+kubectl create -f rbd-provisioner/clusterrole.yaml
+kubectl create -f rbd-provisioner/rolebinding.yaml
+kubectl create -f rbd-provisioner/role.yaml
+kubectl create -f rbd-provisioner/serviceaccount.yaml
 创建RBD provisioner pod
-rbd-provisioner/deployment.yaml
+kubectl create -f rbd-provisioner/deployment.yaml
 创建RBD存储类
 $ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
-rbd-provisioner/storage-class.yaml
+kubectl create -f rbd-provisioner/storage-class.yaml
 
-
-
-POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可
+POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可自动获取存储资源
 创建pvc 示例
 $ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
 
@@ -231,3 +228,5 @@ By default emptyDir is used for everything. If you have durable storage on your 
 1.https://github.com/ceph/ceph-container/tree/master/examples/kubernetes
 2.http://docs.ceph.com/docs/master/start/kube-helm/
 3.https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd
+4.http://tracker.ceph.com/projects/ceph/wiki/Tuning_for_All_Flash_Deployments
+5.http://docs.ceph.com/docs/master/rados/configuration/

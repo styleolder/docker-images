@@ -1,0 +1,186 @@
+[global]
+
+cephx = true
+cephx_require_signatures = false
+cephx_cluster_require_signatures = true
+cephx_service_require_signatures = false
+#max_open_files = 1310720
+mon_host = ceph-mon
+
+debug_lockdep = 0/0
+debug_context = 0/0
+debug_crush = 0/0
+debug_buffer = 0/0
+debug_timer = 0/0
+debug_filer = 0/0
+debug_objecter = 0/0
+debug_rados = 0/0
+debug_rbd = 0/0
+debug_journaler = 0/0
+debug_objectcatcher = 0/0
+debug_client = 0/0
+debug_osd = 0/0
+debug_optracker = 0/0
+debug_objclass = 0/0
+debug_filestore = 0/0
+debug_journal = 0/0
+debug_ms = 0/0
+debug_monc = 0/0
+debug_tp = 0/0
+debug_auth = 0/0
+debug_finisher = 0/0
+debug_heartbeatmap = 0/0
+debug_perfcounter = 0/0
+debug_asok = 0/0
+debug_throttle = 0/0
+debug_mon = 0/0
+debug_paxos = 0/0
+debug_rgw = 0/0
+
+perf = true
+mutex_perf_counter = true
+throttler_perf_counter = false
+
+[mon]
+mon_allow_pool_delete = false
+mon_clock_drift_allowed = .15
+mon_clock_drift_warn_backoff = 30
+#mon_compact_on_trim = false
+mon_pg_warn_max_per_osd=5000
+mon_pg_warn_max_per_osd = 10000
+mon_pg_warn_max_object_skew = 100000
+mon_max_pool_pg_num=166496
+mon_osd_down_out_interval = 600
+mon_osd_min_down_reporters = 4
+mon_osd_report_timeout = 300
+mon_osd_max_split_count = 10000
+mon_osd_down_out_interval = 3600  默认值 300 // seconds  
+mon_osd_min_down_reporters = 3    默认值 2  
+mon_osd_report_timeout = 900      默认值 900  
+mon_osd_full_ratio = .95
+mon_osd_nearfull_ratio = .85
+
+[osd]
+cluster_network = 10.233.0.0/16
+public_network = 10.233.0.0/16
+
+bluestore_default_buffered_read = true
+#bluestore_cache_size = 0
+#bluestore_cache_size_hdd = 1G
+#bluestore_cache_size_ssd = 3G
+#bluestore_csum_type = crc32c
+#bluestore compression algorithm
+#bluestore_compression_mode = none
+#bluestore_compression_required ratio
+
+#performance tuning
+filestore_fd_cache_size = 8192
+filestore_fd_cache_shards = 32
+filestore_max_sync_interval = 60
+filestore_merge_threshold = 40
+filestore_op_threads = 6
+filestore_op_thread_timeout = 100           默认值 60  
+filestore_op_thread_suicide_timeout = 300   默认值 180 
+filestore_queue_committing_max_ops=5000
+filestore_queue_committing_max_bytes=1048576000
+filestore_queue_max_ops=5000
+filestore_queue_max_bytes = 1048576000
+filestore_split_multiple = 8
+filestore_wbthrottle_enable=false
+filestore_xattr_use_omap = true
+
+journal_block_align = true
+journal_dio = true
+journal_aio = true 
+journal_max_write_bytes = 1048576000
+journal_max_write_entries = 5000
+journal_queue_max_bytes = 1048576000
+journal_queue_max_ops = 3000
+journal_size = 100
+journal_throttle_high_multiple = 2  
+journal_throttle_max_multiple = 10 
+
+objecter_inflight_op_bytes = 1048576000
+objecter_inflight_ops=102400
+objecter_infilght_op_bytes=1048576000
+
+osd_client_message_cap = 0
+osd_client_message_size_cap = 1073741824
+osd_client_op_priority = 63
+#crush
+osd_crush_update_on_start = true
+osd_disk_threads = 16
+osd_enable_op_tracker = false
+osd_heartbeat_interval = 10       默认值 6  
+osd_heartbeat_grace = 60          默认值 20 
+osd_mkfs_type = xfs
+osd_mkfs_options_xfs = -f -i size=2048
+osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k,delaylog
+osd_mon_heartbeat_interval = 30
+#osd_max_backfills = 2
+osd_max_object_name_len = 256
+osd_max_write_size = 256
+osd_map_dedup = true
+osd_max_scrubs = 1
+#backend
+osd_objectstore = bluestore
+osd_op_shard_threads = 8
+osd_op_threads = 32
+osd_op_thread_timeout = 100                 默认值 15  
+osd_op_thread_suicide_timeout = 300         默认值 150  
+osd_op_threads = 8
+osd_pg_bits = 8
+osd_pgp_bits = 8
+osd_pool_default_pg_num = 128
+osd_pool_default_pgp_num = 128
+osd_pool_default_size = 3
+osd_pool_default_min_size = 1
+osd_pool_default_crush_rule = 0
+#osd_pool_default_size = 3 
+#osd_pool_default_min_size = 1 
+#recovery tuning
+osd_recovery_max_active = 5
+osd_recovery_op_priority = 2
+osd_recovery_max_chunk = 1048576
+osd_recovery_threads = 1
+osd_recovery_thread_timeout = 100           默认值 30  
+osd_recovery_thread_suicide_timeout = 300   默认值 300
+osd_scrub_sleep = 10  
+osd_scrub_load_threshold = 8  
+osd_scrub_chunk_min = 5  
+osd_scrub_chunk_max = 25
+osd_scrub_begin_hour = 0  
+osd_scrub_end_hour = 8 
+
+#ports
+ms_bind_port_min = 6800
+ms_bind_port_max = 7100
+ms_dispatch_throttle_bytes=1048576000
+ms_dispatch_throttle_bytes = 1048576000
+ms_type = async
+
+[client]
+rbd_cache_enabled = true
+rbd_cache_size = 128M  
+rbd_cache_max_dirty = 96M  
+rbd_cache_target_dirty = 64M  
+rbd_cache_writethrough_until_flush = false 
+rbd_cache_max_dirty_age = 60
+rbd_default_features = 1
+rbd_default_format = 2
+rbd_readahead_disable_after_bytes = 0
+rbd_readahead_max_bytes = 4M
+
+rgw_cache_enabled = true
+rgw_cache_lru_size = 500000
+rgw_thread_pool_size = 256
+#rgw enable ops log = false
+#rgw enable usage log = false
+#log file = /dev/null
+#rgw frontends =civetweb port=80
+rgw_override_bucket_index_max_shards = 8
+rgw_max_chunk_size = 1M
+
+[mds]
+mds_cache_size = 10G
+mds_beacon_grace = 180
