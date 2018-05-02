@@ -18,8 +18,10 @@ spec:
         app: ceph
         daemon: osd
     spec:
+      #nodeName: node1
       nodeSelector:
         node-type: storage
+        #ceph-osd: enabled
       volumes:
         - name: devices
           hostPath:
