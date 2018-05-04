@@ -18,12 +18,12 @@ spec:
       labels:
         k8s-app: traefik-ingress-lb
         name: traefik-ingress-lb
-    nodeSelector:
-      node-role.kubernetes.io/traefik: "true"
     spec:
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       hostNetwork: true
+      nodeSelector:
+        node-role.kubernetes.io/traefik: "true"
       containers:
       - image: traefik
         name: traefik-ingress-lb
