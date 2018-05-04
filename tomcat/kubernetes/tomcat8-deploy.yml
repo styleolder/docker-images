@@ -31,7 +31,7 @@ spec:
       containers:
       - name: tomcat8
         #image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
-        image: slpcat/tomcat:centos7-8.5
+        image: slpcat/tomcat8:centos7-8.5
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           httpGet:
