@@ -49,10 +49,20 @@ spec:
           env:
             - name: CEPH_DAEMON
               value: RGW
+            - name: RGW_CIVETWEB_PORT
+              value: 8080
+            - name: RGW_NAME
+              value: myrgw
+            - name: RGW_ZONEGROUP
+              value: ""
+            - name: RGW_ZONE
+              value: ""
             - name: KV_TYPE
               value: k8s
             - name: CLUSTER
               value: ceph
+            #- name: DEBUG
+            #  value: stayalive
           volumeMounts:
             - name: ceph-conf
               mountPath: /etc/ceph

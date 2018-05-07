@@ -51,6 +51,16 @@ spec:
               value: MDS
             - name: CEPHFS_CREATE
               value: "1"
+            - name: CEPHFS_NAME
+              value: "cephfs"
+            - name: CEPHFS_DATA_POOL
+              value: "cephfs_data"
+            - name: CEPHFS_DATA_POOL_PG
+              value: "32"
+            - name: CEPHFS_METADATA_POOL
+              value: "cephfs_metadata"
+            - name: CEPHFS_METADATA_POOL_PG
+              value: "16"
             - name: KV_TYPE
               value: k8s
             - name: CLUSTER
