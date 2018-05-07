@@ -81,6 +81,8 @@ spec:
               value: ceph
             - name: CEPH_GET_ADMIN_KEY
               value: "1"
+            #- name: DEBUG
+            #  value: stayalive
           livenessProbe:
               tcpSocket:
                 port: 6800

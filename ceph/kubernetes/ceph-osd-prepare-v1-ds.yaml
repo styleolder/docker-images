@@ -85,6 +85,8 @@ spec:
               value: ceph
             - name: CEPH_GET_ADMIN_KEY
               value: "1"
+            #- name: DEBUG
+            #  value: stayalive
           resources:
             requests:
               memory: "512Mi"

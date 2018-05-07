@@ -76,6 +76,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            #- name: DEBUG
+            #  value: stayalive
           volumeMounts:
             - name: ceph-conf
               mountPath: /etc/ceph

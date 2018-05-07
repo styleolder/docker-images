@@ -60,7 +60,7 @@ ceph-mgr-dashboard-v1-svc.yam
 ceph-mgr-prometheus-v1-svc.yaml
 
 mon
-2n+1台 宿主机节点需要标签
+2n+1台 生产5台以上，宿主机节点需要标签  ceph-mon: enabled
 ceph-mon-v1-svc.yaml
 ceph-mon-v1-ds.yaml
 ceph-mon-check-v1-dp.yam
