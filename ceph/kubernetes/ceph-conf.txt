@@ -1,5 +1,6 @@
 [global]
 
+fsid = aabbcc
 cephx = true
 cephx_require_signatures = false
 cephx_cluster_require_signatures = true
@@ -46,9 +47,10 @@ mon_allow_pool_delete = false
 mon_clock_drift_allowed = .15
 mon_clock_drift_warn_backoff = 30
 #mon_compact_on_trim = false
+mon_max_pg_per_osd = 5000
+mon_max_pool_pg_num = 166496
 mon_pg_warn_max_object_skew = 0
 mon_pg_warn_max_per_osd = 10000
-mon_max_pool_pg_num = 166496
 mon_osd_down_out_interval = 600
 mon_osd_min_down_reporters = 4
 mon_osd_report_timeout = 300
@@ -116,7 +118,7 @@ osd_heartbeat_interval = 10
 osd_heartbeat_grace = 60
 osd_mkfs_type = xfs
 osd_mkfs_options_xfs = -f -i size=2048
-osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k,delaylog
+osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k
 osd_mon_heartbeat_interval = 30
 #osd_max_backfills = 2
 osd_max_object_name_len = 256
@@ -156,8 +158,7 @@ osd_scrub_end_hour = 8
 #ports
 ms_bind_port_min = 6800
 ms_bind_port_max = 7100
-ms_dispatch_throttle_bytes = 1048576000
-ms_dispatch_throttle_bytes = 1048576000
+#ms_dispatch_throttle_bytes = 1048576000
 ms_type = async
 
 [client]
