@@ -58,7 +58,7 @@ spec:
       containers:
         - name: ceph-mgr
           #image: ceph/daemon:latest
-          image: ceph/daemon:v3.0.3-stable-3.0-luminous-ubuntu-16.04-x86_64
+          image: slpcat/ceph-daemon:ubuntu16.04
           imagePullPolicy: Always
           ports:
             - containerPort: 6800
