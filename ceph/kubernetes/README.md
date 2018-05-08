@@ -1,6 +1,7 @@
 Ceph on Kubernetes
-ceph作为Kubernetes持久存储服务，以pod形式运行,提供rbd存储类，支持自动创建持久卷供其他pod使用
+ceph作为Kubernetes持久存储服务，以特权pod形式运行,osd能够访问宿主机硬盘，提供rbd存储类，支持自动创建持久卷供其他pod使用
 使用限制与要求
+宿主机硬盘至少1Tx3
 kubernetes 节点内核版本 >= 4.5
 public and cluster networks 必须相同，并且是kubernetes的集群内部网络，本例使用kubespray安装脚本的默认网络10.233.0.0/16If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
 ceph-mgr can only run with 1 replica
@@ -36,6 +37,7 @@ export osd_public_network=10.233.0.0/16
 cd generator
 ./generate_secrets.sh all `./generate_secrets.sh fsid`
 
+ceph.conf 生产环境需要做参数调整，修改完毕执行以下命令
 kubectl create namespace ceph
 
 kubectl create secret generic ceph-conf-combined --from-file=ceph.conf --from-file=ceph.client.admin.keyring --from-file=ceph.mon.keyring --namespace=ceph
@@ -51,7 +53,15 @@ cd ..
 生成授权
 kubectl create -f ceph-rbac.yaml
 
-mds
+给存储节点打上标签(必须)
+所有的存储节点
+kubectl label node <nodename> node-type=storage
+或者所有节点都打上标签
+kubectl label nodes node-type=storage --all
+mon节点标签
+kubectl label node <nodename> ceph-mon=enabled
+
+mds 启用cephfs 可选
 ceph-mds-v1-dp.yaml
 
 mgr
@@ -65,6 +75,10 @@ ceph-mon-v1-svc.yaml
 ceph-mon-v1-ds.yaml
 ceph-mon-check-v1-dp.yam
 
+kubectl exec -it ceph-mon -n ceph bash
+
+ceps -s 检查确认一切正常再进行下一步
+
 osd 使用持久存储
 每个盘对应一个pod,本示例使用/dev/vdb
 先初始化磁盘
@@ -76,17 +90,9 @@ kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
 初始化完毕，激活磁盘
 kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
 
-rgw
+rgw 启用对象存储
 ceph-rgw-v1-dp.yaml
 ceph-rgw-v1-svc.yaml
-
-给存储节点打上标签(必须)
-
-kubectl label node <nodename> node-type=storage
-If you want all nodes in your Kubernetes cluster to be a part of your Ceph cluster, label them all.
-
-kubectl label nodes node-type=storage --all
-Eventually all pods will be running, including a mon and osd per every labeled node.
 
 kubernetes使用外部持久卷
 https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
@@ -113,12 +119,12 @@ kubectl create -f rbd-provisioner/serviceaccount.yaml
 创建RBD provisioner pod
 kubectl create -f rbd-provisioner/deployment.yaml
 创建RBD存储类
-$ kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
+kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
 kubectl create -f rbd-provisioner/storage-class.yaml
 
 POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可自动获取存储资源
 创建pvc 示例
-$ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
+kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
 
 POD里面挂载pvc卷,通常是有状态副本集statefulset.示例
 
@@ -139,14 +145,6 @@ rbd-pvc-pod.yaml
 
 POD里面挂载CephFS,通常是有状态副本集statefulset.示例
 must add the admin client key
-
-kubectl create \
--f ceph-mds-v1-dp.yaml \
--f ceph-mon-v1-svc.yaml \
--f ceph-mon-v1-dp.yaml \
--f ceph-mon-check-v1-dp.yaml \
--f ceph-osd-v1-ds.yaml \
---namespace=ceph
 
 $ kubectl get all --namespace=ceph
 NAME                   DESIRED      CURRENT       AGE
@@ -170,11 +168,6 @@ ceph-osd-3zljh         1/1       Running   2          2m
 ceph-osd-d44er         1/1       Running   2          2m
 ceph-osd-ieio7         1/1       Running   2          2m
 ceph-osd-j1gyd         1/1       Running   2          2m
-$ kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
-
-Now, try create a claim:
-
-If everything works, expect something like the following:
 
 $ kubectl describe pvc claim1
 Name:           claim1
@@ -191,6 +184,7 @@ Events:
   6m            6m              2       {persistentvolume-controller }                                                                 Normal           ExternalProvisioning    cannot find provisioner "ceph.com/rbd", expecting that a volume for the claim is provisioned either manually or via external software
   6m            6m              1       {ceph.com/rbd rbd-provisioner-217120805-9dc84 57e293c8-6e59-11e7-a834-ca4351e8550d }           Normal           Provisioning            External provisioner is provisioning volume for claim "default/claim1"
   6m            6m              1       {ceph.com/rbd rbd-provisioner-217120805-9dc84 57e293c8-6e59-11e7-a834-ca4351e8550d }           Normal           ProvisioningSucceeded   Successfully provisioned volume pvc-a9247186-6e59-11e7-b7b6-00259003b6e8
+
 Mounting CephFS in a pod
 
 First you must add the admin client key to your current namespace (or the namespace of your pod).
