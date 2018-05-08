@@ -66,7 +66,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y wget unz
   wget -O /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl" && \
   chmod +x /usr/local/bin/kubectl && \
   # Cleaning container
-  bash /clean_container.sh && rm /clean_container.sh
+  #bash /clean_container.sh && rm /clean_container.sh
 
 # Modify the entrypoint
 RUN bash "/generate_entrypoint.sh" && \
