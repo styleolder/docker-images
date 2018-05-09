@@ -27,10 +27,10 @@ spec:
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 250m
+            memory: 256Mi
           limits:
-            cpu: 2000m
+            cpu: 1000m
             memory: 2Gi
         ports:
           - name: redis
