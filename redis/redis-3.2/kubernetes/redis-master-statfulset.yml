@@ -38,7 +38,7 @@ spec:
         #  valueFrom:
         #    secretKeyRef:
         #      name: redis-secret
-        3      key: redisAuthPass
+        #      key: redisAuthPass
         resources:
           requests:
             memory: "256Mi"
