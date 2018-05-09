@@ -1,7 +1,7 @@
 Ceph on Kubernetes
-ceph作为Kubernetes持久存储服务，以特权pod形式运行,osd能够访问宿主机硬盘，提供rbd存储类，支持自动创建持久卷供其他pod使用
+ceph作为Kubernetes持久存储服务，以特权pod形式运行,osd能够访问宿主机硬盘，提供rbd存储类，支持自动创建持久卷供其他pod使用,实现超融合基础设施(Hyper converged infrastructure)
 使用限制与要求
-宿主机硬盘至少1Tx3
+宿主机硬盘至少1TBx3
 kubernetes 节点内核版本 >= 4.5
 注：本文所用yaml涉及容器内核参数调优，需要内核版本4.15,低版本内核需要注释或者删除sysctl相关条目。
 public and cluster networks 必须相同，并且是kubernetes的集群内部网络，本例使用kubespray安装脚本的默认网络10.233.0.0/16If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
