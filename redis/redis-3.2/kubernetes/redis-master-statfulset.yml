@@ -8,6 +8,9 @@ metadata:
 spec:
   serviceName: redis-master
   replicas: 1
+  selector:
+    matchLabels:
+      app: redis-master
   template:
     metadata:
       labels:
