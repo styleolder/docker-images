@@ -15,7 +15,7 @@ RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/ap
 RUN \
     echo "${TIMEZONE}" > /etc/timezone \
     && apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog ipset ipvsadm \ 
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils tzdata dialog ipset ipvsadm \ 
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 # Install required packages
