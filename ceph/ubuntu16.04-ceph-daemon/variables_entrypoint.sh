@@ -7,12 +7,15 @@
 
 ALL_SCENARIOS="populate_kvstore mon osd osd_directory osd_directory_single osd_ceph_disk osd_ceph_disk_prepare osd_ceph_disk_activate osd_ceph_activate_journal mds rgw rgw_user restapi nfs zap_device mon_health mgr disk_introspection demo disk_list tcmu_runner rbd_target_api rbd_target_gw"
 
+if [ -z $HOSTNAME ];then
+    HOSTNAME=$(uname -n | cut -d'.' -f1
+fi
 
 #########################
 # LIST OF ALL VARIABLES #
 #########################
 
-HOSTNAME=$(uname -n | cut -d'.' -f1)
+HOSTNAME
 : "${MON_NAME:=${HOSTNAME}}"
 : "${RGW_NAME:=${HOSTNAME}}"
 : "${RBD_MIRROR_NAME:=${HOSTNAME}}"
