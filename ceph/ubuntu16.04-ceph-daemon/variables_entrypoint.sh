@@ -81,7 +81,7 @@ CLI_OPTS=(--cluster ${CLUSTER})
 # This is ONLY used for the daemon's startup, e.g: ceph-osd $DAEMON_OPTS
 DAEMON_OPTS=(--cluster ${CLUSTER} --setuser ceph --setgroup ceph -d)
 
-MOUNT_OPTS=(-t xfs -o noatime,inode64)
+MOUNT_OPTS=(-t xfs -o noatime,inode64,logbsize=256k)
 
 # make sure etcd uses http or https as a prefix
 if [[ "$KV_TYPE" == "etcd" ]]; then
