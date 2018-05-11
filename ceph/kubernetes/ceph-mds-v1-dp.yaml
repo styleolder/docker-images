@@ -29,6 +29,18 @@ spec:
       nodeSelector:
         node-type: storage
       serviceAccount: default
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values: ["ceph"]
+              - key: daemon
+                operator: In
+                values: ["mds"]
+            topologyKey: kubernetes.io/hostname
       volumes:
         - name: ceph-conf
           secret:

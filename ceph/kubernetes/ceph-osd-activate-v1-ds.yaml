@@ -25,6 +25,9 @@ spec:
     spec:
       nodeSelector:
         node-type: storage
+      hostNetwork: true
+      hostPID: true
+      dnsPolicy: ClusterFirstWithHostNet
       volumes:
         - name: devices
           hostPath:

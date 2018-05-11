@@ -28,6 +28,18 @@ spec:
     spec:
       nodeSelector:
         node-type: storage
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values: ["ceph"]
+              - key: daemon
+                operator: In
+                values: ["rgw"]
+            topologyKey: kubernetes.io/hostname
       serviceAccount: default
       volumes:
         - name: ceph-conf
