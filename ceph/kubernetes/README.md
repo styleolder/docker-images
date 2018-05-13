@@ -30,8 +30,8 @@ nameserver <EXISTING_RESOLVER_IP>
 In addition to kubectl, jinja2 or sigil is required for template handling and must be installed in your system PATH. Instructions can be found here for jinja2 https://github.com/mattrobenolt/jinja2-cli or here for sigil https://github.com/gliderlabs/sigil.
 
 覆盖默认的网络设置,本方案使用宿主机的网络
-export osd_cluster_network=10.233.0.0/16
-export osd_public_network=10.233.0.0/16
+export osd_cluster_network=172.17.0.0/16
+export osd_public_network=172.17.0.0/16
 ceph-mon-v1-ds.yaml
 
 
