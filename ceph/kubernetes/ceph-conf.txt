@@ -112,7 +112,6 @@ objecter_inflight_op_bytes = 1048576000
 objecter_inflight_ops = 102400
 objecter_infilght_op_bytes = 1048576000
 
-osd_client_message_cap = 0
 osd_client_message_size_cap = 1073741824
 osd_client_op_priority = 63
 osd_command_thread_timeout = 600
@@ -139,9 +138,6 @@ osd_pool_default_pg_num = 128
 osd_pool_default_pgp_num = 128
 osd_pool_default_size = 3
 osd_pool_default_min_size = 1
-osd_pool_default_crush_rule = 0
-#osd_pool_default_size = 3 
-#osd_pool_default_min_size = 1 
 #recovery tuning
 osd_recovery_max_active = 5
 osd_recovery_op_priority = 2
@@ -157,10 +153,10 @@ osd_scrub_begin_hour = 0
 osd_scrub_end_hour = 8
 
 #ports
-ms_bind_port_min = 6800
-ms_bind_port_max = 7100
+#ms_bind_port_min = 6800
+#ms_bind_port_max = 7100
 #ms_dispatch_throttle_bytes = 1048576000
-ms_type = async
+#ms_type = async
 
 [client]
 rbd_cache_enabled = true
