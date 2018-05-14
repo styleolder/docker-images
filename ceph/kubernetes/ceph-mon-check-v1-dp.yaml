@@ -46,6 +46,13 @@ spec:
           ports:
             - containerPort: 6789
           env:
+            - name: K8S_HOST_NETWORK
+              value: "1"
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
             - name: CEPH_DAEMON
               value: MON_HEALTH
             - name: KV_TYPE
