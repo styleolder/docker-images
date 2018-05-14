@@ -42,13 +42,19 @@ perf = true
 mutex_perf_counter = true
 throttler_perf_counter = false
 
-[mon]
-mon_allow_pool_delete = false
 mon_clock_drift_allowed = .15
 mon_clock_drift_warn_backoff = 30
 #mon_compact_on_trim = false
 mon_max_pg_per_osd = 5000
 mon_max_pool_pg_num = 166496
+
+osd_heartbeat_interval = 10
+osd_heartbeat_grace = 60
+osd_heartbeat_use_min_delay_socket = true
+osd_beacon_report_interval = 600
+
+[mon]
+mon_allow_pool_delete = false
 mon_pg_warn_max_object_skew = 0
 mon_pg_warn_max_per_osd = 10000
 mon_osd_down_out_interval = 600
@@ -114,8 +120,6 @@ osd_command_thread_timeout = 600
 osd_crush_update_on_start = true
 osd_disk_threads = 16
 osd_enable_op_tracker = false
-osd_heartbeat_interval = 10
-osd_heartbeat_grace = 60
 osd_mkfs_type = xfs
 osd_mkfs_options_xfs = -f -i size=2048
 osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k

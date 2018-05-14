@@ -102,7 +102,7 @@ https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/de
 进入mon pod
 kubectl exec -it ceph-mon bash
 创建存储池
-ceph osd pool create kube 64
+ceph osd pool create kube 256
 创建keyring
 ceph auth get-or-create client.kube mon 'allow r' osd \
   'allow class-read object_prefix rbd_children, allow rwx pool=kube' \
