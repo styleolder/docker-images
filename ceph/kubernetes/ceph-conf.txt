@@ -83,7 +83,6 @@ ms_async_op_threads = 6
 ms_async_max_op_threads = 8
 ms_dispatch_throttle_bytes = 104857600000
 
-osd_heartbeat_addr = :/0
 osd_heartbeat_interval = 10
 osd_heartbeat_grace = 60
 osd_heartbeat_use_min_delay_socket = true
