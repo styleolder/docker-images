@@ -79,7 +79,8 @@ mon_max_pool_pg_num = 166496
 ms_bind_port_min = 6800
 ms_bind_port_max = 7400
 ms_type = async
-ms_async_op_threads = 8
+ms_async_op_threads = 6
+ms_async_max_op_threads = 8
 ms_dispatch_throttle_bytes = 104857600000
 
 osd_heartbeat_addr = :/0
