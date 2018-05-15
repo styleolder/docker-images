@@ -28,6 +28,8 @@ spec:
     spec:
       nodeSelector:
         node-type: storage
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       serviceAccount: default
       affinity:
         podAntiAffinity:
@@ -64,6 +66,8 @@ spec:
           ports:
             - containerPort: 6800
           env:
+            - name: K8S_HOST_NETWORK
+              value: "1"
             - name: CEPH_DAEMON
               value: MDS
             - name: CEPHFS_CREATE
