@@ -8,6 +8,9 @@ cephx_service_require_signatures = false
 max_open_files = 1310720
 mon_host = ceph-mon
 
+cluster_network = 10.233.0.0/16
+public_network = 10.233.0.0/16
+
 debug_lockdep = 0/0
 debug_context = 0/0
 debug_crush = 0/0
@@ -40,46 +43,7 @@ debug_rgw = 0/0
 
 perf = true
 mutex_perf_counter = true
-throttler_perf_counter = false
-
-mon_clock_drift_allowed = .15
-mon_clock_drift_warn_backoff = 30
-#mon_compact_on_trim = false
-mon_max_pg_per_osd = 5000
-mon_max_pool_pg_num = 166496
-
-osd_heartbeat_addr = :/0
-osd_heartbeat_interval = 10
-osd_heartbeat_grace = 60
-osd_heartbeat_use_min_delay_socket = true
-osd_beacon_report_interval = 600
-
-[mon]
-mon_allow_pool_delete = false
-mon_pg_warn_max_per_osd = 10000
-mon_osd_down_out_interval = 600
-mon_osd_min_down_reporters = 4
-mon_osd_report_timeout = 300
-mon_osd_max_split_count = 10000
-#mon_osd_down_out_interval = 3600
-#mon_osd_min_down_reporters = 3
-#mon_osd_report_timeout = 900
-mon_osd_full_ratio = .95
-mon_osd_nearfull_ratio = .85
-mon_sync_max_payload_size = 4096
-
-[osd]
-cluster_network = 10.233.0.0/16
-public_network = 10.233.0.0/16
-
-bluestore_default_buffered_read = true
-#bluestore_cache_size = 0
-#bluestore_cache_size_hdd = 1G
-#bluestore_cache_size_ssd = 3G
-#bluestore_csum_type = crc32c
-#bluestore compression algorithm
-#bluestore_compression_mode = none
-#bluestore_compression_required ratio
+throttler_perf_counter = true
 
 #performance tuning
 filestore_fd_cache_size = 8192
@@ -106,6 +70,49 @@ filestore_wbthrottle_xfs_bytes_hard_limit = 500000000
 filestore_wbthrottle_xfs_ios_hard_limit = 500000
 filestore_xattr_use_omap = true
 
+mon_clock_drift_allowed = .15
+mon_clock_drift_warn_backoff = 30
+#mon_compact_on_trim = false
+mon_max_pg_per_osd = 5000
+mon_max_pool_pg_num = 166496
+
+ms_bind_port_min = 6800
+ms_bind_port_max = 7400
+ms_type = async
+ms_async_op_threads = 8
+ms_dispatch_throttle_bytes = 104857600000
+
+osd_heartbeat_addr = :/0
+osd_heartbeat_interval = 10
+osd_heartbeat_grace = 60
+osd_heartbeat_use_min_delay_socket = true
+osd_beacon_report_interval = 600
+
+[mon]
+mon_allow_pool_delete = false
+mon_pg_warn_max_per_osd = 10000
+mon_osd_down_out_interval = 600
+mon_osd_min_down_reporters = 4
+mon_osd_report_timeout = 300
+mon_osd_max_split_count = 10000
+#mon_osd_down_out_interval = 3600
+#mon_osd_min_down_reporters = 3
+#mon_osd_report_timeout = 900
+mon_osd_full_ratio = .95
+mon_osd_nearfull_ratio = .85
+mon_sync_max_payload_size = 4096
+
+[osd]
+
+bluestore_default_buffered_read = true
+#bluestore_cache_size = 0
+#bluestore_cache_size_hdd = 1G
+#bluestore_cache_size_ssd = 3G
+#bluestore_csum_type = crc32c
+#bluestore compression algorithm
+#bluestore_compression_mode = none
+#bluestore_compression_required ratio
+
 journal_block_align = true
 journal_dio = true
 journal_aio = true 
@@ -113,7 +120,6 @@ journal_max_write_bytes = 1048576000
 journal_max_write_entries = 5000
 journal_queue_max_bytes = 1048576000
 journal_queue_max_ops = 3000
-journal_size = 100
 journal_throttle_high_multiple = 2  
 journal_throttle_max_multiple = 10 
 
@@ -160,14 +166,6 @@ osd_scrub_chunk_min = 5
 osd_scrub_chunk_max = 25
 osd_scrub_begin_hour = 0
 osd_scrub_end_hour = 8
-
-#ports
-ms_bind_port_min = 6800
-ms_bind_port_max = 7400
-#ms_type = async
-ms_type = simple
-ms_async_op_threads = 8
-ms_dispatch_throttle_bytes = 104857600000
 
 [client]
 rbd_cache_enabled = true
