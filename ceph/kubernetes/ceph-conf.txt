@@ -1,6 +1,9 @@
 [global]
 
 fsid = aabbcc
+auth_cluster_required = cephx
+auth_service_required = cephx
+auth_client_required = cephx
 cephx = true
 cephx_require_signatures = false
 cephx_cluster_require_signatures = true
@@ -79,7 +82,8 @@ filestore_fd_cache_size = 8192
 filestore_fd_cache_shards = 32
 filestore_fd_cache_random = true
 filestore_fiemap = true
-filestore_max_sync_interval = 60
+filestore_max_sync_interval = 600
+filestore_min_sync_interval = 30
 filestore_merge_threshold = 40
 filestore_omap_header_cache_size = 204800
 filestore_op_threads = 6
@@ -87,7 +91,7 @@ filestore_op_thread_timeout = 150
 filestore_op_thread_suicide_timeout = 1800
 filestore_queue_committing_max_ops = 5000
 filestore_queue_committing_max_bytes = 1048576000
-filestore_queue_max_ops = 5000
+filestore_queue_max_ops = 8000
 filestore_queue_max_bytes = 1048576000
 filestore_split_multiple = 8
 #filestore_wbthrottle_enable = false
@@ -99,18 +103,30 @@ filestore_wbthrottle_xfs_bytes_hard_limit = 500000000
 filestore_wbthrottle_xfs_ios_hard_limit = 500000
 filestore_xattr_use_omap = true
 
+journal_block_align = true
+journal_dio = true
+journal_aio = true 
+journal_max_write_bytes = 1048576000
+journal_max_write_entries = 5000
+journal_queue_max_bytes = 1048576000
+journal_queue_max_ops = 3000
+journal_throttle_high_multiple = 2  
+journal_throttle_max_multiple = 10 
+
 mon_clock_drift_allowed = .15
 mon_clock_drift_warn_backoff = 30
 #mon_compact_on_trim = false
+osd_journal_size = 20000
 mon_max_pg_per_osd = 5000
 mon_max_pool_pg_num = 166496
 
 ms_async_op_threads = 6
 ms_async_max_op_threads = 8
+ms_bind_before_connect = true
 ms_bind_port_min = 6800
-ms_bind_port_max = 7400
+ms_bind_port_max = 7600
 ms_dispatch_throttle_bytes = 104857600000
-ms_tcp_listen_backlog = 512
+ms_tcp_listen_backlog = 4096
 ms_type = async
 
 osd_beacon_report_interval = 600
@@ -143,16 +159,6 @@ bluestore_default_buffered_read = true
 #bluestore compression algorithm
 #bluestore_compression_mode = none
 #bluestore_compression_required ratio
-
-journal_block_align = true
-journal_dio = true
-journal_aio = true 
-journal_max_write_bytes = 1048576000
-journal_max_write_entries = 5000
-journal_queue_max_bytes = 1048576000
-journal_queue_max_ops = 3000
-journal_throttle_high_multiple = 2  
-journal_throttle_max_multiple = 10 
 
 objecter_inflight_op_bytes = 1048576000
 objecter_inflight_ops = 102400
@@ -205,7 +211,7 @@ rbd_cache_size = 512M
 rbd_cache_max_dirty = 320M  
 rbd_cache_target_dirty = 256M  
 rbd_cache_writethrough_until_flush = false 
-rbd_cache_max_dirty_age = 300
+rbd_cache_max_dirty_age = 600
 rbd_default_features = 1
 rbd_default_format = 2
 rbd_op_threads = 8
