@@ -147,7 +147,7 @@ osd_heartbeat_interval = 10
 osd_heartbeat_grace = 60
 osd_heartbeat_use_min_delay_socket = true
 osd_journal_size = 20000
-#osd_map_dedup = true
+osd_map_dedup = true
 #osd_max_backfills = 2
 #osd_max_object_name_len = 256
 osd_max_scrubs = 1
@@ -202,7 +202,6 @@ bluestore_default_buffered_read = true
 
 objecter_inflight_op_bytes = 1048576000
 objecter_inflight_ops = 102400
-objecter_infilght_op_bytes = 1048576000
 
 [client]
 
