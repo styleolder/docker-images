@@ -162,7 +162,6 @@ osd_mon_shutdown_timeout = 10
 osd_mkfs_type = xfs
 osd_mkfs_options_xfs = -f -i size=2048
 osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k
-osd_mon_heartbeat_interval = 30
 #backend
 #osd_objectstore = bluestore
 osd_op_thread_timeout = 60
