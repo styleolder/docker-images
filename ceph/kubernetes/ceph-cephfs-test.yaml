@@ -10,7 +10,7 @@ spec:
     node-type: storage
   containers:
   - name: cephfs-rw
-    image: busybox
+    image: slpcat/debian:stretch
     command:
     - sh
     - -c
