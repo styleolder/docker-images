@@ -42,6 +42,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        #- name: DEBUG
+        #  value: verbose
         volumeMounts:
         - mountPath: /etc/ceph
           name: ceph-conf

@@ -79,7 +79,7 @@ spec:
             - name: CLUSTER
               value: ceph
             #- name: DEBUG
-            #  value: stayalive
+            #  value: verbos
           volumeMounts:
             - name: ceph-conf
               mountPath: /etc/ceph
