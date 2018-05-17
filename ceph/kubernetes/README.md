@@ -215,7 +215,26 @@ kubectl create -f ceph-rbd-test.yaml --namespace=ceph
 And again you should see your mount, but with 20 gigs free
 
 kubectl exec -it --namespace=ceph ceph-rbd-test -- df -h
-Common Modifications
+
+cephfs动态卷使用
+创建cephfs存储类
+kubectl create -f cephfs-provisioner
+POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可自动获取存储资源
+创建pvc 示例
+kubectl create -f cephfs-pv-claim.yaml
+
+生产环境POD里面挂载pvc卷,通常是有状态副本集statefulset，cephfs支持多个POD同时写入同一文件系统。示例
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteMany
+      #cephfs storageclass
+      storageClassName: cephfs
+      resources:
+        requests:
+          storage: 10Gi
 
 Durable Storage
 

@@ -8,7 +8,7 @@ metadata:
   name: ceph-mds
   namespace: ceph
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: ceph
