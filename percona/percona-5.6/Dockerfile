@@ -11,6 +11,10 @@ ENV \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
+RUN echo 'deb http://mirrors.aliyun.com/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list \
+    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
+
 # Set timezone and locales
 RUN \
     echo "${TIMEZONE}" > /etc/timezone \
