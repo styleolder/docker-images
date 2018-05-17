@@ -1,9 +1,9 @@
 [global]
 
 fsid = aabbcc
-auth_cluster_required = cephx
-auth_service_required = cephx
-auth_client_required = cephx
+#auth_cluster_required = cephx
+#auth_service_required = cephx
+#auth_client_required = cephx
 cephx = true
 cephx_require_signatures = false
 cephx_cluster_require_signatures = true
