@@ -26,6 +26,13 @@ spec:
       #从私有仓库下载镜像
       #imagePullSecrets:
       #- name: registrykey-ali-ext
+      initContainers:
+        - name: volume-mount-uid
+          image: busybox
+          command: ["sh", "-c", "chown -R 1000:1000 /opt/atlassian/jira-home"]
+          volumeMounts:
+          - name: jira-data
+            mountPath: "/opt/atlassian/jira-home"
       containers:
       - name: jira
         image: slpcat/jira:7.3.8-20180319a
