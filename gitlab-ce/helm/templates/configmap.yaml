@@ -13,21 +13,58 @@ data:
   ##
   gitlab_omnibus_config: |
     external_url ENV['EXTERNAL_URL'];
-    root_pass = ENV['GITLAB_ROOT_PASSWORD'];
-    gitlab_rails['initial_root_password'] = root_pass unless root_pass.to_s == '';
-    postgresql['enable'] = false;
+    gitlab_rails['auto_migrate'] = true
     gitlab_rails['db_host'] = ENV['DB_HOST'];
     gitlab_rails['db_password'] = ENV['DB_PASSWORD'];
     gitlab_rails['db_username'] = ENV['DB_USER'];
     gitlab_rails['db_database'] = ENV['DB_DATABASE'];
-    redis['enable'] = false;
+    gitlab_rails['gitlab_ssh_host'] = 'git.example.com'
+    gitlab_rails['gitlab_email_enabled'] = true
+    gitlab_rails['gitlab_email_from'] = 'mail@exmple.com'
+    gitlab_rails['gitlab_email_display_name'] = 'GITMAIL'
+    gitlab_rails['initial_root_password'] = root_pass unless root_pass.to_s == '';
+    gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '10.233.0.0/16']
     gitlab_rails['redis_host'] = ENV['REDIS_HOST'];
     gitlab_rails['redis_password'] = ENV['REDIS_PASSWORD'];
-    unicorn['worker_processes'] = 2;
+    gitlab_rails['registry_enabled'] = true
+    gitlab_rails['registry_host'] = "registry.exmpale.com"
+    gitlab_rails['registry_port'] = "5000"
+    gitlab_rails['smtp_enable'] = true
+    gitlab_rails['smtp_address'] = "smtp.exmail.qq.com"
+    gitlab_rails['smtp_port'] = 465
+    gitlab_rails['smtp_user_name'] = "mail@example.com"
+    gitlab_rails['smtp_password'] = "password"
+    gitlab_rails['smtp_domain'] = "example.com"
+    gitlab_rails['smtp_authentication'] = "login"
+    gitlab_rails['smtp_enable_starttls_auto'] = true
+    gitlab_rails['smtp_tls'] = true
+    gitlab_rails['time_zone'] = 'Beijing'
     manage_accounts['enable'] = true;
     manage_storage_directories['manage_etc'] = false;
-    gitlab_shell['auth_file'] = '/gitlab-data/ssh/authorized_keys';
-    git_data_dir '/gitlab-data/git-data';
-    gitlab_rails['shared_path'] = '/gitlab-data/shared';
-    gitlab_rails['uploads_directory'] = '/gitlab-data/uploads';
-    gitlab_ci['builds_directory'] = '/gitlab-data/builds';
+    nginx['enable'] = true
+    nginx['client_max_body_size'] = '512m'
+    nginx['redirect_http_to_https'] = false
+    nginx['proxy_set_headers'] = {
+      "Host" => "$http_host_with_default",
+      "X-Real-IP" => "$remote_addr",
+      "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
+      "X-Forwarded-Proto" => "http",
+      "X-Forwarded-Ssl" => "off",
+      "Upgrade" => "$http_upgrade",
+      "Connection" => "$connection_upgrade"
+     }
+    nginx['http2_enabled'] = false
+    nginx['worker_processes'] = 4
+    nginx['worker_connections'] = 10240
+    postgresql['enable'] = false;
+    prometheus['enable'] = false
+    prometheus['monitor_kubernetes'] = false
+    prometheus_monitoring['enable'] = false
+    redis['enable'] = false;
+    registry_external_url 'http://registry.example.com'
+    root_pass = ENV['GITLAB_ROOT_PASSWORD'];
+    sidekiq['log_directory'] = "/var/log/gitlab/sidekiq"
+    sidekiq['shutdown_timeout'] = 4
+    sidekiq['concurrency'] = 25
+    unicorn['worker_timeout'] = 60
+    unicorn['worker_processes'] = 2

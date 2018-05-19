@@ -96,7 +96,7 @@ spec:
         - name: gitlab-etc
           mountPath: /etc/gitlab
         - name: gitlab-data
-          mountPath: /gitlab-data
+          mountPath: /var/opt/gitlab
         resources:
 {{ toYaml .Values.resources | indent 10 }}
       volumes:
