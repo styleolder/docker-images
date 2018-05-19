@@ -1,7 +1,7 @@
 ## GitLab CE image
 ## ref: https://hub.docker.com/r/gitlab/gitlab-ce/tags/
 ##
-image: gitlab/gitlab-ce:9.4.1-ce.0
+image: slpcat/gitlab-ce
 
 ## Specify a imagePullPolicy
 ## 'Always' if imageTag is 'latest', else set to 'IfNotPresent'
@@ -17,12 +17,12 @@ image: gitlab/gitlab-ce:9.4.1-ce.0
 ## Change the initial default admin password if set. If not set, you'll be
 ## able to set it when you first visit your install.
 ##
-#gitlabRootPassword: ""
+gitlabRootPassword: "5iveL!fe"
 
 ## For minikube, set this to NodePort, elsewhere use LoadBalancer
 ## ref: http://kubernetes.io/docs/user-guide/services/#publishing-services---service-types
 ##
-serviceType: LoadBalancer
+serviceType: NodePort
 
 ## Ingress configuration options
 ##
@@ -58,8 +58,8 @@ resources:
     memory: 1Gi
     cpu: 500m
   limits:
-    memory: 2Gi
-    cpu: 1
+    memory: 4Gi
+    cpu: 4
 
 ## Enable persistence using Persistent Volume Claims
 ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
