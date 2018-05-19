@@ -8,5 +8,5 @@ sources:
 - https://github.com/apache/hadoop
 icon: http://hadoop.apache.org/images/hadoop-logo.jpg
 maintainers:
-- name: danisla
-  email: disla@google.com
+- name: slpcat
+  email: slpcat@qq.com

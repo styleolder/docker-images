@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "hadoop.fullname" . }}-hdfs-nn
@@ -12,6 +12,11 @@ metadata:
     component: hdfs-nn
 spec:
   serviceName: {{ template "hadoop.fullname" . }}-hdfs-nn
+  selector:
+    matchLabels:
+      app: {{ template "hadoop.name" . }}
+      component: hdfs-nn
+      release: {{ .Release.Name }}
   replicas: 1
   template:
     metadata:
@@ -67,16 +72,29 @@ spec:
         volumeMounts:
         - name: hadoop-config
           mountPath: /tmp/hadoop-config
+        {{- if .Values.persistence.nameNode.enabled }}
         - name: dfs
           mountPath: /root/hdfs/namenode
+        {{- end }}
       volumes:
       - name: hadoop-config
         configMap:
           name: {{ template "hadoop.fullname" . }}
-      - name: dfs
-      {{- if .Values.persistence.nameNode.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ template "hadoop.fullname" . }}-hdfs-nn
-      {{- else }}        
-        emptyDir: {}
-      {{- end }}
+{{- if .Values.persistence.nameNode.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: dfs
+    spec:
+      accessModes:
+      - {{ .Values.persistence.nameNode.accessMode | quote }}
+{{- if .Values.persistence.nameNode.storageClass }}
+{{- if (eq "-" .Values.persistence.nameNode.storageClass) }}
+      storageClassName: ""
+{{- else }}
+      storageClassName: "{{ .Values.persistence.nameNode.storageClass }}"
+{{- end }}
+{{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.nameNode.size | quote }}
+{{- end }}

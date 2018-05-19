@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "hadoop.fullname" . }}-yarn-rm
@@ -12,6 +12,11 @@ metadata:
     component: yarn-rm
 spec:
   serviceName: {{ template "hadoop.fullname" . }}-yarn-rm
+  selector:
+    matchLabels:
+      app: {{ template "hadoop.name" . }}
+      component: yarn-rm
+      release: {{ .Release.Name }}
   replicas: 1
   template:
     metadata:

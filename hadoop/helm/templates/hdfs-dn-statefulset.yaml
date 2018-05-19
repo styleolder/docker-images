@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "hadoop.fullname" . }}-hdfs-dn
@@ -12,6 +12,11 @@ metadata:
     component: hdfs-dn
 spec:
   serviceName: {{ template "hadoop.fullname" . }}-hdfs-dn
+  selector:
+    matchLabels:
+      app: {{ template "hadoop.name" . }}
+      component: hdfs-dn
+      release: {{ .Release.Name }}
   replicas: {{ .Values.hdfs.dataNode.replicas }}
   template:
     metadata:
@@ -67,16 +72,29 @@ spec:
         volumeMounts:
         - name: hadoop-config
           mountPath: /tmp/hadoop-config
+        {{- if .Values.persistence.dataNode.enabled }}
         - name: dfs
           mountPath: /root/hdfs/datanode
+        {{- end }}
       volumes:
       - name: hadoop-config
         configMap:
           name: {{ template "hadoop.fullname" . }}
-      - name: dfs
-      {{- if .Values.persistence.dataNode.enabled }}
-        persistentVolumeClaim:
-          claimName: {{ template "hadoop.fullname" . }}-hdfs-dn
-      {{- else }}        
-        emptyDir: {}
-      {{- end }}
+{{- if .Values.persistence.dataNode.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: dfs
+    spec:
+      accessModes:
+      - {{ .Values.persistence.dataNode.accessMode | quote }}
+{{- if .Values.persistence.dataNode.storageClass }}
+{{- if (eq "-" .Values.persistence.dataNode.storageClass) }}
+      storageClassName: ""
+{{- else }}
+      storageClassName: "{{ .Values.persistence.dataNode.storageClass }}"
+{{- end }}
+{{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistence.dataNode.size | quote }}
+{{- end }}
