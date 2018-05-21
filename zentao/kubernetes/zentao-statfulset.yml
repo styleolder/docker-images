@@ -54,7 +54,7 @@ spec:
         - name: PASSWD
           value: "password"
         - name: BIND_ADDRESS
-          value: false
+          value: "false"
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
@@ -68,7 +68,7 @@ spec:
             containerPort: 80
         volumeMounts:
           - name: zentao-data
-            mountPath: "/opt/zbox"
+            mountPath: "/opt"
   volumeClaimTemplates:
   - metadata:
       name: zentao-data
