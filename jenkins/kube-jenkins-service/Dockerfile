@@ -191,7 +191,6 @@ RUN /usr/local/bin/install-plugins.sh       \
   pipeline-build-step:latest     \
   pipeline-github-lib:latest     \
   pipeline-githubnotify-step:latest \
-  pipeline-github-lib:latest     \
   pipeline-graph-analysis:latest \
   pipeline-input-step:latest     \
   pipeline-milestone-step:latest \
