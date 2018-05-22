@@ -61,6 +61,8 @@ COPY conf/jenkins/config.xml "${JENKINS_STAGING}/config.xml"
 #COPY conf/jenkins/jenkins.model.JenkinsLocationConfiguration.xml "${JENKINS_STAGING}/jenkins.model.JenkinsLocationConfiguration.xml"
 #COPY conf/jenkins/nodeMonitors.xml "${JENKINS_STAGING}/nodeMonitors.xml"
 #COPY conf/jenkins/hudson.model.UpdateCenter.xml "${JENKINS_HOME}/hudson.model.UpdateCenter.xml"
+# lets configure Jenkins with some defaults
+#COPY config/*.xml /usr/share/jenkins/ref/
 
 # add plugins
 RUN /usr/local/bin/install-plugins.sh       \
@@ -246,6 +248,12 @@ RUN /usr/local/bin/install-plugins.sh       \
   workflow-support:latest        \
   ws-cleanup:latest              \
   xcode-plugin:latest
+
+# copy custom built plugins
+COPY plugins/*.hpi /usr/share/jenkins/ref/plugins/
+
+# so we can use jenkins cli
+COPY config/jenkins.properties /usr/share/jenkins/ref/
 
 # disable first-run wizard
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
