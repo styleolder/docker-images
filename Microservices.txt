@@ -1,0 +1,38 @@
+CI/CD持续集成发布
+持续集成流水线 Jenkins
+artifactory 仓库 Nexus 
+代码库 Gogs
+代码品质管理SonarQube 
+
+追踪工具
+OpenZipkin
+fabric8
+kubectl create clusterrolebinding fabric8-cluster-admin-binding --clusterrole=cluster-admin --user=system:serviceaccount:default:exposecontroller
+kubectl create clusterrolebinding fabric8-cluster-admin-binding2 --clusterrole=cluster-admin --user=system:serviceaccount:default:configmapcontroller
+gogs-yml
+initContainers:
+        - name: init
+          image: busybox
+          command:
+            - chmod
+            - '777'
+            - /app/gogs/data
+          resources: {}
+          volumeMounts:
+            - name: gogs-data
+              mountPath: /app/gogs/data
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: IfNotPresent
+
+kubectl edit configmap exposecontroller
+apiVersion: "v1"
+data:
+  config.yml: |-
+    exposer: "Ingress"
+    domain: "wzp.local"
+kind: "ConfigMap"
+metadata:
+  name: "exposecontroller"
+
+
