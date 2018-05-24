@@ -50,6 +50,7 @@ kubectl create secret generic ceph-bootstrap-rbd-keyring --from-file=ceph.keyrin
 kubectl create secret generic ceph-client-key --from-file=ceph-client-key --namespace=ceph
 
 cd ..
+注：如果调整ceph.conf配置，需要重新生成secret
 
 生产环境部署ceph组件
 生成授权
@@ -82,7 +83,7 @@ kubectl exec -it ceph-mon -n ceph bash
 ceps -s 检查确认一切正常再进行下一步
 
 osd 使用持久存储
-每个盘对应一个pod,本示例使用/dev/vdb
+每个盘对应一个pod,本示例使用/dev/vdb,多个磁盘修改ceph-osd-prepare-v1-ds.yaml和ceph-osd-activate-v1-ds.yaml
 先初始化磁盘
 
 kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
@@ -120,7 +121,7 @@ kubectl create -f rbd-provisioner/role.yaml
 kubectl create -f rbd-provisioner/serviceaccount.yaml
 创建RBD provisioner pod
 kubectl create -f rbd-provisioner/deployment.yaml
-创建RBD存储类
+创建RBD存储类，并且设置为默认存储类
 kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
 kubectl create -f rbd-provisioner/storage-class.yaml
 
