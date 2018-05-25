@@ -19,14 +19,14 @@ RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 RUN \
     yum update -y && \
     yum install -y wget && \
-    wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u161-b12/2f38c3b165be4555a1fa6e98c45e0808/jdk-8u161-linux-x64.rpm && \
-    rpm -ivh jdk-8u161-linux-x64.rpm && \
-    rm jdk-8u161-linux-x64.rpm
+    wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-linux-x64.rpm && \
+    rpm -ivh jdk-8u171-linux-x64.rpm && \
+    rm jdk-8u171-linux-x64.rpm
 
-ENV JAVA_HOME=/usr/java/jdk1.8.0_161 \
+ENV JAVA_HOME=/usr/java/jdk1.8.0_171 \
     ZK_HOSTS=localhost:2181 \
-    KM_VERSION=1.3.3.8 \
-    KM_REVISION=3b0c060ebf2ca009a5aaacf905e55678674b10e6 \
+    KM_VERSION=1.3.3.17 \
+    KM_REVISION=0356db5f2698c36ec676b947c786b8543086dd49 \
     KM_CONFIGFILE="conf/application.conf"
 
 ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
