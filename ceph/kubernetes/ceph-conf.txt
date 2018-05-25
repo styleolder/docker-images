@@ -135,6 +135,7 @@ ms_bind_port_min = 6800
 ms_bind_port_max = 7600
 ms_dispatch_throttle_bytes = 104857600000
 ms_tcp_listen_backlog = 4096
+ms_tcp_rcvbuf = 512
 ms_type = async
 
 osd_beacon_report_interval = 900
