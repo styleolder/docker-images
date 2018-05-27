@@ -1,0 +1,15 @@
+---
+- hosts: etcd
+  sudo: yes
+  roles:
+          - etcd
+
+- hosts: etcd
+  sudo: yes
+  roles:
+          - flannel-config
+
+- hosts: minions
+  sudo: yes
+  roles:
+          - flannel

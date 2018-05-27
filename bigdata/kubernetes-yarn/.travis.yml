@@ -1,0 +1,23 @@
+language: go
+
+go:
+  - 1.4
+  - 1.3
+
+install:
+  - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
+  - ./hack/travis/install-etcd.sh
+  - ./hack/verify-gofmt.sh
+  - ./hack/verify-boilerplate.sh
+  - ./hack/verify-description.sh
+  - ./hack/travis/install-std-race.sh
+  - ./hack/build-go.sh
+
+script:
+  - KUBE_RACE="-race" KUBE_COVER="-cover -covermode=atomic" KUBE_TIMEOUT='-timeout 60s' ./hack/test-go.sh
+  - PATH=$HOME/gopath/bin:./third_party/etcd:$PATH ./hack/test-cmd.sh
+  - PATH=$HOME/gopath/bin:./third_party/etcd:$PATH ./hack/verify-gendocs.sh
+  - PATH=$HOME/gopath/bin:./third_party/etcd:$PATH ./hack/test-integration.sh
+
+notifications:
+  irc: "chat.freenode.net#google-containers"

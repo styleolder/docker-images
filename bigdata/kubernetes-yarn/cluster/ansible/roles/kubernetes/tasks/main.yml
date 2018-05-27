@@ -1,0 +1,30 @@
+---
+- name: Create directories for archive extraction/configuration/data storage etc
+  file: path={{ item.path }} state=directory mode={{ item.mode }}
+  with_items:
+          - { path: '/tmp/kubernetes-yarn', mode: '0700' }
+          - { path: '/usr/local/src/kubernetes-yarn', mode: '0700' }
+          - { path: '/etc/kubernetes', mode: '0700' }
+
+- name: Copy and extract kubernetes-yarn archive 
+  unarchive: src=kubernetes.tar.gz dest=/tmp/kubernetes-yarn copy=yes
+
+- name: Extract kubernetes binaries 
+  unarchive:  src=/tmp/kubernetes-yarn/kubernetes/server/kubernetes-server-linux-amd64.tar.gz  dest=/usr/local/src/kubernetes-yarn copy=no 
+
+- name: Set up symlinks to kube binaries
+  file: src=/usr/local/src/kubernetes-yarn/kubernetes/server/bin/{{ item.bin }} dest=/usr/local/bin/{{ item.bin }} state=link
+  with_items:
+          - { bin: 'kube-apiserver' }
+          - { bin: 'kube-controller-manager' }
+          - { bin: 'kubecfg' }
+          - { bin: 'kubectl' }
+          - { bin: 'kubelet' }
+          - { bin: 'kube-proxy' }
+          - { bin: 'kubernetes' }
+          - { bin: 'kube-scheduler' }
+
+- name: write the global config file
+  template: src=config.j2 dest=/etc/kubernetes/config
+  notify:
+          - restart daemons

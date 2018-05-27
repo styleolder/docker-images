@@ -1,0 +1,12 @@
+ansible_ssh_user: root
+
+etcd_version: v0.4.6
+
+kube_service_addresses: 10.246.0.0/16
+kube_overlay_ip: 10.244.0.0
+kube_overlay_prefix: 16
+routing_network_interface: eth0
+ansible_routing_network_interface: ansible_eth0
+hadoop_conf_dir: /usr/local/src/hadoop/hadoop-2.6.0/etc/hadoop
+
+
