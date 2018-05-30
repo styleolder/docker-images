@@ -17,5 +17,6 @@ helm list
 helm ls
 
 示例
+helm repo add stable https://kubernetes-charts.storage.googleapis.com
 helm install --name wordpress-test --set "persistence.enabled=false,mariadb.persistence.enabled=false" stable/wordpress
 https://kubeapps.com/ 你可以寻找和发现已有的Charts

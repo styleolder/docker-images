@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: alicloud-disk-controller
-  namespace: kube-system
-secrets:
-- name: alicloud-disk-controller-token-pjx8q
