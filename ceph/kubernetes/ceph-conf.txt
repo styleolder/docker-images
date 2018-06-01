@@ -75,7 +75,7 @@ debug_xio = 0/0
 
 perf = true
 mutex_perf_counter = true
-throttler_perf_counter = false
+throttler_perf_counter = true
 
 #performance tuning
 filestore_fd_cache_size = 8192
@@ -86,7 +86,7 @@ filestore_max_sync_interval = 600
 filestore_min_sync_interval = 30
 filestore_merge_threshold = 40
 filestore_omap_header_cache_size = 204800
-filestore_op_threads = 6
+filestore_op_threads = 16
 filestore_op_thread_timeout = 150
 filestore_op_thread_suicide_timeout = 1800
 filestore_queue_committing_max_ops = 5000
@@ -94,7 +94,7 @@ filestore_queue_committing_max_bytes = 1048576000
 filestore_queue_max_ops = 8000
 filestore_queue_max_bytes = 1048576000
 filestore_split_multiple = 8
-#filestore_wbthrottle_enable = false
+filestore_wbthrottle_enable = false
 filestore_wbthrottle_xfs_bytes_start_flusher = 500000000
 filestore_wbthrottle_xfs_indoes_start_flusher = 500
 filestore_wbthrottle_xfs_indoes_hard_limit = 500000
@@ -117,7 +117,7 @@ mds_cache_size = 10G
 
 mon_clock_drift_allowed = .15
 mon_clock_drift_warn_backoff = 30
-#mon_compact_on_trim = false
+mon_compact_on_trim = false
 mon_max_pg_per_osd = 5000
 mon_max_pool_pg_num = 166496
 mon_osd_down_out_interval = 900
@@ -207,9 +207,9 @@ objecter_inflight_ops = 102400
 [client]
 
 rbd_cache_enabled = true
-rbd_cache_size = 160M  
-rbd_cache_max_dirty = 128M  
-rbd_cache_target_dirty = 64M  
+rbd_cache_size = 256M  
+rbd_cache_max_dirty = 160M  
+rbd_cache_target_dirty = 96M  
 rbd_cache_writethrough_until_flush = false 
 rbd_cache_max_dirty_age = 300
 rbd_default_features = 1
