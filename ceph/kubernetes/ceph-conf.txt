@@ -139,7 +139,7 @@ ms_tcp_rcvbuf = 512
 ms_type = async
 
 osd_beacon_report_interval = 900
-#osd_client_message_size_cap = 1073741824
+osd_client_message_size_cap = 1073741824
 osd_client_op_priority = 63
 osd_command_thread_timeout = 600
 osd_crush_update_on_start = true
@@ -149,8 +149,8 @@ osd_heartbeat_grace = 60
 osd_heartbeat_use_min_delay_socket = true
 osd_journal_size = 20000
 osd_map_dedup = true
-#osd_max_backfills = 2
-#osd_max_object_name_len = 256
+osd_max_backfills = 2
+osd_max_object_name_len = 256
 osd_max_scrubs = 1
 osd_max_write_size = 512
 osd_mon_ack_timeout = 30
@@ -159,7 +159,7 @@ osd_mon_report_interval_max = 600
 osd_mon_report_interval_min = 20
 osd_mon_report_max_in_flight = 2
 osd_mon_shutdown_timeout = 10
-#osd_enable_op_tracker = false
+osd_enable_op_tracker = false
 osd_mkfs_type = xfs
 osd_mkfs_options_xfs = -f -i size=2048
 osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k
