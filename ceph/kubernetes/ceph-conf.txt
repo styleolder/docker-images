@@ -8,7 +8,7 @@ cephx = true
 cephx_require_signatures = false
 cephx_cluster_require_signatures = true
 cephx_service_require_signatures = false
-max_open_files = 1310720
+#max_open_files = 1310720
 mon_host = ceph-mon
 
 cluster_network = 172.19.0.0/16
@@ -82,6 +82,8 @@ filestore_fd_cache_size = 8192
 filestore_fd_cache_shards = 32
 filestore_fd_cache_random = true
 filestore_fiemap = true
+filestore_journal_parallel = true
+filestore_journal_writeahead = true
 filestore_max_sync_interval = 600
 filestore_min_sync_interval = 30
 filestore_merge_threshold = 40
@@ -192,7 +194,9 @@ mon_sync_max_payload_size = 4096
 
 [osd]
 
+bluefs_buffered_io = true
 bluestore_default_buffered_read = true
+bluestore_default_buffered_write = true
 #bluestore_cache_size = 0
 #bluestore_cache_size_hdd = 1G
 #bluestore_cache_size_ssd = 3G
