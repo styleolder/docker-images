@@ -26,6 +26,8 @@ spec:
       #        default: preferredDuringSchedulingIgnoredDuringExecution
       #      topologyKey:
       #        default: kubernetes.io/hostname
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: rbd-provisioner
         # Currently outdated, hence use inofficial version
