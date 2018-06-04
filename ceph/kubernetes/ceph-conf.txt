@@ -104,10 +104,10 @@ filestore_op_thread_timeout = 150
 filestore_op_thread_suicide_timeout = 1800
 filestore_queue_committing_max_ops = 5000
 filestore_queue_committing_max_bytes = 1048576000
-filestore_queue_max_ops = 8000
+filestore_queue_max_ops = 500
 filestore_queue_max_bytes = 1048576000
 filestore_split_multiple = 8
-#filestore_wbthrottle_enable = false
+filestore_wbthrottle_enable = false
 filestore_wbthrottle_xfs_bytes_start_flusher = 500000000
 filestore_wbthrottle_xfs_indoes_start_flusher = 500
 filestore_wbthrottle_xfs_indoes_hard_limit = 500000
@@ -171,7 +171,7 @@ osd_mon_heartbeat_interval = 30
 osd_mon_report_interval_max = 600
 osd_mon_report_interval_min = 20
 osd_mon_shutdown_timeout = 10
-#osd_enable_op_tracker = false
+osd_enable_op_tracker = false
 osd_mkfs_type = xfs
 osd_mkfs_options_xfs = -f -i size=2048
 osd_mount_options_xfs = rw,noatime,inode64,logbsize=256k
