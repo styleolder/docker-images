@@ -91,10 +91,10 @@ bluestore_default_buffered_write = true
 #performance tuning
 filestore_fd_cache_size = 8192
 filestore_fd_cache_shards = 32
-filestore_fd_cache_random = true
+#filestore_fd_cache_random = true
 filestore_fiemap = true
-filestore_journal_parallel = true
-filestore_journal_writeahead = true
+#filestore_journal_parallel = true
+#filestore_journal_writeahead = true
 filestore_max_sync_interval = 600
 filestore_min_sync_interval = 30
 filestore_merge_threshold = 40
@@ -107,7 +107,7 @@ filestore_queue_committing_max_bytes = 1048576000
 filestore_queue_max_ops = 8000
 filestore_queue_max_bytes = 1048576000
 filestore_split_multiple = 8
-filestore_wbthrottle_enable = false
+#filestore_wbthrottle_enable = false
 filestore_wbthrottle_xfs_bytes_start_flusher = 500000000
 filestore_wbthrottle_xfs_indoes_start_flusher = 500
 filestore_wbthrottle_xfs_indoes_hard_limit = 500000
@@ -123,8 +123,8 @@ journal_max_write_bytes = 1048576000
 journal_max_write_entries = 5000
 journal_queue_max_bytes = 1048576000
 journal_queue_max_ops = 3000
-journal_throttle_high_multiple = 2  
-journal_throttle_max_multiple = 10 
+#journal_throttle_high_multiple = 2  
+#journal_throttle_max_multiple = 10 
 
 mds_cache_size = 10G
 
@@ -195,8 +195,8 @@ osd_scrub_sleep = 10
 osd_scrub_load_threshold = 8
 osd_scrub_chunk_min = 5
 osd_scrub_chunk_max = 25
-osd_scrub_begin_hour = 0
-osd_scrub_end_hour = 8
+#osd_scrub_begin_hour = 0
+#osd_scrub_end_hour = 8
 
 [mon]
 

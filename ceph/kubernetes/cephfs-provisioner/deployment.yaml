@@ -12,6 +12,8 @@ spec:
       labels:
         app: cephfs-provisioner
     spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: cephfs-provisioner
         #image: "quay.io/external_storage/cephfs-provisioner:latest"
