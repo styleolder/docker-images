@@ -126,7 +126,7 @@ journal_queue_max_ops = 3000
 #journal_throttle_high_multiple = 2  
 #journal_throttle_max_multiple = 10 
 
-mds_cache_size = 10G
+mds_cache_size = 250000
 
 mon_clock_drift_allowed = .15
 mon_clock_drift_warn_backoff = 30
@@ -149,7 +149,7 @@ ms_bind_port_max = 7600
 ms_dispatch_throttle_bytes = 104857600000
 ms_tcp_listen_backlog = 4096
 ms_tcp_rcvbuf = 512
-ms_type = async
+#ms_type = async
 
 osd_beacon_report_interval = 900
 osd_client_message_size_cap = 1073741824
