@@ -141,13 +141,15 @@ mon_osd_full_ratio = .95
 mon_osd_nearfull_ratio = .85
 mon_pg_warn_max_per_osd = 10000
 
+ms_async_op_threads = 6		
+ms_async_max_op_threads = 8
 ms_bind_before_connect = true
 ms_bind_port_min = 6800
 ms_bind_port_max = 7600
 ms_dispatch_throttle_bytes = 104857600000
 ms_tcp_listen_backlog = 4096
 ms_tcp_rcvbuf = 512
-#ms_type = async
+ms_type = async
 
 osd_beacon_report_interval = 900
 osd_client_message_size_cap = 1073741824
@@ -158,7 +160,7 @@ osd_disk_threads = 8
 osd_heartbeat_interval = 10
 osd_heartbeat_grace = 60
 osd_heartbeat_use_min_delay_socket = true
-#osd_journal_size = 20000
+osd_journal_size = 20000
 osd_map_dedup = true
 osd_max_backfills = 2
 osd_max_object_name_len = 256
@@ -198,7 +200,7 @@ osd_scrub_chunk_max = 25
 [mon]
 
 mon_allow_pool_delete = false
-#mon_sync_max_payload_size = 4096
+mon_sync_max_payload_size = 4096
 
 [osd]
 
