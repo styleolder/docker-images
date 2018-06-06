@@ -78,7 +78,7 @@ spec:
             - name: CLUSTER
               value: ceph
             - name: CEPH_PUBLIC_NETWORK
-              value: 10.233.0.0/16
+              value: 172.19.0.0/16
             - name: MON_NAME
               valueFrom:
                 fieldRef:
