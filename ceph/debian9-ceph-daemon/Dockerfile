@@ -50,7 +50,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y wget unz
   # Install ceph, ganesha and etcd
   wget -q -O- 'https://download.ceph.com/keys/release.asc' | apt-key add - && \
   echo "deb http://download.ceph.com/debian-$CEPH_VERSION/ stretch main" | tee /etc/apt/sources.list.d/ceph-$CEPH_VERSION.list && \
-  echo "deb http://download.ceph.com/nfs-ganesha/deb-V2.5-stable/luminous/ stretch main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
+  echo "deb http://download.ceph.com/nfs-ganesha/deb-V2.5-stable/luminous/ xenial main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
   apt-get update && apt-get install -y  --no-install-recommends --force-yes $PACKAGES && \
   dpkg -s $PACKAGES && \
   apt-get clean && rm -rf $PURGES && \
