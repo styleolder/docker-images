@@ -76,6 +76,8 @@ spec:
           env:
             #- name: LD_PRELOAD
             #  value: "/usr/lib/x86_64-linux-gnu/libjemalloc.so.1"
+            - name: TCMALLOC_MAX_TOTAL_THREAD_CACHE_BYTES
+              value: "268458436"
             - name: CEPH_DAEMON
               value: OSD_CEPH_DISK_ACTIVATE
             - name: OSD_DEVICE
