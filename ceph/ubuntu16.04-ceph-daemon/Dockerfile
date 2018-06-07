@@ -24,7 +24,7 @@ RUN \
     echo "${TIMEZONE}" > /etc/timezone \
     && echo "$LANG UTF-8" > /etc/locale.gen \
     && apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog iproute2 tzdata \ 
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog libjemalloc1 iproute2 tzdata \ 
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && update-locale LANG=$LANG \
     && locale-gen $LANG \
@@ -34,7 +34,7 @@ RUN \
 RUN \
     apt-get dist-upgrade -y
 ENV CEPH_VERSION luminous
-ENV CONFD_VERSION 0.10.0
+ENV CONFD_VERSION 0.16.0
 ENV KUBECTL_VERSION v1.10.2
 
 # Packages list
