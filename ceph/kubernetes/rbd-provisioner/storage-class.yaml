@@ -19,3 +19,5 @@ parameters:
   imageFeatures: layering
   fsType: ext4
 allowVolumeExpansion: true
+mountOptions: ["rw", "nobarrier", "inode_readahead_blks=4096", "delalloc", "commit=600"]
+#superOptions: ["rw", "errors=remount-ro", "data=ordered"]
