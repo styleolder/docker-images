@@ -45,10 +45,10 @@ spec:
             cpu: "250m"
           limits:
             memory: "2Gi"
-            cpu: "1000m"
+            cpu: "2000m"
         volumeMounts:
         - name: redis-master-volume
-          mountPath: /data
+          mountPath: /var/lib/redis
   volumeClaimTemplates:
   - metadata:
       name: redis-master-volume
