@@ -2,21 +2,21 @@
 kind: DaemonSet
 apiVersion: apps/v1
 metadata:
-  name: ceph-osd-activate
+  name: ceph-osd-activate-vdb
   namespace: ceph
   labels:
     app: ceph
-    daemon: osd
+    daemon: osd-vdb
 spec:
   selector:
     matchLabels:
       app: ceph
-      daemon: osd
+      daemon: osd-vdb
   template:
     metadata:
       labels:
         app: ceph
-        daemon: osd
+        daemon: osd-vdb
     spec:
       nodeSelector:
         node-type: storage
