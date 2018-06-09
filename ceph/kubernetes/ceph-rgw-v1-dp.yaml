@@ -36,7 +36,7 @@ spec:
                 values: ["rgw"]
               - key: node-role.kubernetes.io/master
                 operator: In
-                valuues: ["true"]
+                values: ["true"]
             topologyKey: kubernetes.io/hostname
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
