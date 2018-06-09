@@ -34,9 +34,6 @@ spec:
               - key: daemon
                 operator: In
                 values: ["rgw"]
-              - key: node-role.kubernetes.io/master
-                operator: In
-                values: ["true"]
             topologyKey: kubernetes.io/hostname
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
