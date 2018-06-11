@@ -59,12 +59,12 @@ spec:
           #image: ceph/daemon:latest
           image: slpcat/ceph-daemon:ubuntu16.04
           ports:
-            - containerPort: 8080
+            - containerPort: 8088
           env:
             - name: CEPH_DAEMON
               value: RGW
-            #- name: RGW_CIVETWEB_PORT
-            #  value: "8080"
+            - name: RGW_CIVETWEB_PORT
+              value: "8088"
             #- name: RGW_NAME
             #  value: myrgw
             #- name: RGW_ZONEGROUP
@@ -91,13 +91,13 @@ spec:
           livenessProbe:
               httpGet:
                 path: /
-                port: 8080
+                port: 8088
               initialDelaySeconds: 120
               timeoutSeconds: 5
           readinessProbe:
               httpGet:
                 path: /
-                port: 8080
+                port: 8088
               timeoutSeconds: 5
           resources:
             requests:
