@@ -23,7 +23,7 @@ ENV \
     LANGUAGE="en_US.UTF-8" \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai" \
-    CEPH_VERSION="luminous"
+    CEPH_VERSION="mimic"
 
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
     sed -i 's/security.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
