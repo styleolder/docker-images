@@ -41,7 +41,7 @@ spec:
       containers:
         - name: ceph-mon
           #image: ceph/daemon:latest
-          image: slpcat/ceph-daemon:ubuntu16.04
+          image: slpcat/ceph-daemon:mimic
           imagePullPolicy: Always
           ports:
             - containerPort: 6789
