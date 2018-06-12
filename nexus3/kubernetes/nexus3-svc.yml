@@ -9,5 +9,9 @@ spec:
     protocol: TCP
     port: 8081
     targetPort: 8081
+  - name: docker
+    protocol: TCP
+    port: 5003
+    targetPort: 5003
   selector:
     app: nexus3

@@ -66,6 +66,8 @@ spec:
         ports:
           - name: web
             containerPort: 8081
+          - name: docker
+            containerPort: 5003
         volumeMounts:
           - name: nexus-data
             mountPath: "/nexus-data"
@@ -79,4 +81,4 @@ spec:
       #storageClassName: rbd
       resources:
         requests:
-          storage: 160Gi
+          storage: 512Gi
