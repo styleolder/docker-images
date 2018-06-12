@@ -8,7 +8,6 @@ data:
     external_url 'http://git.example.com'
     manage_accounts['enable'] = true
     manage_storage_directories['manage_etc'] = false
-    registry_external_url 'http://registry.example.com'
     gitlab_rails['monitoring_whitelist'] = ['127.0.0.0/8', '10.233.0.0/16']
     gitlab_rails['gitlab_ssh_host'] = 'git.example.com'
     gitlab_rails['time_zone'] = 'Beijing'
@@ -28,7 +27,16 @@ data:
     gitlab_rails['initial_root_password'] = "5iveL!fe"
     gitlab_rails['registry_enabled'] = true
     gitlab_rails['registry_host'] = "registry.exmpale.com"
-    gitlab_rails['registry_port'] = "5000"
+    registry['enable'] = true
+    registry_external_url 'http://registry.example.com'
+    registry_nginx['enable'] = true
+    registry_nginx['listen_port'] = 5000
+    registry_nginx['proxy_set_headers'] = {
+      "Host" => "$http_host",
+      "X-Real-IP" => "$remote_addr",
+      "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
+      "X-Forwarded-Proto" => "http",
+     }
     unicorn['worker_timeout'] = 60
     unicorn['worker_processes'] = 2
     sidekiq['log_directory'] = "/var/log/gitlab/sidekiq"

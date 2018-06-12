@@ -19,5 +19,8 @@ spec:
   - name: https
     port: {{ .Values.httpsPort | int }}
     targetPort: https
+  - name: registry
+    port: {{ .Values.registryPort | int }}
+    targetPort: registry
   selector:
     app: {{ template "gitlab-ce.fullname" . }}

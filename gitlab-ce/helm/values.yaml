@@ -42,6 +42,8 @@ ingress:
 sshPort: 22
 httpPort: 80
 httpsPort: 443
+registryPort: 5000
+
 ## livenessPort Port of liveness probe endpoint
 livenessPort: http
 ## readinessPort Port of readiness probe endpoint
@@ -81,7 +83,7 @@ persistence:
   ##
   gitlabData:
     enabled: true
-    size: 80Gi
+    size: 512Gi
     ## If defined, volume.beta.kubernetes.io/storage-class: <storageClass>
     ## Default: volume.alpha.kubernetes.io/storage-class: default
     ##
