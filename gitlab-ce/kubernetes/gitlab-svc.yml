@@ -15,7 +15,7 @@ spec:
   - name: registry
     protocol: TCP
     port: 5000
-    targetPort: 5000
+    targetPort: 50000
   type: NodePort
   selector:
     app: gitlab-ce

@@ -64,7 +64,7 @@ spec:
           - name: ldap
             containerPort: 636
           - name: registry
-            containerPort: 5000
+            containerPort: 50000
         volumeMounts:
           - name: gitlab-etc
             mountPath: "/etc/gitlab"
