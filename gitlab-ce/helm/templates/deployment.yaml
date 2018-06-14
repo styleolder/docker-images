@@ -73,7 +73,7 @@ spec:
         - name: https
           containerPort: 443
         - name: registry
-          containerPort: 5000
+          containerPort: 50000
         livenessProbe:
           httpGet:
             path: /help

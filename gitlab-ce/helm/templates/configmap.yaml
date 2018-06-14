@@ -22,11 +22,12 @@ data:
     gitlab_rails['db_database'] = ENV['DB_DATABASE'];
     gitlab_rails['registry_enabled'] = true
     gitlab_rails['registry_host'] = "registry.example.com"
+    gitlab_rails['registry_port'] = "5000"
     redis['enable'] = false;
     registry['enable'] = true
     registry_external_url 'http://registry.example.com'
     registry_nginx['enable'] = true
-    registry_nginx['listen_port'] = 5000
+    registry_nginx['listen_port'] = 50000
     registry_nginx['proxy_set_headers'] = {
       "Host" => "$http_host",
       "X-Real-IP" => "$remote_addr",
