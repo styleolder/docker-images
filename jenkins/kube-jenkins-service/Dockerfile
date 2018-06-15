@@ -110,7 +110,6 @@ RUN /usr/local/bin/install-plugins.sh       \
   cloverphp:latest               \
   conditional-buildstep:latest   \
   config-file-provider:latest    \
-  copy-to-slave:latest           \
   copyartifact:latest            \
   cvs:latest                     \
   dashboard-view:latest          \
@@ -125,7 +124,6 @@ RUN /usr/local/bin/install-plugins.sh       \
   ec2:latest                     \
   email-ext:latest               \
   embeddable-build-status:latest \
-  extended-read-permission:lates \
   external-monitor-job:latest    \
   favorite:latest                \
   ghprb:latest                   \
@@ -252,7 +250,7 @@ RUN /usr/local/bin/install-plugins.sh       \
 COPY plugins/*.hpi /usr/share/jenkins/ref/plugins/
 
 # so we can use jenkins cli
-COPY config/jenkins.properties /usr/share/jenkins/ref/
+#COPY config/jenkins.properties /usr/share/jenkins/ref/
 
 # disable first-run wizard
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state

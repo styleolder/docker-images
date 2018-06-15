@@ -14,8 +14,7 @@ ENV \
     SSH_KNOWN_HOSTS=github.com
 
 RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
-    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
-    && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
+    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list
 
 # Set timezone and locales
 RUN \
@@ -33,7 +32,8 @@ RUN \
 RUN \
     apt-get -y update && \
     apt-get -y install software-properties-common apt-transport-https gnupg2 ca-certificates && \
-    add-apt-repository -y ppa:webupd8team/java && \
+    #add-apt-repository -y ppa:webupd8team/java && \
+    echo 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main' > /etc/apt/sources.list.d/webupd8team-ubuntu-java.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
     apt-get -y update && \
     # Auto-accept the Oracle License
