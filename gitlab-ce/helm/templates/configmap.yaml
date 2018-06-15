@@ -20,6 +20,7 @@ data:
     gitlab_rails['db_password'] = ENV['DB_PASSWORD'];
     gitlab_rails['db_username'] = ENV['DB_USER'];
     gitlab_rails['db_database'] = ENV['DB_DATABASE'];
+<<<<<<< HEAD
     gitlab_rails['registry_enabled'] = true
     gitlab_rails['registry_host'] = "registry.example.com"
     gitlab_rails['registry_port'] = "5000"
@@ -28,12 +29,21 @@ data:
     registry_external_url 'http://registry.example.com'
     registry_nginx['enable'] = true
     registry_nginx['listen_port'] = 50000
+=======
+    gitlab_rails['registry_enabled'] = true;
+    gitlab_rails['registry_host'] = "registry.example.com";
+    redis['enable'] = false;
+    registry['enable'] = true;
+    registry_external_url 'http://registry.example.com';
+    registry_nginx['enable'] = true;
+    registry_nginx['listen_port'] = 5000;
+>>>>>>> 2ca776c6803d1f50c40cba51325afabf6f9d6abd
     registry_nginx['proxy_set_headers'] = {
       "Host" => "$http_host",
       "X-Real-IP" => "$remote_addr",
       "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
       "X-Forwarded-Proto" => "http",
-     }
+     };
     gitlab_rails['redis_host'] = ENV['REDIS_HOST'];
     gitlab_rails['redis_password'] = ENV['REDIS_PASSWORD'];
     unicorn['worker_processes'] = 2;
