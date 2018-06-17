@@ -1,0 +1,81 @@
+image:
+  repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-task-runner-ee
+  pullSecrets: []
+  # pullPolicy: IfNotPresent
+  # tag: latest
+enabled: false
+global:
+  # imagePullPolicy: IfNotPresent
+  hosts:
+    domain: example.local
+    hostSuffix:
+    https: true
+    gitlab: {}
+    registry: {}
+    minio: {}
+  psql:
+    # host: '0.0.0.0'
+    # port: '5432'
+    # database: 'gitlabhq_production'
+    # username: 'gitlab'
+    password: {}
+  redis:
+    password: {}
+  gitaly:
+    authToken: {}
+backups:
+  bucketNames:
+    backups: gitlab-backups
+    artifacts: gitlab-artifacts
+    uploads: gitlab-uploads
+    registry: registry
+    lfs: git-lfs
+extra: {}
+
+rack_attack:
+  git_basic_auth:
+    enabled: false
+    # enabled: true
+    # ip_whitelist: ["127.0.0.1"]
+    # maxretry: 10
+    # findtime: 60
+    # bantime: 3600
+
+trusted_proxies: []
+
+redis:
+  password: {}
+psql:
+  password: {}
+gitaly:
+  # host: '0.0.0.0'
+  # port: 8075
+  # serviceName: 'gitaly'
+  authToken: {}
+  #   secret: gitaly-secret
+  #   key: token
+lfs:
+  enabled: true
+  proxy_download: true
+  # bucket:
+  # connection: {}
+minio:
+  enabled: true
+  bucket: git-lfs
+  serviceName: 'minio-svc'
+  port: 9000
+registry:
+  host:
+  # port: 443
+  api:
+    protocol: http
+    serviceName: registry
+    port: 5000
+  tokenIssuer: gitlab-issuer
+resources:
+  # limits:
+  #  cpu: 1
+  #  memory: 2G
+  requests:
+    cpu: 200m
+    memory: 500M

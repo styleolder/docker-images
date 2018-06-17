@@ -1,0 +1,143 @@
+# Default values for unicorn-web.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-unicorn-ee
+  pullSecrets: []
+  # pullPolicy: IfNotPresent
+  # tag: latest
+metrics:
+  enabled: true
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "8080"
+    prometheus.io/path: "/-/metrics"
+service:
+  name: unicorn
+  type: ClusterIP
+  externalPort: 8080
+  internalPort: 8080
+  workhorseExternalPort: 8181
+  workhorseInternalPort: 8181
+enabled: true
+ingress:
+  enabled: true
+  proxyConnectTimeout: 15
+  proxyReadTimeout: 600
+  proxyBodySize: "512m"
+  tls: {}
+    # secretName:
+  annotations: {}
+workerProcesses: 2
+workerTimeout: 60
+workhorse:
+  sentryDSN: ""
+  extraArgs: ""
+ldap:
+  servers: {}
+  # 'main' is the GitLab 'provider ID' of this LDAP server
+  # main:
+  #   label: 'LDAP'
+  #   host: '_your_ldap_server'
+  #   port: 636
+  #   uid: 'sAMAccountName'
+  #   bind_dn: '_the_full_dn_of_the_user_you_will_bind_with'
+  #   password: '_the_password_of_the_bind_user'
+  #   encryption: 'plain'
+omniauth:
+  providers: []
+  # - name: google_oauth2
+  #   secretName: gitlab-google-oauth2
+  #   args: { access_type: 'offline', approval_prompt: '' }
+global:
+  # imagePullPolicy: IfNotPresent
+  ingress:
+    enabled: true
+    annotations: {}
+    tls: {}
+      # secretName:
+  hosts:
+    domain: example.local
+    hostSuffix:
+    https: true
+    gitlab: {}
+      #name: gitlab.example.local
+      #https: false
+    registry: {}
+      #name: registry.example.local
+      #https: false
+    minio: {}
+      #name: minio.example.local
+      #https: false
+  psql: {}
+    # host: '0.0.0.0'
+    # port: '5432'
+    # database: 'gitlabhq_production'
+    # username: 'gitlab'
+    # password:
+    #   secret: gitlab-postgres
+    #   key: psql-password
+  redis:
+    # host: '0.0.0.0'
+    password: {}
+  gitaly:
+    authToken: {}
+redis:
+  password: {}
+gitaly:
+  # host: '0.0.0.0'
+  # port: 8075
+  # serviceName: 'gitaly'
+  authToken: {}
+  #   secret: gitaly-secret
+  #   key: token
+artifacts:
+  enabled: true
+  proxy_download: true
+  bucket: gitlab-artifacts
+  # connection: {}
+lfs:
+  enabled: true
+  proxy_download: true
+  bucket: git-lfs
+  # connection: {}
+uploads:
+  enabled: true
+  proxy_download: true
+  bucket: gitlab-uploads
+  # connection: {}
+minio:
+  enabled: true
+  serviceName: 'minio-svc'
+  port: 9000
+registry:
+  host:
+  # port: 443
+  api:
+    protocol: http
+    serviceName: registry
+    port: 5000
+  tokenIssuer: gitlab-issuer
+extra: {}
+  # google_analytics_id: '_your_tracking_id'
+  # piwik_url: '_your_piwik_url'
+  # piwik_site_id: '_your_piwik_site_id'
+rack_attack:
+  git_basic_auth:
+    enabled: false
+    # enabled: true
+    # ip_whitelist: ["127.0.0.1"]
+    # maxretry: 10
+    # findtime: 60
+    # bantime: 3600
+trusted_proxies: []
+resources:
+  # limits:
+  #  cpu: 1
+  #  memory: 2G
+  requests:
+    cpu: 200m
+    memory: 2G
+maxUnavailable: 1
+minReplicas: 2
+maxReplicas: 10

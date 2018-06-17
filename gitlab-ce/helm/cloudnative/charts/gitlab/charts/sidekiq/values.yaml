@@ -1,0 +1,179 @@
+# Default values for sidekiq.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+image:
+  repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ee
+  pullSecrets: []
+  # pullPolicy: IfNotPresent
+  # tag: latest
+enabled: true
+
+metrics:
+  enabled: true
+  port: 3807
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3807"
+
+redis:
+  password: {}
+
+global:
+  # imagePullPolicy: IfNotPresent
+  hosts:
+    domain: example.local
+    hostSuffix:
+    https: true
+    gitlab: {}
+      #name: gitlab.example.local
+      #https: false
+    registry: {}
+      #name: registry.example.local
+      #https: false
+    minio: {}
+      #name: minio.example.local
+      #https: false
+  psql: {}
+    # host: '0.0.0.0'
+    # port: '5432'
+    # database: 'gitlabhq_production'
+    # username: 'gitlab'
+    # password:
+    #   secret: gitlab-postgres
+    #   key: psql-password
+  redis:
+    password: {}
+  gitaly:
+    authToken: {}
+gitaly:
+  # host: '0.0.0.0'
+  # port: 8075
+  # serviceName: 'gitaly'
+  authToken: {}
+  #   secret: gitaly-secret
+  #   key: token
+artifacts:
+  enabled: true
+  proxy_download: true
+  bucket: gitlab-artifacts
+  # connection: {}
+lfs:
+  enabled: true
+  proxy_download: true
+  bucket: git-lfs
+  # connection: {}
+uploads:
+  enabled: true
+  proxy_download: true
+  bucket: gitlab-uploads
+  # connection: {}
+minio:
+  enabled: true
+  credentials:
+    secret: gitlab-minio
+  serviceName: 'minio-svc'
+  port: 9000
+extra: {}
+
+rack_attack:
+  git_basic_auth:
+    enabled: false
+    # enabled: true
+    # ip_whitelist: ["127.0.0.1"]
+    # maxretry: 10
+    # findtime: 60
+    # bantime: 3600
+
+cron_jobs: {}
+  # stuck_ci_jobs_worker:
+  #   cron: "0 * * * *"
+  # pipeline_schedule_worker:
+  #   cron: "19 * * * *"
+  # expire_build_artifacts_worker:
+  #   cron: "50 * * * *"
+  # repository_check_worker:
+  #   cron: "20 * * * *"
+  # admin_email_worker:
+  #   cron: "0 0 * * 0"
+  # repository_archive_cache_worker:
+  #   cron: "0 * * * *"
+  # pages_domain_verification_cron_worker:
+  #   cron: "*/15 * * * *"
+
+trusted_proxies: []
+
+# Global defaults
+minReplicas: 1
+maxReplicas: 10
+concurrency: 10
+timeout: 5
+resources:
+  # limits:
+  #  cpu: 500m
+  #  memory: 1G
+  requests:
+    cpu: 500m
+    memory: 1024M
+maxUnavailable: 1
+
+# Define queue groups into Pods
+pods:
+  - name: all-in-1
+    concurrency: 10
+    # minReplicas: 1
+    # maxReplicas: 10
+    queues:
+      - [post_receive, 5]
+      - [merge, 5]
+      - [update_merge_requests, 3]
+      - [process_commit, 3]
+      - [new_note, 2]
+      - [new_issue, 2]
+      - [new_merge_request, 2]
+      - [pipeline_processing, 5]
+      - [pipeline_creation, 4]
+      - [pipeline_default, 3]
+      - [pipeline_cache, 3]
+      - [pipeline_hooks, 2]
+      - [gitlab_shell, 2]
+      - [email_receiver, 2]
+      - [emails_on_push, 2]
+      - [mailers, 2]
+      - [invalid_gpg_signature_update, 2]
+      - [create_gpg_signature, 2]
+      - [rebase, 2]
+      - [upload_checksum, 1]
+      - [repository_fork, 1]
+      - [repository_import, 1]
+      - [github_importer, 1]
+      - [github_import_advance_stage, 1]
+      - [project_service, 1]
+      - [delete_user, 1]
+      - [delete_merged_branches, 1]
+      - [authorized_projects, 1]
+      - [expire_build_instance_artifacts, 1]
+      - [group_destroy, 1]
+      - [irker, 1]
+      - [namespaceless_project_destroy, 1]
+      - [project_cache, 1]
+      - [project_destroy, 1]
+      - [project_export, 1]
+      - [web_hook, 1]
+      - [repository_check, 1]
+      - [git_garbage_collect, 1]
+      - [reactive_caching, 1]
+      - [cronjob, 1]
+      - [default, 1]
+      - [pages, 1]
+      - [system_hook_push, 1]
+      - [update_user_activity, 1]
+      - [propagate_service_template, 1]
+      - [background_migration, 1]
+      - [gcp_cluster, 1]
+      - [project_migrate_hashed_storage, 1]
+      - [storage_migrator, 1]
+      - [pages_domain_verification, 1]
+      - [object_storage_upload, 1]
+      - [object_storage, 1]
+      - [plugin, 1]
+      - [pipeline_background, 1]

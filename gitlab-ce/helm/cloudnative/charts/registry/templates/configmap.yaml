@@ -1,0 +1,62 @@
+{{- if .Values.enabled -}}
+{{- $httpSecret := randAlphaNum 128 | b64enc -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  configure: |-
+{{ .Values.init.script | indent 4 }}
+  config.yml: |
+    version: 0.1
+    log:
+      level: warn
+      fields:
+        service: registry
+    # health:
+    #   storagedriver:
+    #     enabled: true
+    #     interval: 10s
+    #     threshold: 3
+    http:
+      debug:
+        addr: :5001
+      headers:
+        X-Content-Type-Options: [nosniff]
+    # Filled from chart
+    http:
+      addr: :{{ .Values.service.internalPort }}
+      secret: {{ default $httpSecret .Values.httpSecret }}
+    auth:
+      token:
+        realm: {{ template "registry.authEndpoint" . }}/jwt/auth
+        service: {{ .Values.tokenService }}
+        issuer: {{ .Values.tokenIssuer | quote }}
+        # This is provided from the initContainer execution, at a known path.
+        rootcertbundle: /etc/docker/registry/certificate.crt
+    storage:
+      {{- if .Values.storage }}
+{{ toYaml .Values.storage | indent 6}}
+      {{- else if .Values.minio.enabled }}
+      s3:
+        accesskey: "ACCESS_KEY"
+        secretkey: "SECRET_KEY"
+        region: us-east-1
+        regionendpoint: {{ template "registry.minio.url" . }}
+        bucket: {{ .Values.minio.bucket }}
+        secure: true
+        v4auth: true
+        rootdirectory: /
+      cache:
+        blobdescriptor: 'inmemory'
+      delete:
+        enabled: true
+      {{- else }}
+{{ include (print $.Template.BasePath "/_storage_default.yaml") . | indent 6}}
+      {{- end }}
+{{- end -}}

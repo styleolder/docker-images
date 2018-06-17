@@ -1,0 +1,131 @@
+{{- if .Values.enabled }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "name" . }}
+        release: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        fsGroup: 1000
+      initContainers:
+        - name: configure
+          command: ['sh', '/config/configure']
+          image: busybox
+          volumeMounts:
+          - name: task-runner-config
+            mountPath: /config
+            readOnly: true
+          - name: init-task-runner-secrets
+            mountPath: /init-config
+            readOnly: true
+          - name: task-runner-secrets
+            mountPath: /init-secrets
+            readOnly: false
+{{- include "pullsecrets" .Values.image | indent 6}}
+      containers:
+        - name: {{ .Chart.Name }}
+          args:
+            - /bin/bash
+            - -c
+            - cp /etc/gitlab/.s3cfg $HOME/.s3cfg && while sleep 3600; do :; done # alpine sleep has no infinity
+          image: "{{ .Values.image.repository }}:{{ coalesce .Values.image.tag (include "gitlab.versionTag" . ) }}"
+          {{ template "gitlab.imagePullPolicy" . }}
+          env:
+            - name: ARTIFACTS_BUCKET_NAME
+              value: {{ .Values.backups.bucketNames.artifacts }}
+            - name: REGISTRY_BUCKET_NAME
+              value: {{ .Values.backups.bucketNames.registry }}
+            - name: LFS_BUCKET_NAME
+              value: {{ .Values.backups.bucketNames.lfs }}
+            - name: BACKUP_BUCKET_NAME
+              value: {{ .Values.backups.bucketNames.backups }}
+            - name: S3_CONFIG_DIR
+              value: "/etc/gitlab/minio"
+            - name: S3_ENDPOINT
+              value: {{ template "gitlab.minio.endpoint" .}}
+            - name: GITALY_FEATURE_DEFAULT_ON
+              value: "1"
+            - name: CONFIG_TEMPLATE_DIRECTORY
+              value: '/var/opt/gitlab/templates'
+            - name: CONFIG_DIRECTORY
+              value: '/var/opt/gitlab/config/gitlab/'
+          volumeMounts:
+            - name: task-runner-config
+              mountPath: '/var/opt/gitlab/templates'
+            - name: task-runner-secrets
+              mountPath: '/etc/gitlab'
+              readOnly: true
+            - name: task-runner-secrets
+              mountPath: /home/git/gitlab/config/secrets.yml
+              subPath: rails-secrets/secrets.yml
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      volumes:
+      - name: task-runner-config
+        configMap:
+          name: {{ template "fullname" . }}
+      - name: init-task-runner-secrets
+        projected:
+          defaultMode: 0400
+          sources:
+          - secret:
+              name: {{ template "gitlab.rails-secrets.secret" . }}
+              items:
+                - key: secrets.yml
+                  path: rails-secrets/secrets.yml
+          - secret:
+              name: {{ template "gitlab.gitlab-shell.authToken.secret" . }}
+              items:
+                - key: {{ template "gitlab.gitlab-shell.authToken.key" . }}
+                  path: shell/.gitlab_shell_secret
+          - secret:
+              name: {{ template "gitlab.gitaly.authToken.secret" . }}
+              items:
+                - key: {{ template "gitlab.gitaly.authToken.key" . }}
+                  path: gitaly/gitaly_token
+          - secret:
+              name: {{ template "gitlab.redis.password.secret" . }}
+              items:
+                - key: {{ template "gitlab.redis.password.key" . }}
+                  path: redis/password
+          - secret:
+              name: {{ template "gitlab.psql.password.secret" . }}
+              items:
+                - key: {{ template "gitlab.psql.password.key" . }}
+                  path: postgres/psql-password
+          - secret:
+              name: {{ template "gitlab.registry.certificate.secret" . }}
+              items:
+                - key: registry-auth.key
+                  path: registry/gitlab-registry.key
+          {{- if .Values.minio.enabled }}
+          - secret:
+              name: {{ template "gitlab.minio.credentials.secret" . }}
+              items:
+                - key: accesskey
+                  path: minio/accesskey
+                - key: secretkey
+                  path: minio/secretkey
+          {{- end }}
+      - name: task-runner-secrets
+        emptyDir:
+          medium: "Memory"
+    {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+    {{- end }}
+{{- end }}

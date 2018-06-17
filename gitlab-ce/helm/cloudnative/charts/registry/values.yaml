@@ -1,0 +1,86 @@
+image:
+  repository: registry
+  tag: '2.6.2'
+  pullPolicy: 'IfNotPresent'
+  pullSecrets: []
+service:
+  name: registry
+  type: ClusterIP
+  externalPort: 5000
+  internalPort: 5000
+  clusterIP: '0.0.0.0'
+
+## Enable/Disable
+enabled: true
+
+ingress:
+  enabled: true
+  proxyReadTimeout: 900
+  proxyBodySize: "0"
+  proxyBuffering: "off"
+  tls: {}
+    # secretName:
+  annotations: {}
+
+global:
+  ingress:
+    enabled: true
+    annotations: {}
+    tls: {}
+      # secretName:
+  hosts:
+    domain: example.local
+    hostSuffix:
+    https: true
+    tls: {}
+      # secretName:
+    gitlab: {}
+      #name: gitlab.example.local
+      #https: false
+    registry: {}
+      #name: registry.example.local
+      #https: false
+    minio: {}
+      #name: minio.example.local
+      #https: false
+
+## Control the InitContainer behaviors.
+init:
+  image: "busybox"
+  tag: "latest"
+  pullPolicy: "IfNotPresent"
+  script: |-
+    if [ -e /config/accesskey ] ; then
+      sed -e 's@ACCESS_KEY@'"$(cat /config/accesskey)"'@' -e 's@SECRET_KEY@'"$(cat /config/secretkey)"'@' /config/config.yml > /registry/config.yml
+    else
+      cp /config/config.yml  /registry/config.yml
+    fi
+    # Set to known path, to used ConfigMap
+    cat /config/certificate.crt > /registry/certificate.crt
+
+# define some sane resource requests and limitations
+resources:
+  # limits:
+  #   cpu: 200m
+  #   memory: 1024Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Chart operation controls
+enabled: true
+# Will be auto-populated if not present (`{{ randAlphaNum 128 | b64enc | quote }}`)
+httpSecret: ''
+# Protocol/Host only. '/jwt/auth' will be appended.
+authEndpoint:
+# Do not change this
+tokenService: 'container_registry'
+# This must match your GitLab Rails configuration
+tokenIssuer: 'gitlab-issuer'
+# if replicas is >1, shared storage MUST be used.
+replicas: 1
+maxUnavailable: 1
+storage: {}
+minio:
+  enabled: true
+  bucket: registry
