@@ -1,6 +1,6 @@
 # CEPH DAEMON IMAGE
-# CEPH VERSION: Luminous
-# CEPH VERSION DETAIL: 12.x.x
+# CEPH VERSION: mimic
+# CEPH VERSION DETAIL: 13.x.x
 FROM ubuntu:16.04
 
 MAINTAINER 若虚 <slpcat@qq.com>
@@ -33,7 +33,7 @@ RUN \
 # Install required packages
 RUN \
     apt-get dist-upgrade -y
-ENV CEPH_VERSION luminous
+ENV CEPH_VERSION mimic
 ENV CONFD_VERSION 0.16.0
 ENV KUBECTL_VERSION v1.10.4
 
@@ -52,7 +52,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y wget unz
   # Install ceph, ganesha and etcd
   wget -q -O- 'https://download.ceph.com/keys/release.asc' | apt-key add - && \
   echo "deb http://download.ceph.com/debian-$CEPH_VERSION/ xenial main" | tee /etc/apt/sources.list.d/ceph-$CEPH_VERSION.list && \
-  echo "deb http://download.ceph.com/nfs-ganesha/deb-V2.5-stable/luminous/ xenial main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
+  echo "deb http://download.ceph.com/nfs-ganesha/deb-V2.6-stable/mimic/ xenial main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
   apt-get update && apt-get install -y  --no-install-recommends --force-yes $PACKAGES && \
   dpkg -s $PACKAGES && \
   apt-get clean && rm -rf $PURGES && \
