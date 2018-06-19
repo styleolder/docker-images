@@ -33,7 +33,8 @@ RUN \
 RUN \
     apt-get -y update && \
     apt-get -y install software-properties-common apt-transport-https gnupg2 ca-certificates && \
-    add-apt-repository -y ppa:webupd8team/java && \
+    #add-apt-repository -y ppa:webupd8team/java && \
+    echo 'deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main' > etc/apt/sources.list.d/webupd8team-ubuntu-java-xenial.list && \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 && \
     apt-get -y update && \
     # Auto-accept the Oracle License
