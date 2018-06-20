@@ -40,7 +40,7 @@ securityContext:
   fsGroup: 999
   runAsNonRoot: true
 
-resources: {}
+resources:
   limits:
     cpu: 4
     memory: 8Gi
