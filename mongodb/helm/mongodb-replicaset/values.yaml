@@ -41,12 +41,12 @@ securityContext:
   runAsNonRoot: true
 
 resources: {}
-# limits:
-#   cpu: 500m
-#   memory: 512Mi
-# requests:
-#   cpu: 100m
-#   memory: 256Mi
+ limits:
+   cpu: 4
+   memory: 8Gi
+ requests:
+   cpu: 100m
+   memory: 256Mi
 
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
@@ -70,7 +70,7 @@ persistentVolume:
   # storageClass: "-"
   accessModes:
     - ReadWriteOnce
-  size: 10Gi
+  size: 80Gi
   annotations: {}
 
 # Annotations to be added to the service
