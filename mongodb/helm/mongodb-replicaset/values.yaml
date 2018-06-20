@@ -23,7 +23,7 @@ installImage:
 
 # Specs for the MongoDB image
 image:
-  repository: mongo
+  repository: slpcat/mongodb
   tag: 3.6
   pullPolicy: IfNotPresent
 
