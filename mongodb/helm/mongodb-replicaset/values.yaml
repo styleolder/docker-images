@@ -41,12 +41,12 @@ securityContext:
   runAsNonRoot: true
 
 resources: {}
- limits:
-   cpu: 4
-   memory: 8Gi
- requests:
-   cpu: 100m
-   memory: 256Mi
+  limits:
+    cpu: 4
+    memory: 8Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi
 
 ## Node selector
 ## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector
