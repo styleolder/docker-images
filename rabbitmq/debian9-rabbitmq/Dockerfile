@@ -1,5 +1,33 @@
 #upstream https://github.com/docker-library/rabbitmq/blob/1a37166704d2ca7c386980387e81615985d5db47/3.7/debian/Dockerfile
 FROM debian:stretch-slim
+MAINTAINER 若虚 <slpcat@qq.com>
+
+# Container variables
+ENV \
+    TERM="xterm" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    TIMEZONE="Asia/Shanghai"
+
+RUN echo 'deb http://mirrors.aliyun.com/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
+    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
+
+# Set timezone and locales
+RUN \
+    echo "${TIMEZONE}" > /etc/timezone \
+    && echo "$LANG UTF-8" > /etc/locale.gen \
+    && apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog vim-tiny curl locales \
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && update-locale LANG=$LANG \
+    && locale-gen $LANG \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
+
+# Install required packages
+RUN \
+    apt-get dist-upgrade -y
 
 RUN set -eux; \
 	apt-get update; \
@@ -30,7 +58,7 @@ RUN set -eux; \
 	\
 # verify the signature
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -rf "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
@@ -111,7 +139,7 @@ RUN set -eux; \
 	apt-get purge -y --auto-remove ca-certificates wget; \
 	\
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$RABBITMQ_GPG_KEY"; \
+	gpg --keyserver keyserver.ubuntu.com --recv-keys "$RABBITMQ_GPG_KEY"; \
 	gpg --batch --verify rabbitmq-server.deb.asc rabbitmq-server.deb; \
 	rm -rf "$GNUPGHOME"; \
 	\

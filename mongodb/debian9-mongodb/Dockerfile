@@ -12,8 +12,7 @@ ENV \
     TIMEZONE="Asia/Shanghai"
 
 RUN echo 'deb http://mirrors.aliyun.com/debian jessie-backports main' > /etc/apt/sources.list.d/backports.list \
-    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list \
-    && sed -i 's/security.debian.org/mirrors.aliyun.com\/debian-security/' /etc/apt/sources.list
+    && sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list
 
 # Set timezone and locales
 RUN \
@@ -57,7 +56,7 @@ RUN set -ex; \
 	wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
 	wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
 	export GNUPGHOME="$(mktemp -d)"; \
-	gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
+	gpg --keyserver keyserver.ubuntu.com --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
 	gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu; \
 	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	chmod +x /usr/local/bin/gosu; \
@@ -79,7 +78,7 @@ ENV GPG_KEYS \
 RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
-		gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+		gpg --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
 	done; \
 	gpg --export $GPG_KEYS > /etc/apt/trusted.gpg.d/mongodb.gpg; \
 	rm -r "$GNUPGHOME"; \
@@ -95,7 +94,7 @@ ARG MONGO_REPO=mirrors.aliyun.com/mongodb
 ENV MONGO_PACKAGE=${MONGO_PACKAGE} MONGO_REPO=${MONGO_REPO}
 
 ENV MONGO_MAJOR 3.6
-ENV MONGO_VERSION 3.6.3
+ENV MONGO_VERSION 3.6.5
 
 RUN echo "deb http://$MONGO_REPO/apt/debian jessie/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR main" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
 
