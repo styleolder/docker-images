@@ -40,7 +40,7 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: {{ .Values.ImagePullPolicy }}
-        image: gcr.io/google_samples/k8szk:v2
+        image: slpcat/k8szk:v2
         resources:
 {{ toYaml .Values.Resources | indent 10 }}
         ports:

@@ -68,7 +68,7 @@ spec:
       containers:
       - name: k8skafka
         imagePullPolicy: Always
-        image: slpcat/kafka:centos7
+        image: slpcat/kafka:alpine
         resources:
           requests:
             memory: "1Gi"

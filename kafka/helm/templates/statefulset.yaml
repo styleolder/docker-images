@@ -53,8 +53,8 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: datadir
-      annotations:
-        volume.beta.kubernetes.io/storage-class: alicloud-disk-efficiency
+      #annotations:
+        #volume.beta.kubernetes.io/storage-class: alicloud-disk-efficiency
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
