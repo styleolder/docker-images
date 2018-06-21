@@ -1,5 +1,5 @@
 #upstream https://github.com/docker-library/redis
-FROM alpine:3.6
+FROM alpine:3.7
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -24,9 +24,9 @@ RUN addgroup -S redis && adduser -S -G redis redis
 # grab su-exec for easy step-down from root
 RUN apk add --no-cache 'su-exec>=0.2'
 
-ENV REDIS_VERSION 4.0.1
-ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-4.0.1.tar.gz
-ENV REDIS_DOWNLOAD_SHA 2049cd6ae9167f258705081a6ef23bb80b7eff9ff3d0d7481e89510f27457591
+ENV REDIS_VERSION 4.0.10
+ENV REDIS_DOWNLOAD_URL http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz
+ENV REDIS_DOWNLOAD_SHA 1db67435a704f8d18aec9b9637b373c34aa233d65b6e174bdac4c1b161f38ca4
 
 # for redis-sentinel see: http://redis.io/topics/sentinel
 # disable Redis protected mode [1] as it is unnecessary in context of Docker
