@@ -24,13 +24,12 @@ RUN set -ex \
            su-exec \
            gnupg \
            gzip \
+           shadow \
            tar \
            wget \
            curl \
     && echo "${TIMEZONE}" > /etc/TZ \
-    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    # Network fix
-    && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 # Here we install GNU libc (aka glibc) and set en_US.UTF-8 locale as default.
 
