@@ -30,10 +30,11 @@ ENV JAVA_HOME=/usr/java/jdk1.8.0_171 \
     KM_CONFIGFILE="conf/application.conf"
 
 ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+COPY plugins.sbt /tmp/plugins.sbt
 
 #install sbt
-#RUN curl https://bintray.com/sbt/rpm/rpm > /etc/yum.repos.d/bintray-sbt-rpm.repo && \
-#    yum install -y sbt
+RUN curl https://bintray.com/sbt/rpm/rpm > /etc/yum.repos.d/bintray-sbt-rpm.repo && \
+    yum install -y sbt
 
 RUN yum install -y git wget unzip which && \
     mkdir -p /tmp && \
@@ -42,8 +43,9 @@ RUN yum install -y git wget unzip which && \
     cd /tmp/kafka-manager && \
     git checkout ${KM_REVISION} && \
     echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
-    sed -i 's/0.13.9/1.1.6/' sbt && \
-    ./sbt clean dist && \
+    rm project/build.properties && \
+    cp /tmp/plugins.sbt project/plugins.sbt && \
+    sbt clean dist && \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
     rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
     chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh && \
