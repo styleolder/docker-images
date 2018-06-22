@@ -123,6 +123,26 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     apk del build-dependencies && \
     rm "/tmp/"*
 
+ENV SBT_VERSION 0.13.9
+ENV SCALA_VERSION 2.11.9
+ENV SCALA_HOME /usr/local/share/scala
+RUN export PATH=$PATH:${SCALA_HOME}/bin
+
+RUN wget http://downloads.typesafe.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz && \
+    wget http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar && \
+    mkdir -p ~/bin && touch ~/bin/sbt && \
+    echo '#!/bin/sh' | tee -a ~/bin/sbt && \
+    echo 'SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled"' | tee -a ~/bin/sbt && \
+    echo 'java $SBT_OPTS -jar /sbt-launch.jar "$@"' | tee -a ~/bin/sbt && \
+    chmod +x ~/bin/sbt && \
+    ln -s ~/bin/sbt /usr/local/bin/sbt && \
+    tar xvzf scala-${SCALA_VERSION}.tgz && \
+    mv scala-${SCALA_VERSION} ${SCALA_HOME} && \
+    rm -f scala-${SCALA_VERSION}.tgz
+
+# compile a non-existent project to pre-download sbt dependencies
+RUN sbt compile
+
 ENV \
     ZK_HOSTS=localhost:2181 \
     KM_VERSION=1.3.3.17 \
@@ -138,7 +158,7 @@ RUN \
     cd /tmp/kafka-manager && \
     git checkout ${KM_REVISION} && \
     echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
-    ./sbt clean dist && \
+    sbt clean dist && \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
     rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
     chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
