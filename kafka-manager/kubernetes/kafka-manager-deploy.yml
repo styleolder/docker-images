@@ -23,11 +23,12 @@ spec:
       #nodeSelector:  #	指派特定的节点
       #  env: test-team
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
-      imagePullSecrets:
-      - name: registrykey-ali-ext
+      #imagePullSecrets:
+      #- name: registrykey-ali-ext
       containers:
       - name: kafka-manager
         image: solsson/kafka-manager@sha256:5db7d54cdb642ec5a92f37a869fdcf2aa479b2552e900b2d2b83b38a1806c2de
+        #image: slpcat/kafka-manager:alpine
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           httpGet:
