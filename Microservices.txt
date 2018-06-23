@@ -6,6 +6,10 @@ artifactory 仓库 Nexus
 
 追踪工具
 OpenZipkin
+
+jenkins-x
+https://jenkins-x.io/
+
 fabric8
 kubectl create clusterrolebinding fabric8-cluster-admin-binding --clusterrole=cluster-admin --user=system:serviceaccount:default:exposecontroller
 kubectl create clusterrolebinding fabric8-cluster-admin-binding2 --clusterrole=cluster-admin --user=system:serviceaccount:default:configmapcontroller
