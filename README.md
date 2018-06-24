@@ -1,2 +1,5 @@
-# docker-images
-docker images
+常用docker容器镜像构建，kubernetes配置文件，helm模板
+实现一条命令安装gitlab，jenkins，nginx-php，tomcat等常用服务
+实现一条命令搭建redis-ha，mongodb，zookeeper，kafaka等高可用集群环境
+容器内核参数已经为高并发大吞吐量场景优化，完美运行需要4.15及以上版本内核，低版本内核需要删除sysctl相关annotations，这样做也失去单实例高并发能力。
+微服务与持续发布fabric8,jenkins-x
