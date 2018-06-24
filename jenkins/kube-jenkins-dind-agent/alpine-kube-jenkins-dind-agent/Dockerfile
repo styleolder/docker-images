@@ -131,6 +131,7 @@ RUN apk update              \
        iptables             \
        jq                   \
        openrc               \
+       openssh-client       \
        shadow               \
        unzip                \
        zip                  

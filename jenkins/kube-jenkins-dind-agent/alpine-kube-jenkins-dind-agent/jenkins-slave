@@ -33,7 +33,9 @@
 #change docker options and start docker daemon
 #sudo sed -i s/#DOCKER_OPTS=.*/DOCKER_OPTS=\"${DOCKER_EXTRA_OPTS}\"/ /etc/default/docker
 #enable openrc
-touch /run/openrc/softlevel
+sudo mkdir -p /run/openrc
+sudo touch /run/openrc/softlevel
+sudo openrc
 sudo service docker start
 
 if [ $# -eq 1 ]; then
