@@ -12,5 +12,6 @@ spec:
   - port: 50000
     targetPort: 50000
     name: agent
+  type: NodePort
   selector:
     app: jenkins

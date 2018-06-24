@@ -230,6 +230,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   openshift-pipeline:latest      \
   pam-auth:latest                \
   parameterized-trigger:latest   \
+  performance:latest             \
   pipeline-build-step:latest     \
   pipeline-github-lib:latest     \
   pipeline-githubnotify-step:latest \

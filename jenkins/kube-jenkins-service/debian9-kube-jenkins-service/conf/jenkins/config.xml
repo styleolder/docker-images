@@ -24,11 +24,11 @@
           <name>jnlp-slave</name>
           <namespace>default</namespace>
           <privileged>false</privileged>
-          <alwaysPullImage>false</alwaysPullImage>
+          <alwaysPullImage>true</alwaysPullImage>
           <instanceCap>80</instanceCap>
           <slaveConnectTimeout>90</slaveConnectTimeout>
           <idleMinutes>60</idleMinutes>
-          <activeDeadlineSeconds>1200</activeDeadlineSeconds>
+          <activeDeadlineSeconds>0</activeDeadlineSeconds>
           <label>jnlp-slave</label>
           <nodeSelector></nodeSelector>
           <nodeUsageMode>NORMAL</nodeUsageMode>
@@ -42,7 +42,7 @@
               <name>jnlp</name>
               <image>slpcat/kube-jenkins-dind-agent</image>
               <privileged>true</privileged>
-              <alwaysPullImage>false</alwaysPullImage>
+              <alwaysPullImage>true</alwaysPullImage>
               <workingDir>/home/jenkins</workingDir>
               <command></command>
               <args>${computer.jnlpmac} ${computer.name}</args>
