@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: jenkins
+  name: jenkins
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins
+  serviceName: jenkins
+  template:
+    metadata:
+      labels:
+        app: jenkins
+      name: jenkins
+      annotations:
+        #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
+        security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"
+        #kernel version 4.15 needed
+        security.alpha.kubernetes.io/unsafe-sysctls: "net.core.somaxconn=65535,net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=30,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_rfc1337=1,net.ipv4.tcp_slow_start_after_idle=0,net.ipv4.tcp_fack=1,net.ipv4.tcp_fwmark_accept=1,net.ipv4.fwmark_reflect=1"
+    spec:
+      containers:
+      - image: slpcat/kube-jenkins-service
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /login
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        name: jenkins
+        ports:
+        - containerPort: 8080
+          name: web
+          protocol: TCP
+        - containerPort: 50000
+          name: agent
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /login
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: "4"
+            memory: 4Gi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/jenkins_home
+          name: jenkinshome
+      #imagePullSecrets:
+      #- name: myregistrykey
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+      serviceAccount: jenkins
+  volumeClaimTemplates:
+  - metadata:
+      name: jenkinshome
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      #ceph rbd storageclass
+      #storageClassName: rbd
+      resources:
+        requests:
+          storage: 60Gi

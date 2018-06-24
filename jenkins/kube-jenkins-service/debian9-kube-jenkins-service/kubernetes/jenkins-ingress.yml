@@ -1,0 +1,16 @@
+kind: Ingress
+metadata:
+  name: jenkins
+spec:
+  tls:
+  - hosts:
+    - jenkins.gkkxd.com
+    secretName: jenkins-secret
+  rules:
+  - host: jenkins.gkkxd.com
+    http:
+      paths:
+      - backend:
+          serviceName: jenkins
+          servicePort: 8080
+        path: /
