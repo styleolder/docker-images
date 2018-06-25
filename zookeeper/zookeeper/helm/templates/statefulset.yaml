@@ -45,7 +45,7 @@ spec:
       containers:
       - name: {{ template "zookeeper.name" . }}-server
         imagePullPolicy: {{ .Values.imagePullPolicy }}
-        image: registry.cn-hangzhou.aliyuncs.com/xianlu/k8szk:v2
+        image: slpcat/k8szk:v2
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         ports:
