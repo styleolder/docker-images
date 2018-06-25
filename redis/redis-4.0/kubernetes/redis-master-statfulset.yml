@@ -48,7 +48,7 @@ spec:
             cpu: "2000m"
         volumeMounts:
         - name: redis-master-volume
-          mountPath: /var/lib/redis
+          mountPath: /data
   volumeClaimTemplates:
   - metadata:
       name: redis-master-volume
@@ -56,4 +56,4 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 5Gi
+          storage: 10Gi

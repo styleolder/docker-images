@@ -3,8 +3,8 @@
 ##
 image:
   registry: docker.io
-  repository: bitnami/redis
-  tag: 4.0.9
+  repository: slpcat/redis-4.0
+  tag: 4.0.10
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -21,7 +21,7 @@ image:
 ## Cluster settings
 cluster:
   enabled: true
-  slaveCount: 1
+  slaveCount: 3
 
 metrics:
   enabled: false
@@ -175,7 +175,7 @@ master:
 
     ## The path the volume will be mounted at, useful when using different
     ## Redis images.
-    path: /bitnami/redis/data
+    path: /data
 
     ## The subdirectory of the volume to mount to, useful in dev environments and one PV for multiple services.
     subPath: ""
@@ -190,7 +190,7 @@ master:
     # storageClass: "-"
     accessModes:
     - ReadWriteOnce
-    size: 8Gi
+    size: 20Gi
 
 
 ##
