@@ -13,7 +13,7 @@ resources:
     memory: 4Gi
 heap: "2G"
 storage: "20Gi"
-storageClass: alicloud-disk-efficiency
+#storageClass: alicloud-disk-efficiency
 serverPort: 2888
 leaderElectionPort: 3888
 clientPort: 2181
