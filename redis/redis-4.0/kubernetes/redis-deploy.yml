@@ -4,17 +4,17 @@ kind: Deployment
 metadata:
   name: redis
   labels:
-    app: redis
+    app: redis-cache
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: redis-cache
   template:
     metadata:
       labels:
         name: redis
-        app: redis
+        app: redis-cache
       annotations:
         #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
         security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"

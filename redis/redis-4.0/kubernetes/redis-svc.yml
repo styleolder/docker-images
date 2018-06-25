@@ -11,4 +11,4 @@ spec:
   ports:
     - port: 6379
   selector:
-    app: "redis"
+    app: redis-cache
