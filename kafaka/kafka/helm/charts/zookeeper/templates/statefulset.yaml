@@ -45,7 +45,8 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: {{ .Values.ImagePullPolicy }}
-        image: slpcat/k8szk:v2
+        #image: slpcat/k8szk:v2
+        image: slpcat/zookeeper:alpine
         resources:
 {{ toYaml .Values.Resources | indent 10 }}
         ports:
