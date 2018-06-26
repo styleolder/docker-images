@@ -2,8 +2,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: kong
-  tag: 0.13.1
+  repository: slpcat/kong
+  tag: alpine
   pullPolicy: IfNotPresent
 
 # Specify Kong admin and proxy services configurations
@@ -97,7 +97,7 @@ podAnnotations:
   security.alpha.kubernetes.io/unsafe-sysctls: "net.core.somaxconn=65535,net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=30,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_rfc1337=1,net.ipv4.tcp_slow_start_after_idle=0,net.ipv4.tcp_fack=1,net.ipv4.tcp_fwmark_accept=1,net.ipv4.fwmark_reflect=1"
 
 # Kong pod count
-replicaCount: 1
+replicaCount: 3
 
 # Kong has a choice of either Postgres or Cassandra as a backend datatstore.
 # This chart allows you to choose either of them with the `database.type`
