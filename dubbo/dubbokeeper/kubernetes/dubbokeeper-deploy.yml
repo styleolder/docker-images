@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: dubbokeeper
+  name: dubbokeeper
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dubbokeeper
+  template:
+    metadata:
+      labels:
+        app: dubbokeeper
+    spec:
+      containers:
+      - command:
+        - sh
+        - -c
+        - cd $TOMCAT_HOME/bin && ./startup.sh && while ( true ) ; do sleep 20s;done
+        image: slpcat/dubbokeeper:v1.0.0
+        imagePullPolicy: Always
+        name: dubbokeeper
+        ports:
+        - containerPort: 8080
+          name: tomcat
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+        volumeMounts:
+        - mountPath: /workspace/service/apps/dubbokeeper/WEB-INF/classes/dubbo.properties
+          name: configmap
+          subPath: dubbo.properties
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: registrykey-ali-vpc
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 10
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: dubbomonitor
+        name: configmap
