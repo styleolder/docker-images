@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: hbase-regionserver
+  namespace: default
+  labels:
+    app: hbase-regionserver
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hbase-regionserver
+#  minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
+  serviceName: hbase-regionserver
+  template:
+    metadata:
+      labels:
+        app: hbase-regionserver
+      #annotations:
+        #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
+        #security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"
+        #kernel version 4.15 needed
+        #security.alpha.kubernetes.io/unsafe-sysctls: "net.core.somaxconn=65535,net.ipv4.tcp_tw_reuse=1,net.ipv4.tcp_fin_timeout=30,net.ipv4.tcp_keepalive_intvl=4,net.ipv4.tcp_keepalive_probes=3,net.ipv4.tcp_keepalive_time=120,net.ipv4.tcp_max_syn_backlog=65535,net.ipv4.tcp_rfc1337=1,net.ipv4.tcp_slow_start_after_idle=0,net.ipv4.tcp_fack=1,net.ipv4.tcp_fwmark_accept=1,net.ipv4.fwmark_reflect=1"
+    spec:
+      #nodeName: k8s.node1 #指定调度节点为k8s.node1
+      #nodeSelector:  #调度特定的节点
+      #  env: test-team
+      terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
+      #imagePullSecrets:
+      #- name: registrykey-ali-ext
+      containers:
+      - name: hbase-regionserver
+        image: slpcat/hbase:debian8
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 500m
+            memory: 512Mi
+          limits:
+            cpu: 2
+            #nvidia.com/gpu: 1
+            memory: 2Gi
+        securityContext:
+          capabilities: {}
+          privileged: false
+        env:
+        - name: HBASE_SERVER_TYPE
+          value: regionserver
+        - name: HDFS_PATH
+          value: hadoop-hdfs-nn
+        - name: ZOOKEEPER_SERVICE_LIST
+          value: zookeeper-1,zookeeper-2,zookeeper-3
+        - name: ZOOKEEPER_PORT
+          value: "2181"
+        - name: ZNODE_PARENT
+          value: hbase
+        ports:
+        - containerPort: 16020
+          protocol: TCP
+        - containerPort: 16030
+          protocol: TCP
