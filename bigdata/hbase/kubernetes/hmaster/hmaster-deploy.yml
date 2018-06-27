@@ -47,14 +47,6 @@ spec:
           capabilities: {}
           privileged: false
         env:
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
         - name: HBASE_SERVER_TYPE
           value: master
         - name: HDFS_PATH
