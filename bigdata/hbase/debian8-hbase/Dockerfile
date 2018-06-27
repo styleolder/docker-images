@@ -37,10 +37,10 @@ RUN mkdir -p ${HBASE_INSTALL_DIR} && \
     curl -L http://mirrors.aliyun.com/apache/hbase//${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz | tar -xz --strip=1 -C ${HBASE_INSTALL_DIR}
 
 RUN sed -i "s/httpredir.debian.org/mirrors.163.com/g" /etc/apt/sources.list
-RUN \
-    rm ${HBASE_INSTALL_DIR}/lib/zookeeper-3.4.6.jar
+#RUN \
+#    rm ${HBASE_INSTALL_DIR}/lib/zookeeper-3.4.6.jar
 
-COPY zookeeper-3.4.10.jar ${HBASE_INSTALL_DIR}/lib/zookeeper-3.4.10.jar
+#COPY zookeeper-3.4.10.jar ${HBASE_INSTALL_DIR}/lib/zookeeper-3.4.10.jar
 # build LZO
 WORKDIR /tmp
 #RUN apt-get update && \
