@@ -23,6 +23,7 @@ RUN \
     rm jdk-8u171-linux-x64.rpm
 
 ENV HBASE_VERSION 1.2.6.1
+ENV JAVA_HOME /usr/java/jdk1.8.0_171
 ENV HBASE_INSTALL_DIR /opt/hbase
 
 RUN mkdir -p ${HBASE_INSTALL_DIR} && \
