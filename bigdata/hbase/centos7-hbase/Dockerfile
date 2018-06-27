@@ -17,14 +17,26 @@ RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 RUN \
     yum update -y && \
-    yum install -y wget && \
+    yum install -y wget gnupg curl && \
     wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u171-b11/512cd62ec5174c3487ac17c61aaa89e8/jdk-8u171-linux-x64.rpm && \
     rpm -ivh jdk-8u171-linux-x64.rpm && \
     rm jdk-8u171-linux-x64.rpm
 
+ENV HADOOP_VERSION 2.7.3
+ENV HADOOP_NATIVE_LIBDIR /usr/local/hadoop-${HADOOP_VERSION}/lib/native
+ENV HADOOP_URL https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
 ENV HBASE_VERSION 1.2.6.1
-ENV JAVA_HOME /usr/java/jdk1.8.0_171
+ENV JAVA_HOME /usr/java/jdk1.8.0_171-amd64
+ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$HADOOP_NATIVE_LIBDIR
 ENV HBASE_INSTALL_DIR /opt/hbase
+
+RUN set -x \
+    && curl -fSL "$HADOOP_URL" -o /tmp/hadoop.tar.gz \
+    && curl -fSL "$HADOOP_URL.asc" -o /tmp/hadoop.tar.gz.asc \
+    && gpg --verify /tmp/hadoop.tar.gz.asc \
+    && tar -xvf /tmp/hadoop.tar.gz -C /usr/local/ \
+    && rm /tmp/hadoop.tar.gz*
+
 
 RUN mkdir -p ${HBASE_INSTALL_DIR} && \
     curl -L http://mirrors.aliyun.com/apache/hbase//${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz | tar -xz --strip=1 -C ${HBASE_INSTALL_DIR}
