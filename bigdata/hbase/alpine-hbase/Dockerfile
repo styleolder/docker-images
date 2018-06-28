@@ -123,7 +123,7 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     apk del build-dependencies && \
     rm "/tmp/"*
 
-RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
+RUN gpg --keyserver keyserver.ubuntu.com --recv-keys \
     07617D4968B34D8F13D56E20BE5AAA0BA210C095 \
     2CAC83124870D88586166115220F69801F27E622 \
     4B96409A098DBD511DF2BC18DBAF69BEA7239D59 \
@@ -157,7 +157,7 @@ RUN gpg --keyserver pool.sks-keyservers.net --recv-keys \
     4A6AC5C675B6155682729C9E08D51A0A7501105C \
     8B44A05C308955D191956559A5CEE20A90348D47
 
-RUN gpg --keyserver pool.sks-keyservers.net --recv-key C36C5F0F
+RUN gpg --keyserver keyserver.ubuntu.com --recv-key C36C5F0F
 
 ENV HADOOP_VERSION 2.7.3
 ENV HADOOP_NATIVE_LIBDIR /usr/local/hadoop-${HADOOP_VERSION}/lib/native

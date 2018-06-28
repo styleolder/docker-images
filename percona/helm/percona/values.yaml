@@ -1,12 +1,12 @@
 ## percona image version
 ## ref: https://hub.docker.com/r/library/percona/tags/
 ##
-imageTag: "5.7.17"
+imageTag: "5.6.40"
 
 ## Specify password for root user
 ##
 ## Default: random 10 character string
-# mysqlRootPassword: testing
+mysqlRootPassword: password
 
 ## Create a database user
 ##
@@ -25,11 +25,11 @@ imageTag: "5.7.17"
 ## It's recommended to change this to 'Always' if the image tag is 'latest'
 ## ref: http://kubernetes.io/docs/user-guide/images/#updating-images
 ##
-imagePullPolicy: IfNotPresent
+imagePullPolicy: Always
 
 ## Persist data to a persistent volume
 persistence:
-  enabled: false
+  enabled: true
   ## percona data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
@@ -39,7 +39,7 @@ persistence:
   ##
   # storageClass: "-"
   accessMode: ReadWriteOnce
-  size: 8Gi
+  size: 40Gi
 
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -48,3 +48,6 @@ resources:
   requests:
     memory: 256Mi
     cpu: 100m
+  limits:
+    cpu: 4000m
+    memory: 8Gi
