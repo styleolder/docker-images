@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
       - name: rocketmq-console-ng
-        #image: styletang/rocketmq-console-ng
-        image: slpcat/rocketmq-console-ng
+        image: styletang/rocketmq-console-ng
+        #image: slpcat/rocketmq-console-ng
         ports:
           - name: web
             containerPort: 8080

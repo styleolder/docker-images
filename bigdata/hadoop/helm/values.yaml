@@ -1,7 +1,7 @@
 # The base hadoop image to use for all components.
 # See this repo for image build details: https://github.com/Comcast/kube-yarn/tree/master/image
-image: danisla/hadoop:2.7.3
-imagePullPolicy: IfNotPresent
+image: slpcat/hadoop:2.7.3-centos7
+imagePullPolicy: Always
 
 # The version of the hadoop libraries being used in the image.
 hadoopVersion: 2.7.3

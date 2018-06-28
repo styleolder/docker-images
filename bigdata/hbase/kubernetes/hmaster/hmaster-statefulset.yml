@@ -30,7 +30,7 @@ spec:
       #- name: registrykey-ali-ext
       containers:
       - name: hbase-master
-        image: slpcat/hbase:debian8
+        image: slpcat/hbase:centos7
         imagePullPolicy: Always
         resources:
           requests:
