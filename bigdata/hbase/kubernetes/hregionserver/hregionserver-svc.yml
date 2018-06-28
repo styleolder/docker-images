@@ -17,7 +17,6 @@ kind: Service
 metadata:
   name: hbase-regionserver-ui
 spec:
-  clusterIP: None
   selector:
     app: hbase-regionserver
   ports:
