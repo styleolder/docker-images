@@ -129,6 +129,7 @@ ENV JAVA_OPT=" -Duser.home=/opt/rocketmq"
 
 RUN groupadd rocketmq && \
     useradd -g rocketmq -s /bin/bash -c RocketMQ rocketmq  && \
+    mkdir -p /home/rocketmq && \
     chown -R rocketmq:rocketmq /home/rocketmq
 
 # install from source
@@ -138,7 +139,9 @@ RUN groupadd rocketmq && \
 #    mvn -Prelease-all -DskipTests clean install -U
 #cd distribution/target/apache-rocketmq
 # install from binary
-RUN cd /opt && \
+RUN \
+    mkdir /opt && \
+    cd /opt && \
     wget https://mirrors.tuna.tsinghua.edu.cn/apache/rocketmq/${ROCKETMQ_VERSION}-incubating/rocketmq-all-${ROCKETMQ_VERSION}-incubating-bin-release.zip && \
     unzip rocketmq-all-${ROCKETMQ_VERSION}-incubating-bin-release.zip && \
     rm -rf rocketmq-all-${ROCKETMQ_VERSION}-incubating-bin-release.zip && \
