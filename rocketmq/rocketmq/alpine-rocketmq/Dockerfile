@@ -23,6 +23,7 @@ RUN set -ex \
            tini \
            su-exec \
            gzip \
+           shadow \
            tar \
            wget \
            curl \
