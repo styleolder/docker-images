@@ -51,4 +51,4 @@ USER rocketmq
 COPY runbroker.sh /opt/rocketmq/bin/runbroker.sh
 WORKDIR /opt/rocketmq/bin
 EXPOSE 9876 10909 10911
-CMD  ["sh", "-c", ". ./play.sh; while sleep 10; do echo RocketMQ, GO ROCK; done"]
+CMD  ["sh", "-c", ". ./play.sh; while sleep 60; do echo RocketMQ, GO ROCK; done"]
