@@ -60,10 +60,12 @@ spec:
         - "/tmp/hadoop-config/bootstrap.sh"
         - "-d"
         env:
+        - name: DAEMON
+          value: NAME_NODE
         - name: HOSTNAME
           valueFrom:
             fieldRef:
-              fieldPath: metadata.name
+              fieldPath: spec.nodeName
         resources:
 {{ toYaml .Values.hdfs.nameNode.resources | indent 10 }}
         readinessProbe:

@@ -74,6 +74,19 @@ helm install --set hadoop.useConfigMap=true stable/zeppelin
 # References
 
 - Original K8S Hadoop adaptation this chart was derived from: https://github.com/Comcast/kube-yarn
+
+修改宿主机resolv.conf
+search ceph.svc.cluster.local default.svc.cluster.local svc.cluster.local cluster.local
+nameserver 10.233.0.3
+nameserver 8.8.8.8
+options timeout:2 attempts:3 rotate single-request-reopenbel node <nodename> node-type=storage
+
+给存储节点打上标签(必须)
+所有的存储节点
+kubectl label node <nodename> hdfs=enabled
+或者所有节点都打上标签
+kubectl label nodes hdfs=enabled --all
+
 修改记录
 1.hdfs datanode使用hostnetwork
 2.hdfs datanode使用daemonset
@@ -81,4 +94,3 @@ helm install --set hadoop.useConfigMap=true stable/zeppelin
 4.hdfs namenode使用hostnetwork
 5.hdfs namenode使用statefulset
 6.所有hdfs使用指定节点 hdfs: enabled
-
