@@ -11,6 +11,11 @@ metadata:
     heritage: {{ .Release.Service }}
     component: hdfs-dn
 spec:
+  selector:
+    matchLabels:
+      app: {{ template "hadoop.name" . }}
+      component: hdfs-dn
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
