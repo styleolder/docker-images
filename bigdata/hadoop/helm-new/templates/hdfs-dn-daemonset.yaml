@@ -36,6 +36,11 @@ spec:
            - "/bin/bash"
            - "/tmp/hadoop-config/bootstrap.sh"
            - "-d"
+        env:
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         resources:       
 {{ toYaml .Values.hdfs.dataNode.resources | indent 10 }}
         readinessProbe:

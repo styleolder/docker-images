@@ -33,13 +33,17 @@ data:
     cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
     if [[ "${HOSTNAME}" =~ "hdfs-nn" ]]; then
-      mkdir -p /root/hdfs/namenode
-      $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive
+       if [ ! -f /root/hdfs/namenode/current/VERSION]; then
+          mkdir -p /root/hdfs/namenode
+          $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive
+       fi
       $HADOOP_PREFIX/sbin/hadoop-daemon.sh start namenode
     fi
 
     if [[ "${HOSTNAME}" =~ "hdfs-dn" ]]; then
-      mkdir -p /root/hdfs/datanode
+       if [ ! -f /root/hdfs/datanode/current/VERSION]; then
+          mkdir -p /root/hdfs/datanode
+       fi
 
       #  wait up to 30 seconds for namenode 
       (while [[ $count -lt 15 && -z `curl -sf http://{{ template "hadoop.fullname" . }}-hdfs-nn:50070` ]]; do ((count=count+1)) ; echo "Waiting for {{ template "hadoop.fullname" . }}-hdfs-nn" ; sleep 2; done && [[ $count -lt 15 ]])

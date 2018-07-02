@@ -1,6 +1,6 @@
 # The base hadoop image to use for all components.
 # See this repo for image build details: https://github.com/Comcast/kube-yarn/tree/master/image
-image: slpcat/hadoop:2.7.3-centos7
+image: slpcat/hadoop:2.7.3-alpine
 imagePullPolicy: Always
 
 # The version of the hadoop libraries being used in the image.
