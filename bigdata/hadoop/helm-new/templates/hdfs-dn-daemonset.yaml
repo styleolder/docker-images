@@ -19,7 +19,7 @@ spec:
         component: hdfs-dn
     spec:
       nodeSelector:
-        node-type: hdfs
+        hdfs: enabled
       hostNetwork: true
       hostPID: true
       dnsPolicy: ClusterFirstWithHostNet

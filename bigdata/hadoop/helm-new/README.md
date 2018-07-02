@@ -80,5 +80,5 @@ helm install --set hadoop.useConfigMap=true stable/zeppelin
 3.hdfs datanode存储使用hostdir /hdfs/<集群名字>/datanode/
 4.hdfs namenode使用hostnetwork
 5.hdfs namenode使用statefulset
-6.所有hdfs使用指定节点 node-type: hdfs
+6.所有hdfs使用指定节点 hdfs: enabled
 

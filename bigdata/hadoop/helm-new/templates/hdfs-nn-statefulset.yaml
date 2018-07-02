@@ -48,7 +48,7 @@ spec:
         {{- end }}
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        node-type: hdfs
+        hdfs: enabled
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
