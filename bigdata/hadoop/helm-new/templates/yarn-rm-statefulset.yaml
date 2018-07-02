@@ -58,9 +58,6 @@ spec:
            - "/bin/bash"
            - "/tmp/hadoop-config/bootstrap.sh"
            - "-d"
-        env:
-        - name: DAEMON
-          value: YARN_RM
         resources:
 {{ toYaml .Values.yarn.resourceManager.resources | indent 10 }}
         readinessProbe:

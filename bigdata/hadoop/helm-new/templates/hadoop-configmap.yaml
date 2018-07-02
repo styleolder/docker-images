@@ -52,14 +52,14 @@ data:
       $HADOOP_PREFIX/sbin/hadoop-daemon.sh start datanode
     fi
 
-    if [[ "${DAEMON}" == "YARN_RM" ]]; then
+    if [[ "${HOSTNAME}" =~ "yarn-rm" ]]; then
       cp ${CONFIG_DIR}/start-yarn-rm.sh $HADOOP_PREFIX/sbin/
       cd $HADOOP_PREFIX/sbin
       chmod +x start-yarn-rm.sh
       ./start-yarn-rm.sh
     fi
 
-    if [[ "${DAEMON}" == "YARN_NM" ]]; then
+    if [[ "${HOSTNAME}" =~ "yarn-nm" ]]; then
       sed -i '/<\/configuration>/d' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
       cat >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml <<- EOM
       <property>
