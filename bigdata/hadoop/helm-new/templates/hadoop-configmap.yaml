@@ -40,7 +40,7 @@ data:
       $HADOOP_PREFIX/sbin/hadoop-daemon.sh start namenode
     fi
 
-    if [[ "${DAEMON}" =~ "DATA_NODE" ]]; then
+    if [[ "${DAEMON}" == "DATA_NODE" ]]; then
        if [[ ! -f /root/hdfs/datanode/current/VERSION ]]; then
           mkdir -p /root/hdfs/datanode
        fi
@@ -59,7 +59,7 @@ data:
       ./start-yarn-rm.sh
     fi
 
-    if [[ "${DAEMON}" =- "YARN_NM" ]]; then
+    if [[ "${DAEMON}" == "YARN_NM" ]]; then
       sed -i '/<\/configuration>/d' $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
       cat >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml <<- EOM
       <property>
