@@ -27,7 +27,7 @@ spec:
         hdfs: enabled
       hostNetwork: true
       hostPID: true
-      #dnsPolicy: ClusterFirstWithHostNet
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: hdfs-dn
         image: {{ .Values.image }}

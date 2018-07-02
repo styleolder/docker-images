@@ -50,7 +50,7 @@ spec:
       nodeSelector:
         hdfs: enabled
       hostNetwork: true
-      #dnsPolicy: ClusterFirstWithHostNet
+      dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: hdfs-nn
         image: {{ .Values.image }}
