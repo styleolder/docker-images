@@ -33,7 +33,7 @@ data:
     cd $HADOOP_PREFIX/share/hadoop/common ; for cp in ${ACP//,/ }; do  echo == $cp; curl -LO $cp ; done; cd -
 
     if [[ "${HOSTNAME}" =~ "hdfs-nn" ]]; then
-       if [ ! -f /root/hdfs/namenode/current/VERSION]; then
+       if [[ ! -f /root/hdfs/namenode/current/VERSION ]]; then
           mkdir -p /root/hdfs/namenode
           $HADOOP_PREFIX/bin/hdfs namenode -format -force -nonInteractive
        fi
@@ -41,7 +41,7 @@ data:
     fi
 
     if [[ "${HOSTNAME}" =~ "hdfs-dn" ]]; then
-       if [ ! -f /root/hdfs/datanode/current/VERSION]; then
+       if [[ ! -f /root/hdfs/datanode/current/VERSION ]]; then
           mkdir -p /root/hdfs/datanode
        fi
 
