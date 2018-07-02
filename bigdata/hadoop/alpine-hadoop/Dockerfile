@@ -183,7 +183,7 @@ ENV HADOOP_PREFIX=/usr/local/hadoop \
 
 RUN \
   cd /usr/local && ln -s ./hadoop-${HADOOP_VERSION} hadoop && \
-  rm -f ${HADOOP_PREFIX}/logs/*
+  mkdir ${HADOOP_PREFIX}/logs
 
 WORKDIR $HADOOP_PREFIX
 
