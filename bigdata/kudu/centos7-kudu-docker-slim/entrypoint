@@ -1,0 +1,11 @@
+#!/bin/bash
+set -xeuo pipefail
+
+ulimit -u 10000
+
+if [ "$KUDU_MASTER" = "localhost" ]; then
+  /usr/lib/kudu/sbin/kudu-master $KUDU_MASTER_START_OPTS $KUDU_MASTER_EXTRA_OPTS &
+fi
+
+sleep 5s
+/usr/lib/kudu/sbin/kudu-tserver --tserver_master_addrs $KUDU_MASTER $KUDU_TSERVER_START_OPTS $KUDU_TSERVER_EXTRA_OPTS
