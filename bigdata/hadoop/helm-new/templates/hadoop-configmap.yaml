@@ -215,11 +215,6 @@ data:
       </property>
 
       <property>
-        <name>mapred.compress.map.output</name>
-        <value>true</value>
-      </property>
-
-      <property>
         <name>mapred.map.output.compression.codec</name>
         <value>com.hadoop.compression.lzo.LzoCodec</value>
       </property>
