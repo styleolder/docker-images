@@ -193,18 +193,55 @@ data:
         <name>mapreduce.framework.name</name>
         <value>yarn</value>
       </property>
+
       <property>
         <name>mapreduce.jobhistory.address</name>
         <value>{{ template "hadoop.fullname" . }}-yarn-rm-0.{{ template "hadoop.fullname" . }}-yarn-rm.{{ .Release.Namespace }}.svc.cluster.local:10020</value>
       </property>
+
       <property>
         <name>mapreduce.jobhistory.webapp.address</name>
         <value>{{ template "hadoop.fullname" . }}-yarn-rm-0.{{ template "hadoop.fullname" . }}-yarn-rm.{{ .Release.Namespace }}.svc.cluster.local:19888</value>
       </property>
 
       <property>
+        <name>mapreduce.job.ubertask.enable</name>
+        <value>true</value>
+      </property>
+
+      <property>
+        <name>mapred.child.java.opts</name>
+        <value>-Xms1024M -Xmx2048M</value>
+      </property>
+
+      <property>
+        <name>mapred.compress.map.output</name>
+        <value>true</value>
+      </property>
+
+      <property>
+        <name>mapred.map.output.compression.codec</name>
+        <value>com.hadoop.compression.lzo.LzoCodec</value>
+      </property>
+
+      <property>
+        <name>io.sort.mb</name>
+        <value>800</value>
+      </property>
+
+      <property>
         <name>mapred.job.reuse.jvm.num.tasks</name>
-        <value>512</value>
+        <value>-1</value>
+      </property>
+
+      <property>
+        <name>mapred.max.split.size</name>
+        <value>268435456</value>
+      </property>
+
+      <property>
+        <name>mapred.min.split.size</name>
+        <value>134217728</value>
       </property>
     </configuration>
 
