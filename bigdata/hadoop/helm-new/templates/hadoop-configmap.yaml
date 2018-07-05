@@ -99,10 +99,14 @@ data:
     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
     <configuration>
       <property>
-            <name>fs.defaultFS</name>
-            <value>hdfs://{{ template "hadoop.fullname" . }}-hdfs-nn:9000/</value>
-            <description>NameNode URI</description>
-        </property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://{{ template "hadoop.fullname" . }}-hdfs-nn:9000/</value>
+        <description>NameNode URI</description>
+      </property>
+      <property>
+        <name>io.file.buffer.size/name>
+        <value>524288</value>
+      </property>
     </configuration>
 
   hdfs-site.xml: |
@@ -139,6 +143,21 @@ data:
       <property>
         <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
         <value>false</value>
+      </property>
+
+      <property>
+        <name>dfs.datanode.handler.count/name>
+        <value>64</value>
+      </property>
+
+      <property>
+        <name>dfs.namenode.handler.count/name>
+        <value>64</value>
+      </property>
+
+      <property>
+        <name>io.native.lib.available/name>
+        <value>true</value>
       </property>
 
       <!-- Bind to all interfaces -->
