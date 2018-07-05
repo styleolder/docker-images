@@ -161,6 +161,11 @@ data:
         <value>true</value>
       </property>
 
+      <property>
+        <name>ipc.server.listen.queue.size</name>
+        <value>4096</value>
+      </property>
+
       <!-- Bind to all interfaces -->
       <property>
         <name>dfs.namenode.rpc-bind-host</name>
@@ -190,6 +195,11 @@ data:
       <property>
         <name>mapreduce.jobhistory.webapp.address</name>
         <value>{{ template "hadoop.fullname" . }}-yarn-rm-0.{{ template "hadoop.fullname" . }}-yarn-rm.{{ .Release.Namespace }}.svc.cluster.local:19888</value>
+      </property>
+
+      <property>
+        <name>mapred.job.reuse.jvm.num.tasks</name>
+        <value>512</value>
       </property>
     </configuration>
 
