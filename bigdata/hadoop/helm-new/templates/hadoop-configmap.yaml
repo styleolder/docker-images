@@ -103,8 +103,9 @@ data:
         <value>hdfs://{{ template "hadoop.fullname" . }}-hdfs-nn:9000/</value>
         <description>NameNode URI</description>
       </property>
+
       <property>
-        <name>io.file.buffer.size/name>
+        <name>io.file.buffer.size</name>
         <value>524288</value>
       </property>
     </configuration>
@@ -146,17 +147,17 @@ data:
       </property>
 
       <property>
-        <name>dfs.datanode.handler.count/name>
+        <name>dfs.datanode.handler.count</name>
         <value>64</value>
       </property>
 
       <property>
-        <name>dfs.namenode.handler.count/name>
+        <name>dfs.namenode.handler.count</name>
         <value>64</value>
       </property>
 
       <property>
-        <name>io.native.lib.available/name>
+        <name>io.native.lib.available</name>
         <value>true</value>
       </property>
 
