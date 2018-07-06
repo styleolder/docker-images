@@ -54,4 +54,4 @@ RUN \
 EXPOSE 8888
 WORKDIR /qconf
 COPY docker-entrypoint.sh /qconf/docker-entrypoint.sh
-ENTRYPOINT ["sh" "-c" "/qconf/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "-c", "/qconf/docker-entrypoint.sh"]
