@@ -32,6 +32,9 @@ RUN \
 
 ARG VERSION=${VERSION:-master}
 
+ENV LOCAL_IDC="test" \
+    ZK_LIST="zk-0.zk-svc:2181,zk-1.zk-svc:2181,zk-2.zk-svc:2181"
+
 RUN \
     DEBIAN_FRONTEND="noninteractive" apt-get install -y vim curl wget build-essential cmake \
     && mkdir -p /qconf/tmp \
@@ -50,5 +53,5 @@ RUN \
 
 EXPOSE 8888
 WORKDIR /qconf
-
-CMD ["bin/agent-cmd.sh", "start"]
+COPY docker-entrypoint.sh /qconf/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
