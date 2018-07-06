@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ssdb
+  name: qconf
   namespace: default
   labels:
-    app: ssdb
+    app: qconf
 spec:
   selector:
     matchLabels:
-      app: ssdb
-  serviceName: ssdb-server
+      app: qconf
+  serviceName: qconf-svc
   replicas: 1
   #minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
   template:
     metadata:
       labels:
-        app: ssdb
+        app: qconf
       annotations:
         #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
         security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"
@@ -27,8 +27,8 @@ spec:
       #imagePullSecrets:
       #- name: registrykey-ali-ext
       containers:
-      - name: ssdb
-        image: slpcat/ssdb:alpine
+      - name: qconf
+        image: slpcat/qconf:ubuntu16.04
         imagePullPolicy: Always
         resources:
           # keep request = limit to keep this container in guaranteed class
@@ -38,23 +38,17 @@ spec:
           limits:
             cpu: 4000m
             memory: 4Gi
+        env:
+        - name : LOCAL_IDC
+          value: "test"
+        - name : ZK_LIST
+          value: "zk-0.zk-svc:2181,zk-1.zk-svc:2181,zk-2.zk-svc:2181"
         ports:
-          - name: ssdb
+          - name: qconf
             containerPort: 8888
         volumeMounts:
-          - name: ssdb-conf
-            mountPath: "/ssdb/ssdb.conf"
-            subPath: ssdb.conf
           - name: datadir
-            mountPath: "/ssdb/var"
-      volumes:
-        - name: ssdb-conf
-          configMap:
-            name: ssdb
-            #Add ConfigMap data to a specific path in the Volume
-            items:
-            - key: ssdb.conf
-              path: ssdb.conf
+            mountPath: "/qconf/var"
   volumeClaimTemplates:
   - metadata:
       name: datadir
