@@ -48,7 +48,7 @@ spec:
             containerPort: 8888
         volumeMounts:
           - name: datadir
-            mountPath: "/qconf/var"
+            mountPath: "/qconf/dumps"
   volumeClaimTemplates:
   - metadata:
       name: datadir

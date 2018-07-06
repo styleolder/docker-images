@@ -1,6 +1,7 @@
 #!/bin/bash
 set -eu
 sed -i s/^daemon_mode=.*$/daemon_mode=0/ conf/agent.conf
+sed -i 's/^#log_fmt=.*$/log_fmt=\/qconf\/logs\/qconf.log.%Y-%m-%d-%H/' conf/agent.conf
 #set IDC
 echo $LOCAL_IDC > conf/localidc
 #set ZOOKEEPER
