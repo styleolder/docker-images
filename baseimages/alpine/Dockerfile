@@ -1,6 +1,6 @@
 # Build a minimal distribution container
 # upstream https://github.com/gliderlabs/docker-alpine
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables

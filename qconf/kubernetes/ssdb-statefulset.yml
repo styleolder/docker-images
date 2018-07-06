@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: gitlab-ce
+  name: ssdb
   namespace: default
   labels:
-    app: gitlab-ce
+    app: ssdb
 spec:
   selector:
     matchLabels:
-      app: gitlab-ce
-  serviceName: gitlab-ce
+      app: ssdb
+  serviceName: ssdb-server
   replicas: 1
   #minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
   template:
     metadata:
       labels:
-        app: gitlab-ce
+        app: ssdb
       annotations:
         #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
         security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"
@@ -27,66 +27,42 @@ spec:
       #imagePullSecrets:
       #- name: registrykey-ali-ext
       containers:
-      - name: gitlab-ce
-        image: slpcat/gitlab-ce
+      - name: ssdb
+        image: slpcat/ssdb:alpine
         imagePullPolicy: Always
-        livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
-          httpGet:
-            path: /
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 60 # equals to the maximum startup time of the application + couple of seconds
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
-        readinessProbe: #kubernetes认为该pod是启动成功的
-          httpGet:
-            path: /
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 30 # equals to minimum startup time of the application
-          timeoutSeconds: 5
-          successThreshold: 1
-          failureThreshold: 5
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
             cpu: 1000m
-            memory: 2Gi
+            memory: 1Gi
           limits:
-            cpu: 8000m
-            memory: 8Gi
+            cpu: 4000m
+            memory: 4Gi
         ports:
-          - name: ssh
-            containerPort: 22
-          - name: web
-            containerPort: 80
-          - name: ldap
-            containerPort: 636
-          - name: registry
-            containerPort: 50000
+          - name: ssdb
+            containerPort: 8888
         volumeMounts:
-          - name: gitlab-etc
-            mountPath: "/etc/gitlab/gitlab.rb"
-            subPath: gitlab.rb
-          - name: gitlab-data
-            mountPath: "/var/opt/gitlab"
+          - name: ssdb-conf
+            mountPath: "/ssdb/ssdb.conf"
+            subPath: ssdb.conf
+          - name: datadir
+            mountPath: "/ssdb/var"
       volumes:
-        - name: gitlab-etc
+        - name: ssdb-conf
           configMap:
-            name: gitlab-etc-configmap
+            name: ssdb
             #Add ConfigMap data to a specific path in the Volume
             items:
-            - key: gitlab.rb
-              path: gitlab.rb
+            - key: ssdb.conf
+              path: ssdb.conf
   volumeClaimTemplates:
   - metadata:
-      name: gitlab-data
+      name: datadir
     spec:
       accessModes:
       - ReadWriteOnce
       #ceph rbd storageclass
-      storageClassName: rbd
+      #storageClassName: rbd
       resources:
         requests:
-          storage: 80Gi
+          storage: 20Gi

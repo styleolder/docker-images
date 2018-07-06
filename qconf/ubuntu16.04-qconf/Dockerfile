@@ -30,26 +30,25 @@ RUN \
 RUN \
     apt-get dist-upgrade -y
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-    apt-get install -y nano git make g++ autoconf python && \
-    git clone https://github.com/ideawu/ssdb.git /tmp/ssdb --depth 1 && \
-    cd /tmp/ssdb && make && make install && \
-    mv /usr/local/ssdb /ssdb && \
-    apt-get remove --purge -y git make g++ autoconf && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
-    sed -e "s@home.*@home $(dirname /ssdb/var)@" \
-        -e "s/loglevel.*/loglevel info/" \
-        -e "s@work_dir = .*@work_dir = /ssdb/var@" \
-        -e "s@pidfile = .*@pidfile = /run/ssdb.pid@" \
-        -e "s@output:.*@output: stdout@" \
-        -e "s@level:.*@level: info@" \
-        -e "s@ip:.*@ip: 0.0.0.0@" \
-        -i /ssdb/ssdb.conf
+ARG VERSION=${VERSION:-master}
 
-WORKDIR /ssdb
-VOLUME /ssdb/var
+RUN \
+    DEBIAN_FRONTEND="noninteractive" apt-get install -y vim curl wget build-essential cmake \
+    && mkdir -p /qconf/tmp \
+    && curl -Lk "https://github.com/Qihoo360/QConf/archive/${VERSION}.tar.gz" | \
+       tar -xz -C /qconf/tmp --strip-components=1 \
+    && cd /qconf/tmp \
+    && mkdir build \
+    && cd build \
+    && cmake .. -DCMAKE_INSTALL_PREFIX=/qconf \
+    && make -j$(getconf _NPROCESSORS_ONLN) \
+    && make install PREFIX=/qconf \
+    && rm -rf /qconf/tmp \
+    && apt-get remove --purge -y git make g++ autoconf \
+    && apt-get autoremove -y \
+    && apt-get clean -y
 
 EXPOSE 8888
-CMD ["/ssdb/ssdb-server", "/ssdb/ssdb.conf"]
+WORKDIR /qconf
+
+CMD ["bin/agent-cmd.sh", "start"]
