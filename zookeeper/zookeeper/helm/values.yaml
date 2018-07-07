@@ -9,7 +9,7 @@ resources:
     cpu: 500m
     memory: 2Gi
   limits:
-    cpu: 1
+    cpu: 2
     memory: 4Gi
 heap: "2G"
 storage: "20Gi"
@@ -21,7 +21,7 @@ imagePullPolicy: "Always"
 tickTimeMs: 2000
 initTicks: 10
 syncTicks: 5
-clientCnxns: 60
+clientCnxns: 1024
 snapRetain: 3
 purgeHours: 1
 probeInitialDelaySeconds: 15

@@ -24,7 +24,7 @@ data:
   tick: "2000"
   init: "10"
   sync: "5"
-  client.cnxns: "60"
+  client.cnxns: "1024"
   snap.retain: "3"
   purge.interval: "0"
 ---
