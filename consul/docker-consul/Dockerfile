@@ -1,5 +1,5 @@
 #upstream https://github.com/hashicorp/docker-consul
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
