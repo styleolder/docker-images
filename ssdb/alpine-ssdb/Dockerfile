@@ -1,4 +1,4 @@
-FROM alpine:3.7
+FROM alpine:3.8
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -23,6 +23,7 @@ RUN set -ex \
            su-exec \
            gzip \
            tar \
+           python \
            wget \
            curl \
     && echo "${TIMEZONE}" > /etc/TZ \
