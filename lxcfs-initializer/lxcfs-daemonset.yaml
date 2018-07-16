@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: lxcfs
+  namespace: kube-system
   labels:
     app: lxcfs
 spec:
@@ -19,7 +20,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: lxcfs
-        image: registry.cn-hangzhou.aliyuncs.com/denverdino/lxcfs:2.0.8
+        image: slpcat/lxcfs:2.0.8
         imagePullPolicy: Always
         securityContext:
           privileged: true

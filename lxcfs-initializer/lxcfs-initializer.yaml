@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: lxcfs-initializer-default
-  namespace: default
+  namespace: kube-system
 rules:
 - apiGroups: ["*"]
   resources: ["deployments"]
@@ -12,7 +12,7 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: lxcfs-initializer-service-account
-  namespace: default
+  namespace: kube-system
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -21,7 +21,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: lxcfs-initializer-service-account
-  namespace: default
+  namespace: kube-system
 roleRef:
   kind: ClusterRole
   name: lxcfs-initializer-default
@@ -35,6 +35,7 @@ metadata:
   labels:
     app: lxcfs-initializer
   name: lxcfs-initializer
+  namespace: kube-system
 spec:
   replicas: 1
   template:
@@ -46,7 +47,7 @@ spec:
       serviceAccountName: lxcfs-initializer-service-account
       containers:
         - name: lxcfs-initializer
-          image: registry.cn-hangzhou.aliyuncs.com/denverdino/lxcfs-initializer:0.0.2
+          image: slpcat/lxcfs-initializer:0.0.2
           imagePullPolicy: Always
           args:
             - "-annotation=initializer.kubernetes.io/lxcfs"
@@ -56,6 +57,7 @@ apiVersion: admissionregistration.k8s.io/v1alpha1
 kind: InitializerConfiguration
 metadata:
   name: lxcfs.initializer
+  namespace: kube-system
 initializers:
   - name: lxcfs.initializer.kubernetes.io
     rules:
