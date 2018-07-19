@@ -31,7 +31,7 @@ spec:
       containers:
       - name: tomcat8
         #image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
-        image: slpcat/tomcat8:centos7-8.5
+        image: slpcat/tomcat8:alpine-8.5
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           httpGet:
@@ -57,8 +57,8 @@ spec:
             cpu: 500m
             memory: 512Mi
           limits:
-            cpu: 2000m
-            memory: 4096Mi
+            cpu: 4
+            memory: 8Gi
         env:
           - name: PROFILE
             value: "test"
