@@ -74,11 +74,12 @@ spec:
           - name: nginx-etc
             mountPath: "/etc/nginx/nginx.conf"
             subPath: nginx.conf
-        volumeMounts:
+          - name: nginx-vhost
+            mountPath: "/opt/docker/etc/nginx/vhost.conf"
+            subPath: vhost.conf
           - name: php-etc
             mountPath: "/opt/docker/etc/php/php.webdevops.ini"
             subPath: php.webdevops.ini
-        volumeMounts:
           - name: php-fpm-pool-etc
             mountPath: "/opt/docker/etc/php/fpm/pool.d/docker.conf"
             subPath: docker.conf
@@ -90,7 +91,13 @@ spec:
             items:
             - key: nginx.conf
               path: nginx.conf
-      volumes:
+        - name: nginx-vhost
+          configMap:
+            name: nginx-php-configmap
+            #Add ConfigMap data to a specific path in the Volume
+            items:
+            - key: vhost.conf
+              path: vhost.conf
         - name: php-etc
           configMap:
             name: nginx-php-configmap
@@ -98,7 +105,6 @@ spec:
             items:
             - key: php.webdevops.ini
               path: php.webdevops.ini
-      volumes:
         - name: php-fpm-pool-etc
           configMap:
             name: nginx-php-configmap
