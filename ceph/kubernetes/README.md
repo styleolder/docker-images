@@ -4,6 +4,7 @@ ceph作为Kubernetes持久存储服务，以特权pod形式运行,osd能够访�
 
 使用限制与要求
 
+kubelet 调整配置kube_feature_gates 加上ReadOnlyAPIDataVolumes=false
 kubernetes 宿主机osd硬盘至少1TB,未分区裸盘，至少3个节点用于ceph存储，宿主机支持多个osd硬盘
 kubernetes 宿主机节点内核版本 >= 4.15
 kubernetes DNS组件仅支持kube-dns，不支持core-dns
