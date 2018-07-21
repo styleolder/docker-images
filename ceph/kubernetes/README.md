@@ -136,6 +136,9 @@ kubectl create -f rbd-provisioner/deployment.yaml
 kubectl create secret generic ceph-secret-admin --from-file=generator/ceph-client-key --type=kubernetes.io/rbd --namespace=ceph
 kubectl create -f rbd-provisioner/storage-class.yaml
 
+至此, 自动创建rbd卷提供pvc持久存储全部完成
+
+以下为功能验证阶段
 POD作为使用者,只需创建pvc获取相应容量的存储，然后挂载即可自动获取存储资源
 创建pvc 示例
 kubectl create -f https://raw.githubusercontent.com/kubernetes/examples/master/staging/persistent-volume-provisioning/claim1.json
