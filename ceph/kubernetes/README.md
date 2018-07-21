@@ -1,20 +1,26 @@
 Ceph on Kubernetes
+
 ceph作为Kubernetes持久存储服务，以特权pod形式运行,osd能够访问宿主机硬盘，提供rbd存储类，支持自动创建持久卷供其他pod使用,实现超融合基础设施(Hyper converged infrastructure)
+
 使用限制与要求
-宿主机硬盘至少1TBx3
-kubernetes 节点内核版本 >= 4.5
+
+kubernetes 宿主机osd硬盘至少1TB,未分区裸盘，至少3个节点用于ceph存储，宿主机支持多个osd硬盘
+kubernetes 宿主机节点内核版本 >= 4.15
+kubernetes DNS组件仅支持kube-dns，不支持core-dns
+kubernetes 宿主机节点ceph版本支持mimic和luminous
 注：本文所用yaml涉及容器内核参数调优，需要内核版本4.15,低版本内核需要注释或者删除sysctl相关条目。
-public and cluster networks 必须相同，并且是kubernetes的集群宿主机网络.If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
+ceph public和cluster networks必须相同，并且是kubernetes的集群宿主机网络.If the storage class user id is not admin, you will have to manually create the user in your Ceph cluster and create its secret in Kubernetes
 ceph-mgr can only run with 1 replica
 rgw对象存储支持集群内部和外部同时访问
 因为主机名检测问题，暂时不兼容istio
 
 生产环境安装过程
-规划
-奇数个宿主机节点作为mon，直接使用宿主机目录作为持久存储
-osd数据盘使用宿主机无分区裸盘
-宿主机节点安装ceph客户端
-宿主机节点dns解析使用集群dns服务器
+
+安装前规划与准备
+奇数个宿主机节点作为mon，通常3个，直接使用宿主机目录作为持久存储
+osd数据盘使用宿主机未分区裸盘,本文以/dev/vdb为例
+所有宿主机节点安装ceph客户端 apt-get install ceph-common 或者yum install ceph-common
+所有宿主机节点dns解析使用集群dns服务器
 /etc/resolv.conf
 domain <EXISTING_DOMAIN>
 search <EXISTING_DOMAIN>
@@ -31,11 +37,6 @@ In addition to kubectl, jinja2 or sigil is required for template handling and mu
 覆盖默认的网络设置,本方案使用宿主机的网络
 export osd_cluster_network=172.17.0.0/16
 export osd_public_network=172.17.0.0/16
-
-文件 ceph-mon-v1-ds.yaml
-- name: CEPH_PUBLIC_NETWORK
-              value: 172.17.0.0/16
-修改为相应的宿主机网段
 
 生成keys和ceph配置
 
@@ -56,7 +57,7 @@ cd ..
 注：如果调整ceph.conf配置，需要重新生成secret
 
 生产环境部署ceph组件
-生成授权
+生成RBAC授权
 kubectl create -f ceph-rbac.yaml
 
 给存储节点打上标签(必须)
@@ -67,26 +68,32 @@ kubectl label nodes node-type=storage --all
 mon节点标签
 kubectl label node <nodename> ceph-mon=enabled
 
-mds 启用cephfs 可选
-ceph-mds-v1-dp.yaml
+ceph mds 启用cephfs 可选
+kubectl create -f ceph-mds-v1-dp.yaml
 
-mgr
-ceph-mgr-v1-dp.yaml
-ceph-mgr-dashboard-v1-svc.yam
-ceph-mgr-prometheus-v1-svc.yaml
+ceph mgr
+kubectl create -f ceph-mgr-v1-dp.yaml
+kubectl create -f ceph-mgr-dashboard-v1-svc.yam
+kubectl create -f ceph-mgr-prometheus-v1-svc.yaml
 
-mon
-2n+1台 生产5台以上，宿主机节点需要标签  ceph-mon: enabled
-ceph-mon-v1-svc.yaml
-ceph-mon-v1-ds.yaml
-ceph-mon-check-v1-dp.yam
+ceph mon
+2n+1台 生产3台或者5台，宿主机节点需要标签  ceph-mon: enabled
 
-kubectl exec -it ceph-mon -n ceph bash
+打开文件 ceph-mon-v1-ds.yaml
+- name: CEPH_PUBLIC_NETWORK
+              value: 172.17.0.0/16
+修改为相应的宿主机网段
+
+kubectl create -f ceph-mon-v1-svc.yaml
+kubectl create -f ceph-mon-v1-ds.yaml
+kubectl create -f ceph-mon-check-v1-dp.yam
+
+kubectl exec -it ceph-mon-XXXX -n ceph bash
 
 ceps -s 检查确认一切正常再进行下一步
 
-osd 使用持久存储
-每个盘对应一个pod,本示例使用/dev/vdb,多个磁盘修改ceph-osd-prepare-v1-ds.yaml和ceph-osd-activate-v1-ds.yaml
+ceph osd持久存储
+每个盘对应一个pod,本示例使用/dev/vdb,如果有多个磁盘修改ceph-osd-prepare-v1-ds.yaml和ceph-osd-activate-v1-ds.yaml然后依次创建
 先初始化磁盘
 
 kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
@@ -96,14 +103,14 @@ kubectl delete -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
 初始化完毕，激活磁盘
 kubectl create -f ceph-osd-activate-v1-ds.yaml --namespace=ceph
 
-rgw 启用对象存储
-ceph-rgw-v1-dp.yaml
-ceph-rgw-v1-svc.yaml
+ceph rgw对象存储 可选
+kubectl create -f ceph-rgw-v1-dp.yaml
+kubectl create -f ceph-rgw-v1-svc.yaml
 
 kubernetes使用外部持久卷
 https://github.com/kubernetes-incubator/external-storage/tree/master/ceph/rbd/deploy/rbac
 进入mon pod
-kubectl exec -it ceph-mon bash
+kubectl exec -it ceph-mon-XXXX bash
 创建存储池
 ceph osd pool create kube 256
 创建keyring
