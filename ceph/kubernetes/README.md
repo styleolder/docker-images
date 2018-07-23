@@ -252,6 +252,18 @@ kubectl create -f cephfs-pv-claim.yaml
 
 Durable Storage
 
+ceph存储节点扩容操作
+新的节点打上临时标签
+kubectl label node <nodename> ceph-new=true
+打开修改文件ceph-osd-prepare-v1-ds.yaml
+      nodeSelector:
+        ceph-new: true
+
+kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
+等待prepare completed之后
+然后node删掉标签ceph-new=true 添加标签node-type=storage
+等待自动创建osd-actviate最后osd加入ceph集群
+
 By default emptyDir is used for everything. If you have durable storage on your nodes, replace the emptyDirs with a hostPath to that storage.
 
 参考：
