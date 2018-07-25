@@ -9,7 +9,7 @@ Spark:
 Master:
   Name: master
   #Image: "k8s.gcr.io/spark"
-  Image: "mirrorgooglecontainers/spark"
+  Image: "slpcat/spark"
   ImageTag: "1.5.1_v3"
   Replicas: 1
   Component: "spark-master"
@@ -29,7 +29,7 @@ WebUi:
 Worker:
   Name: worker
   #Image: "k8s.gcr.io/spark"
-  Image: "mirrorgooglecontainers/spark"
+  Image: "slpcat/spark"
   ImageTag: "1.5.1_v3"
   Replicas: 3
   Component: "spark-worker"
@@ -40,6 +40,10 @@ Worker:
   # DaemonMemory: 1g
   # Set how much total memory workers have to give executors
   # ExecutorMemory: 1g
+  Autoscaling:
+    Enabled: true
+  ReplicasMax: 10
+  CpuTargetPercentage: 50
 
 Zeppelin:
   Name: zeppelin
@@ -69,3 +73,22 @@ Zeppelin:
   #   SecretName: example-tls
   #   Hosts:
   #   - example.local
+  Persistence:
+    Config:
+      Enabled: true
+      ## etcd data Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ## set, choosing the default provisioner. (gp2 on AWS, standard on
+      ## GKE, AWS & OpenStack)
+      #storageClass: "-"
+      ## Set default PVC size
+      Size: 10G
+      ## Set default PVC access mode: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
+      AccessMode: ReadWriteOnce
+    Notebook:
+      Enabled: true
+      #storageClass: "-"
+      Size: 10G
+      AccessMode: ReadWriteOnce
