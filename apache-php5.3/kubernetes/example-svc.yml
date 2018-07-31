@@ -13,3 +13,4 @@ spec:
   type: NodePort
   selector:
     app: example-web
+    #statefulset.kubernetes.io/pod-name: pod-0
