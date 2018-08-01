@@ -103,15 +103,20 @@ data:
         <value>hdfs://{{ template "hadoop.fullname" . }}-hdfs-nn:9000/</value>
         <description>NameNode URI</description>
       </property>
-
+    
       <property>
         <name>fs.trash.interval</name>
         <value>20160</value>
       </property>
-
+    
       <property>
         <name>io.file.buffer.size</name>
         <value>524288</value>
+      </property>
+    
+      <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>master188:2181,master189:2181,slave190:2181</value>
       </property>
     </configuration>
 
@@ -174,6 +179,11 @@ data:
       <property>
         <name>ipc.server.listen.queue.size</name>
         <value>8192</value>
+      </property>
+
+      <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
       </property>
 
       <!-- Bind to all interfaces -->
@@ -331,6 +341,11 @@ data:
         <value>0.0.0.0</value>
       </property>
       <!-- /Bind to all interfaces -->
+
+      <property>
+        <name>yarn.resourcemanager.zk-address</name>
+        <value>master188:2181,master189:2181,slave190:2181</value>
+      </property>
 
       <property>
         <name>yarn.nodemanager.vmem-check-enabled</name>
