@@ -17,6 +17,8 @@ spec:
       labels:
         app: ssdb
       annotations:
+        #disable istio sidecar injection
+        sidecar.istio.io/inject: "false"
         #net.ipv4.tcp_syncookies=0 need kernel version 4.4 or newer
         security.alpha.kubernetes.io/sysctls: "net.ipv4.tcp_syncookies=0,net.ipv4.ip_local_port_range=10000 65535"
         #kernel version 4.15 needed
