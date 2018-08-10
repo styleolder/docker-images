@@ -65,9 +65,9 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=171 \
-    JAVA_BUILD=11 \
-    JAVA_PATH=512cd62ec5174c3487ac17c61aaa89e8 \
+    JAVA_UPDATE=181 \
+    JAVA_BUILD=13 \
+    JAVA_PATH=96a7b8442fe848ef90c96a2fad6ed6d1 \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
@@ -155,10 +155,10 @@ COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 
 # jenkins version being bundled in this docker image
 ARG JENKINS_VERSION
-ENV JENKINS_VERSION ${JENKINS_VERSION:-2.121.1}
+ENV JENKINS_VERSION ${JENKINS_VERSION:-2.121.2}
 
 # jenkins.war checksum, download will be validated using it
-ARG JENKINS_SHA=5bb075b81a3929ceada4e960049e37df5f15a1e3cfc9dc24d749858e70b48919
+ARG JENKINS_SHA=da0f9d106e936246841a898471783fb4fbdbbacc8d42a156b7306a0855189602
 
 # Can be used to customize where jenkins.war get downloaded from
 #http://mirrors.jenkins.io/war-stable/latest/jenkins.war

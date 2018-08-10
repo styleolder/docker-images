@@ -1,0 +1,4 @@
+1.istio官方原版
+https://istio.io/docs/setup/kubernetes/
+2.istio cilium增强版
+http://cilium.readthedocs.io/en/latestgettingstarted/istio/

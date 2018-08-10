@@ -63,9 +63,9 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=171 \
-    JAVA_BUILD=11 \
-    JAVA_PATH=512cd62ec5174c3487ac17c61aaa89e8 \
+    JAVA_UPDATE=181 \
+    JAVA_BUILD=13 \
+    JAVA_PATH=96a7b8442fe848ef90c96a2fad6ed6d1 \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
@@ -118,9 +118,9 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     apk del build-dependencies && \
     rm "/tmp/"*
 
-ARG MAVEN_VERSION=3.5.3
+ARG MAVEN_VERSION=3.5.4
 ARG USER_HOME_DIR="/root"
-ARG SHA=b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408
+ARG SHA=ce50b1c91364cb77efe3776f756a6d92b76d9038b0a0782f7d53acf1e997a14d
 #ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 ARG BASE_URL=http://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/${MAVEN_VERSION}/binaries
 

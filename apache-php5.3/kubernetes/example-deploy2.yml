@@ -63,8 +63,6 @@ spec:
           #kubenetes v1.11 and kernel version 4.15 needed
           - name: kernel.msgmax
             value: "65536"
-          - name: kernel.shm_rmid_forced
-            value: "1"
           - name: net.ipv4.tcp_syncookies=0
             value: "0"
           - name: net.ipv4.ip_local_port_range
