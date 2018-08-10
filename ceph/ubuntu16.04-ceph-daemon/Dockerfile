@@ -50,9 +50,9 @@ ADD *.sh ceph.defaults check_zombie_mons.py ./osd_scenarios/* entrypoint.sh.in d
 # install prerequisites
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y wget unzip uuid-runtime python-setuptools udev dmsetup && \
   # Install ceph, ganesha and etcd
-  wget -q -O- 'https://download.ceph.com/keys/release.asc' | apt-key add - && \
-  echo "deb http://download.ceph.com/debian-$CEPH_VERSION/ xenial main" | tee /etc/apt/sources.list.d/ceph-$CEPH_VERSION.list && \
-  echo "deb http://download.ceph.com/nfs-ganesha/deb-V2.6-stable/mimic/ xenial main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
+  wget -q -O- 'https://mirrors.aliyun.com/ceph/keys/release.asc' | apt-key add - && \
+  echo "deb http://mirrors.aliyun.com/ceph/debian-$CEPH_VERSION/ xenial main" | tee /etc/apt/sources.list.d/ceph-$CEPH_VERSION.list && \
+  echo "deb http://mirrors.aliyun.com/ceph/nfs-ganesha/deb-V2.6-stable/mimic/ xenial main" | tee /etc/apt/sources.list.d/nfs-ganesha.list && \
   apt-get update && apt-get install -y  --no-install-recommends --force-yes $PACKAGES && \
   dpkg -s $PACKAGES && \
   apt-get clean && rm -rf $PURGES && \
