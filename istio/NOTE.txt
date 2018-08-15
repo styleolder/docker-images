@@ -2,3 +2,17 @@
 https://istio.io/docs/setup/kubernetes/
 2.istio cilium增强版
 http://cilium.readthedocs.io/en/latestgettingstarted/istio/
+helm template istio-cilium-helm --name istio --namespace istio-system \
+      --set global.proxy.includeIPRanges="10.233.0.0/16\,10.234.0.0/16" \
+      --set pilot.image=docker.io/cilium/istio_pilot:1.0.0 \
+      --set sidecarInjectorWebhook.enabled=true \
+      --set global.controlPlaneSecurityEnabled=true \
+      --set global.mtls.enabled=true \
+      --set tracing.enabled=true \
+      --set servicegraph.enabled=true \
+      --set grafana.enabled=true \
+      --set kiali.enabled=true \
+      --set global.proxy.image=proxyv2 \
+      --set ingress.enabled=false \
+      --set egressgateway.enabled=false \
+      > istio-cilium.yaml
