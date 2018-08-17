@@ -413,8 +413,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   workflow-scm-step:latest       \
   workflow-step-api:latest       \
   workflow-support:latest        \
-  ws-cleanup:latest              \
-  xcode-plugin:latest
+  ws-cleanup:latest
 
 # copy custom built plugins
 COPY plugins/*.hpi /usr/share/jenkins/ref/plugins/
