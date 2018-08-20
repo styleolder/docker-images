@@ -416,7 +416,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   ws-cleanup:latest
 
 # copy custom built plugins
-COPY plugins/*.hpi /usr/share/jenkins/ref/plugins/
+#COPY plugins/*.hpi /usr/share/jenkins/ref/plugins/
 
 # so we can use jenkins cli
 #COPY config/jenkins.properties /usr/share/jenkins/ref/
