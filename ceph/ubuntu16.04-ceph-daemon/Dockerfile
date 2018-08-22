@@ -24,7 +24,7 @@ RUN \
     echo "${TIMEZONE}" > /etc/timezone \
     && echo "$LANG UTF-8" > /etc/locale.gen \
     && apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog libjemalloc1 iproute2 tzdata \ 
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog libjemalloc1 dpdk iproute2 tzdata \ 
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     && update-locale LANG=$LANG \
     && locale-gen $LANG \
