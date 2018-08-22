@@ -1,4 +1,4 @@
-FROM ceph/daemon:latest
+FROM ceph/daemon:latest-mimic
 
 MAINTAINER 若虚 <slpcat@qq.com>
 
@@ -9,12 +9,10 @@ ENV \
     LANGUAGE="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
-COPY epel.repo /etc/yum.repos.d/
-
 # set timezone
 RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
 
 RUN  \
     yum update -y && \
-    yum install -y iproute && \
+    yum install -y iproute dpdk && \
     yum clean all
