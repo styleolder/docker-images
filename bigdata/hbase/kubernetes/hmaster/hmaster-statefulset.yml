@@ -50,8 +50,10 @@ spec:
         - name: HBASE_SERVER_TYPE
           value: master
         - name: HDFS_PATH
+          #hdfs headless service
           value: hadoop-hadoop-hdfs-nn:9000
         - name: ZOOKEEPER_SERVICE_LIST
+          #zookeeper headless service
           value: zookeeper-1,zookeeper-2,zookeeper-3
         - name: ZOOKEEPER_PORT
           value: "2181"
