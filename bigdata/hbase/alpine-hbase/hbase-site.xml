@@ -22,10 +22,6 @@
       <value>/@ZNODE_PARENT@</value>
     </property>
     <property>
-      <name>zookeeper.session.timeout</name>
-      <value>90000</value>
-    </property>
-    <property>
         <name>hbase.client.scanner.caching</name>
         <value>5000</value>
         <description>HBase客户端扫描缓存，对查询性能有很大帮助</description>
@@ -53,13 +49,6 @@
     <property>
         <name>hbase.rpc.timeout</name>
         <value>360000000</value>
-    </property>
-    <property>
-        <name>hbase.regionserver.restart.on.zk.expire</name>
-        <value>true</value>
-        <description>
-           Zookeeper sessionexpired will force regionserver exit.Enable this will makethe regionserver restart.
-        </description>
     </property>
     <property>
       <name>hbase.ipc.client.tcpnodelay</name>

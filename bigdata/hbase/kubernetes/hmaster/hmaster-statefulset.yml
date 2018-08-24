@@ -32,16 +32,17 @@ spec:
       #- name: registrykey-ali-ext
       containers:
       - name: hbase-master
-        image: slpcat/hbase:centos7
+        #image: slpcat/hbase:centos7
+        image: slpcat/hbase:alpine
         imagePullPolicy: Always
         resources:
           requests:
             cpu: 500m
             memory: 512Mi
           limits:
-            cpu: 2
+            cpu: 4
             #nvidia.com/gpu: 1
-            memory: 2Gi
+            memory: 8Gi
         securityContext:
           capabilities: {}
           privileged: false
