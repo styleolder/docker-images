@@ -49,7 +49,7 @@ spec:
         - name: HBASE_SERVER_TYPE
           value: regionserver
         - name: HDFS_PATH
-          value: hadoop-hdfs-nn
+          value: hadoop-hadoop-hdfs-nn:9000
         - name: ZOOKEEPER_SERVICE_LIST
           value: zookeeper-1,zookeeper-2,zookeeper-3
         - name: ZOOKEEPER_PORT
