@@ -70,7 +70,7 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: slpcat/zookeeper
+        image: slpcat/zookeeper:alpine
         resources:
           requests:
             memory: "2Gi"
