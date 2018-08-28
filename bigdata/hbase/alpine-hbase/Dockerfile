@@ -177,6 +177,7 @@ RUN mkdir -p ${HBASE_INSTALL_DIR} && \
     curl -L http://mirrors.aliyun.com/apache/hbase//${HBASE_VERSION}/hbase-${HBASE_VERSION}-bin.tar.gz | tar -xz --strip=1 -C ${HBASE_INSTALL_DIR}
 
 ADD hbase-site.xml /opt/hbase/conf/hbase-site.xml
+ADD hbase-env.sh /opt/hbase/conf/hbase-env.sh
 ADD start-k8s-hbase.sh /opt/hbase/bin/start-k8s-hbase.sh
 RUN chmod +x /opt/hbase/bin/start-k8s-hbase.sh
 
