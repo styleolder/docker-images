@@ -23,8 +23,12 @@
     </property>
     <property>
         <name>hbase.client.scanner.caching</name>
-        <value>5000</value>
+        <value>10000</value>
         <description>HBase客户端扫描缓存，对查询性能有很大帮助</description>
+    </property>
+    <property>
+        <name>hbase.client.write.buffer</name>
+        <value>33554432</value>
     </property>
     <property>
         <name>hbase.offpeak.start.hour</name>
