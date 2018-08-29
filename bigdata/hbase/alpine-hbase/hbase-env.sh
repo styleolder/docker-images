@@ -44,9 +44,9 @@ export HBASE_OPTS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitFor
 #export HBASE_OPTS="-XX:+UseConcMarkSweepGC"
 
 # Configure PermSize. Only needed in JDK7. You can safely remove it for JDK8+
-export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -Xms1024m -Xmx2048m"
+#export HBASE_MASTER_OPTS="$HBASE_MASTER_OPTS -Xms1024m -Xmx2048m"
 #export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XX:+UseParNewGC -Xms24576m -Xmx24576m -XX:PermSize=128m -XX:MaxPermSize=128m -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC -Xloggc:$HBASE_HOME/logs/gc-$(hostname)-hbase.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M"
-export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XX:InitiatingHeapOccupancyPercent=70 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution -XX:+PrintGCApplicationStoppedTime -XX:+PrintHeapAtGC -Xloggc:$HBASE_HOME/logs/gc-$(hostname)-hbase.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M"
+export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS -XX:InitiatingHeapOccupancyPercent=60 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintTenuringDistribution -XX:+PrintGCApplicationStoppedTime -XX:+PrintHeapAtGC -Xloggc:$HBASE_HOME/logs/gc-$(hostname)-hbase.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M"
 
 # Uncomment one of the below three options to enable java garbage collection logging for the server-side processes.
 
