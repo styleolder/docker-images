@@ -19,6 +19,8 @@ RUN set -ex \
     && apk upgrade \
     && apk add \
            bash \
+           bzip2 \
+           snappy \
            gnupg \
            tzdata \
            vim \
