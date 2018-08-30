@@ -25,7 +25,7 @@ ZK_ELECTION_PORT=${ZK_ELECTION_PORT:-3888}
 ZK_TICK_TIME=${ZK_TICK_TIME:-2000}
 ZK_INIT_LIMIT=${ZK_INIT_LIMIT:-10}
 ZK_SYNC_LIMIT=${ZK_SYNC_LIMIT:-5}
-ZK_HEAP_SIZE=${ZK_HEAP_SIZE:-2G}
+#ZK_HEAP_SIZE=${ZK_HEAP_SIZE:-2G}
 ZK_MAX_CLIENT_CNXNS=${ZK_MAX_CLIENT_CNXNS:-2000}
 ZK_MIN_SESSION_TIMEOUT=${ZK_MIN_SESSION_TIMEOUT:- $((ZK_TICK_TIME*2))}
 ZK_MAX_SESSION_TIMEOUT=${ZK_MAX_SESSION_TIMEOUT:- $((ZK_TICK_TIME*20))}
@@ -77,7 +77,7 @@ function validate_env() {
     echo "ZK_MAX_CLIENT_CNXNS=$ZK_MAX_CLIENT_CNXNS"
     echo "ZK_MIN_SESSION_TIMEOUT=$ZK_MIN_SESSION_TIMEOUT"
     echo "ZK_MAX_SESSION_TIMEOUT=$ZK_MAX_SESSION_TIMEOUT"
-    echo "ZK_HEAP_SIZE=$ZK_HEAP_SIZE"
+    #echo "ZK_HEAP_SIZE=$ZK_HEAP_SIZE"
     echo "ZK_SNAP_RETAIN_COUNT=$ZK_SNAP_RETAIN_COUNT"
     echo "ZK_PURGE_INTERVAL=$ZK_PURGE_INTERVAL"
     echo "ENSEMBLE"
@@ -150,7 +150,7 @@ function create_java_env() {
     rm -f $JAVA_ENV_FILE
     echo "Creating JVM configuration file"
     echo "ZOO_LOG_DIR=$ZK_LOG_DIR" >> $JAVA_ENV_FILE
-    echo "JVMFLAGS=\"-Xmx$ZK_HEAP_SIZE -Xms$ZK_HEAP_SIZE\"" >> $JAVA_ENV_FILE
+    echo "JVMFLAGS=\"-XX:MaxRAMFraction=2 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=15 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:G1MixedGCLiveThresholdPercent=90 -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=32M -XX:+PerfDisableSharedMem -XX:-ResizePLAB\"" >> $JAVA_ENV_FILE
     echo "Wrote JVM configuration to $JAVA_ENV_FILE"
 }
 
