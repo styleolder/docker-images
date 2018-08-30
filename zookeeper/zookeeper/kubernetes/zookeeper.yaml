@@ -76,8 +76,12 @@ spec:
         image: slpcat/zookeeper:alpine
         resources:
           requests:
-            memory: "2Gi"
+            memory: "1Gi"
             cpu: "500m"
+          limits:
+            cpu: 2
+            #nvidia.com/gpu: 1
+            memory: 4Gi
         ports:
         - containerPort: 2181
           name: client
