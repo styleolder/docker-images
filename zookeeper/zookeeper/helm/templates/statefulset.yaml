@@ -65,8 +65,8 @@ spec:
         env:
         - name : ZK_REPLICAS
           value: "{{ .Values.servers }}"
-        - name : ZK_HEAP_SIZE
-          value: "{{ .Values.heap }}"
+        #- name : ZK_HEAP_SIZE
+        #  value: "{{ .Values.heap }}"
         - name : ZK_TICK_TIME
           value: "{{ .Values.tickTimeMs }}"
         - name : ZK_INIT_LIMIT

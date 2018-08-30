@@ -11,7 +11,7 @@ resources:
   limits:
     cpu: 2
     memory: 4Gi
-heap: "2G"
+#heap: "2G"
 storage: "20Gi"
 #storageClass: alicloud-disk-efficiency
 serverPort: 2888
