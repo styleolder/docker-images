@@ -164,7 +164,7 @@ RUN gpg --keyserver keyserver.ubuntu.com --recv-key C36C5F0F
 # Add native libs
 ENV HADOOP_VERSION=2.7.3
 ENV HADOOP_NATIVE_LIBDIR /usr/local/hadoop-${HADOOP_VERSION}/lib/native
-ENV HADOOP_OPTS="-XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=9 -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=1 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:+PerfDisableSharedMem -XX:-ResizePLAB"
+ENV HADOOP_OPTS="-XX:MaxRAMFraction=2 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=15 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:G1MixedGCLiveThresholdPercent=90 -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=32M -XX:+PerfDisableSharedMem -XX:-ResizePLAB"
 ENV HADOOP_URL https://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz
 ENV LD_LIBRARY_PATH ${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$HADOOP_NATIVE_LIBDIR
 
