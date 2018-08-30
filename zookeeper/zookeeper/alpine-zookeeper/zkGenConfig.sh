@@ -150,7 +150,7 @@ function create_java_env() {
     rm -f $JAVA_ENV_FILE
     echo "Creating JVM configuration file"
     echo "ZOO_LOG_DIR=$ZK_LOG_DIR" >> $JAVA_ENV_FILE
-    echo "JVMFLAGS=\"-XX:MaxRAMFraction=2 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=15 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:G1MixedGCLiveThresholdPercent=90 -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=32M -XX:+PerfDisableSharedMem -XX:-ResizePLAB\"" >> $JAVA_ENV_FILE
+    echo "JVMFLAGS=\"-XX:MaxRAMFraction=1 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=15 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:G1MixedGCLiveThresholdPercent=90 -XX:InitiatingHeapOccupancyPercent=70 -XX:G1HeapRegionSize=32M -XX:+PerfDisableSharedMem -XX:-ResizePLAB\"" >> $JAVA_ENV_FILE
     echo "Wrote JVM configuration to $JAVA_ENV_FILE"
 }
 

@@ -7,7 +7,7 @@ servers: 3
 resources:
   requests:
     cpu: 500m
-    memory: 2Gi
+    memory: 1Gi
   limits:
     cpu: 2
     memory: 4Gi
@@ -29,6 +29,6 @@ probeTimeoutSeconds: 5
 antiAffinity: "hard"
 logLevel: "INFO"
 security:
-  enabled: false
+  enabled: true
   runAsUser: 1000
   fsGroup: 1000

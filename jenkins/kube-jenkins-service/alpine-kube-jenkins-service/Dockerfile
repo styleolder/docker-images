@@ -428,7 +428,7 @@ RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 COPY src/main/docker/master-executors.groovy /usr/share/jenkins/ref/init.groovy.d/
 
 # ENV JAVA_OPTS="-Djava.util.logging.config.file=/var/jenkins_home/log.properties"
-ENV JAVA_OPTS="-XX:MaxRAMFraction=2 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking \
+ENV JAVA_OPTS="-XX:MaxRAMFraction=1 -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking \
         -XX:+UseFastAccessorMethods -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap \
         -XX:+UseG1GC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 \
         -XX:MaxGCPauseMillis=50 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled \

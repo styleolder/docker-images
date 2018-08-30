@@ -7,7 +7,7 @@
     </property>
     <property>
       <name>hbase.rootdir</name>
-      <value>hdfs://@HDFS_PATH@/hbase/</value>
+      <value>hdfs://@HDFS_PATH@/@ZNODE_PARENT@/</value>
     </property>
     <property>
       <name>hbase.zookeeper.quorum</name>
@@ -73,6 +73,14 @@
     <property>
       <name>hbase.regionserver.handler.count</name>
       <value>64</value>
+    </property>
+    <property>
+      <name>dfs.client.hedged.read.threadpool.size</name>
+      <value>20</value> <!-- 20 threads 设置为0不启用-->
+    </property>
+    <property>
+      <name>dfs.client.hedged.read.threshold.millis</name>
+      <value>10</value> <!-- 10 milliseconds 启动第二个个线程等待的毫秒数-->
     </property>
     <property>
       <name>hbase.hstore.min.locality.to.skip.major.compact</name>
