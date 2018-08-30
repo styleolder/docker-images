@@ -19,6 +19,7 @@ metadata:
 spec:
   selector:
     app: hbase-master
+    statefulset.kubernetes.io/pod-name: hbase-master-0
   ports:
     - name: p2
       port: 16010
