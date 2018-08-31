@@ -15,11 +15,11 @@ hdfs:
 
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "10m"
+        memory: "512Mi"
+        cpu: "500m"
       limits:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "4Gi"
+        cpu: "2"
 
   dataNode:
     #replicas: 3
@@ -27,11 +27,11 @@ hdfs:
 
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "10m"
+        memory: "512Mi"
+        cpu: "500m"
       limits:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "8Gi"
+        cpu: "4"
 
 yarn:
   resourceManager:
@@ -39,11 +39,11 @@ yarn:
 
     resources:
       requests:
-        memory: "256Mi"
-        cpu: "10m"
+        memory: "512Mi"
+        cpu: "500m"
       limits:
-        memory: "2048Mi"
-        cpu: "2000m"
+        memory: "2Gi"
+        cpu: "2"
 
   nodeManager:
     pdbMinAvailable: 1
@@ -61,8 +61,8 @@ yarn:
         memory: "2048Mi"
         cpu: "1000m"
       limits:
-        memory: "2048Mi"
-        cpu: "1000m"
+        memory: "8Gi"
+        cpu: "8"
 
 persistence:
   nameNode:
