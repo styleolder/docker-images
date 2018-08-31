@@ -48,7 +48,7 @@
     </property>
     <property>
       <name>hfile.block.cache.size</name>
-      <value>0.4</value>
+      <value>0.3</value>
     </property>
     <property>
       <name>hbase.bucketcache.size</name>
