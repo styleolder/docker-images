@@ -63,7 +63,6 @@ spec:
         - "exec ./bin/kafka-server-start.sh config/server.properties --override broker.id=${HOSTNAME##*-} \
           --override listeners=PLAINTEXT://:9093 \
           --override zookeeper.connect={{ .Release.Name }}-zookeeper:2181 \
-          --override log.dir=/var/lib/kafka \
           --override auto.create.topics.enable=true \
           --override auto.leader.rebalance.enable=true \
           --override background.threads=10 \
