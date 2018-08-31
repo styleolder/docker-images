@@ -37,13 +37,13 @@ spec:
         - name: JMX_PORT
           value: "9999"
         - name: KAFKA_JMX_OPTS
-          value: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+          value: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.rmi.port=$JMX_PORT"
         livenessProbe:
           exec:
             command:
               - bin/kafka-topics.sh
               - --zookeeper
-              - "{{ .Release.Name }}-zookeeper:2181"
+              - "{{ .Release.Name }}-zookeeper:2181/kafka"
               - --list
           initialDelaySeconds: 30
           timeoutSeconds: 5
@@ -52,13 +52,15 @@ spec:
             command:
               - bin/kafka-topics.sh
               - --zookeeper
-              - "{{ .Release.Name }}-zookeeper:2181"
+              - "{{ .Release.Name }}-zookeeper:2181/kafka"
               - --list
           initialDelaySeconds: 30
           timeoutSeconds: 5
         ports:
         - containerPort: 9092
           name: kafka
+        - containerPort: 9999
+          name: jmx
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         command:
@@ -66,7 +68,7 @@ spec:
         - -c
         - "exec ./bin/kafka-server-start.sh config/server.properties --override broker.id=${HOSTNAME##*-} \
           --override listeners=PLAINTEXT://:9092 \
-          --override zookeeper.connect={{ .Release.Name }}-zookeeper:2181 \
+          --override zookeeper.connect={{ .Release.Name }}-zookeeper:2181/kafka \
           --override auto.create.topics.enable=true \
           --override auto.leader.rebalance.enable=true \
           --override background.threads=10 \
