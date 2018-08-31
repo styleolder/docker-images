@@ -39,6 +39,10 @@
         <value>18</value>
     </property>
     <property>
+      <name>hbase.bucketcache.combinedcache.enabled</name>
+      <value>true</value>
+    </property>
+    <property>
       <name>hbase.bucketcache.ioengine</name>
       <value>offheap</value>
     </property>
@@ -48,7 +52,15 @@
     </property>
     <property>
       <name>hbase.bucketcache.size</name>
-      <value>0.9</value>
+      <value>0.4</value>
+    </property>
+    <property>
+      <name>hbase.bucketcache.writer.queuelength</name>
+      <value>64</value>
+    </property>
+    <property>
+      <name>hbase.bucketcache.writer.threads</name>
+      <value>3</value>
     </property>
     <property>
         <name>hbase.regionserver.thread.compaction.small</name>
