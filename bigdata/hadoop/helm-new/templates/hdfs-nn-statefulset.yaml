@@ -71,7 +71,7 @@ spec:
             resourceFieldRef:
               containerName: hdfs-nn
               resource: limits.memory
-              divisor: 2M
+              divisor: 1Mi
         resources:
 {{ toYaml .Values.hdfs.nameNode.resources | indent 10 }}
         readinessProbe:
