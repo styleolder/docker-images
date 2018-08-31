@@ -44,7 +44,7 @@
     </property>
     <property>
       <name>hbase.bucketcache.ioengine</name>
-      <value>offheap</value>
+      <value>heap</value>
     </property>
     <property>
       <name>hfile.block.cache.size</name>
