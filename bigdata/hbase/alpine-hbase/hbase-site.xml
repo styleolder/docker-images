@@ -39,8 +39,16 @@
         <value>18</value>
     </property>
     <property>
-        <name>hfile.block.cache.size</name>
-        <value>0.3</value>
+      <name>hbase.bucketcache.ioengine</name>
+      <value>offheap</value>
+    </property>
+    <property>
+      <name>hfile.block.cache.size</name>
+      <value>0.4</value>
+    </property>
+    <property>
+      <name>hbase.bucketcache.size</name>
+      <value>0.9</value>
     </property>
     <property>
         <name>hbase.regionserver.thread.compaction.small</name>
@@ -63,6 +71,10 @@
       <value>true</value>
     </property>
     <property>
+      <name>hbase.wal.provider</name>
+      <value>multiwal</value>
+    </property>
+    <property>
       <name>dfs.namenode.avoid.read.stale.datanode</name>
       <value>true</value>
     </property>
@@ -80,7 +92,7 @@
     </property>
     <property>
       <name>dfs.client.hedged.read.threshold.millis</name>
-      <value>10</value> <!-- 10 milliseconds 启动第二个个线程等待的毫秒数-->
+      <value>50</value> <!-- 10 milliseconds 启动第二个线程等待的毫秒数-->
     </property>
     <property>
       <name>hbase.hstore.min.locality.to.skip.major.compact</name>
