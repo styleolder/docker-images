@@ -88,6 +88,12 @@ spec:
               containerName: yarn-nm
               resource: limits.memory
               divisor: 1M
+        - name: HADOOP_HEAPSIZE
+          valueFrom:
+            resourceFieldRef:
+              containerName: yarn-nm
+              resource: limits.memory
+              divisor: 1M
         volumeMounts:
         - name: hadoop-config
           mountPath: /tmp/hadoop-config

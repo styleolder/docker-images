@@ -43,6 +43,12 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: HADOOP_HEAPSIZE
+          valueFrom:
+            resourceFieldRef:
+              containerName: hdfs-dn
+              resource: limits.memory
+              divisor: 1M
         resources:       
 {{ toYaml .Values.hdfs.dataNode.resources | indent 10 }}
         readinessProbe:

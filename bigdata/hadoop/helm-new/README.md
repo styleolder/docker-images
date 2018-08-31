@@ -94,3 +94,4 @@ kubectl label nodes hdfs=enabled --all
 4.hdfs namenode使用hostnetwork
 5.hdfs namenode使用statefulset
 6.所有hdfs使用指定节点 hdfs: enabled
+7.自动设置HADOOP_HEAPSIZE
