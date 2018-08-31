@@ -9,12 +9,12 @@ Image: "slpcat/kafka"
 ImageTag: "alpine"
 ImagePullPolicy: "Always"
 resources:
-  limits:
-    cpu: 2
-    memory: 4Gi
   requests:
     cpu: 500m
     memory: 1024Mi
+  limits:
+    cpu: 4
+    memory: 8Gi
 Storage: "50Gi"
 DataDirectory: "/opt/kafka/data"
 
@@ -27,7 +27,7 @@ zookeeper:
   Resources:
     requests:
       cpu: 500m
-      memory: 1024Mi
+      memory: 512Mi
     limits:
       cpu: 2
       memory: 4Gi
