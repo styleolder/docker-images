@@ -53,7 +53,7 @@ spec:
           initialDelaySeconds: 30
           timeoutSeconds: 5
         ports:
-        - containerPort: 9092
+        - containerPort: 9093
           name: kafka
         resources:
 {{ toYaml .Values.resources | indent 10 }}
