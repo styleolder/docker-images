@@ -10,7 +10,7 @@ metadata:
 spec:
   ports:
   - name: broker
-    port: 9093
+    port: 9092
   selector:
     app: {{ include "kafka.name" . | quote }}
     release: {{ .Release.Name | quote }}

@@ -12,7 +12,7 @@ metadata:
 spec:
   ports:
   - name: broker
-    port: 9093
+    port: 9092
   clusterIP: None
   selector:
     app: {{ include "kafka.name" . | quote }}

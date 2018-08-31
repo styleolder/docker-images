@@ -7,7 +7,7 @@ metadata:
     app: kafka
 spec:
   ports:
-  - port: 9093
+  - port: 9092
     name: server
   clusterIP: None
   selector:
@@ -76,13 +76,13 @@ spec:
             memory: "1Gi"
             cpu: 500m
         ports:
-        - containerPort: 9093
+        - containerPort: 9092
           name: server
         command:
         - sh
         - -c
         - "exec kafka-server-start.sh /opt/kafka/config/server.properties --override broker.id=${HOSTNAME##*-} \
-          --override listeners=PLAINTEXT://:9093 \
+          --override listeners=PLAINTEXT://:9092 \
           --override zookeeper.connect=zk-0.zk-svc.default.svc.cluster.local:2181,zk-1.zk-svc.default.svc.cluster.local:2181,zk-2.zk-svc.default.svc.cluster.local:2181 \
           --override log.dir=/var/lib/kafka \
           --override auto.create.topics.enable=true \
@@ -175,6 +175,10 @@ spec:
           value: "-server -XshowSettings:vm -XX:+AggressiveOpts -XX:+UseBiasedLocking -XX:+UseFastAccessorMethods -XX:+UseG1GC -XX:+DisableExplicitGC -XX:G1ReservePercent=20 -XX:G1NewSizePercent=10 -XX:G1MaxNewSizePercent=25 -XX:MaxGCPauseMillis=20 -XX:-OmitStackTraceInFastThrow -XX:+ParallelRefProcEnabled -XX:ParallelGCThreads=8 -XX:MaxTenuringThreshold=15 -XX:G1HeapWastePercent=10 -XX:G1MixedGCCountTarget=16 -XX:G1MixedGCLiveThresholdPercent=90 -XX:InitiatingHeapOccupancyPercent=35 -XX:G1HeapRegionSize=32M -XX:+PerfDisableSharedMem -XX:-ResizePLAB -Djava.awt.headless=true"
         - name: KAFKA_OPTS
           value: " -Dlogging.level=INFO"
+        - name: JMX_PORT
+          value: "9999"
+        - name: KAFKA_JMX_OPTS
+          value: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/kafka
@@ -183,7 +187,7 @@ spec:
            command: 
             - sh 
             - -c 
-            - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9093"
+            - "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server=localhost:9092"
       securityContext:
         runAsUser: 1000
         fsGroup: 1000
