@@ -113,6 +113,11 @@ data:
         <name>io.file.buffer.size</name>
         <value>524288</value>
       </property>
+      <property>
+        <name>io.compression.codecs</name>
+        <value>org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.DeflateCodec,org.apache.hadoop.io.compress.SnappyCodec,org.apache.hadoop.io.compress.Lz4Codec</value>
+      </property>
+
     </configuration>
 
   hdfs-site.xml: |
@@ -228,6 +233,19 @@ data:
         <name>mapred.min.split.size</name>
         <value>134217728</value>
       </property>
+      <property>
+        <name>mapred.compress.map.output</name>
+        <value>true</value>
+      </property>
+      <property>
+        <name>mapred.map.output.compression.codec</name>
+        <value>org.apache.hadoop.io.compress.Lz4Codec</value>
+      </property>
+      <property>
+        <name>io.sort.mb</name>
+        <value>800</value>
+      </property>
+
     </configuration>
 
   slaves: |
