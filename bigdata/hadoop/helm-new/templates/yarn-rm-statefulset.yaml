@@ -59,12 +59,12 @@ spec:
            - "/tmp/hadoop-config/bootstrap.sh"
            - "-d"
         env:
-        - name: HADOOP_HEAPSIZE
+        - name: YARN_HEAPSIZE
           valueFrom:
             resourceFieldRef:
               containerName: yarn-rm
               resource: limits.memory
-              divisor: 1M
+              divisor: 1Mi
         resources:
 {{ toYaml .Values.yarn.resourceManager.resources | indent 10 }}
         readinessProbe:
