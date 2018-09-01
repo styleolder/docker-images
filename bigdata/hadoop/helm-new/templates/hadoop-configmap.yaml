@@ -182,27 +182,6 @@ data:
           Note that you can still do zero-copy reads when this size is set to 0.
         </description>
       </property>
-      <property>
-        <name>dfs.data.transfer.client.tcpnodelay</name>
-        <value>true</value>
-        <description>
-          If true, set TCP_NODELAY to sockets for transferring data from DFS client.
-        </description>
-      </property>
-      <property>
-        <name>dfs.data.transfer.server.tcpnodelay</name>
-        <value>true</value>
-        <description>
-          If true, set TCP_NODELAY to sockets for transferring data between Datanodes.
-        </description>
-      </property>
-      <property>
-        <name>dfs.datanode.lazywriter.interval.sec</name>
-        <value>600</value>
-        <description>
-          Interval in seconds for Datanodes for lazy persist writes.
-        </description>
-      </property>
       <property>  
         <name>dfs.datanode.readahead.bytes</name>  
         <value>4193404</value>  
@@ -212,7 +191,6 @@ data:
         <value>file:///root/hdfs/datanode</value>
         <description>DataNode directory</description>
       </property>
-
       <property>
         <name>dfs.namenode.name.dir</name>
         <value>file:///root/hdfs/namenode</value>
