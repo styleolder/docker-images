@@ -163,7 +163,7 @@ data:
       </property>
       <property>  
         <name>dfs.client.cache.readahead</name>  
-        <value>true</value>  
+        <value>4193404</value>  
       </property>  
       <property>
         <name>dfs.client.mmap.enabled</name>
