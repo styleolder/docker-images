@@ -136,17 +136,17 @@ data:
 
       <property>
         <name>dfs.replication</name>
-          <value>3</value>
+        <value>3</value>
       </property>
       <property>
         <name>dfs.blocksize</name>
-          <value>256m</value>
-          <description>
+        <value>256m</value>
+        <description>
             The default block size for new files, in bytes.
             You can use the following suffix (case insensitive):
             k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
             Or provide complete size in bytes (such as 134217728 for 128 MB).
-          </description>
+        </description>
       </property>
       <property>
         <name>dfs.datanode.balance.bandwidthPerSec</name>
@@ -166,13 +166,12 @@ data:
         <value>true</value>  
       </property>  
       <property>
-       <name>dfs.client.mmap.enabled</name>
-       <value>true</value>
-       <description>
-         If this is set to false, the client won't attempt to perform memory-mapped reads.
-       </description>
+        <name>dfs.client.mmap.enabled</name>
+        <value>true</value>
+        <description>
+          If this is set to false, the client won't attempt to perform memory-mapped reads.
+        </description>
       </property>
-  
       <property>
         <name>dfs.client.mmap.cache.size</name>
         <value>512</value>
@@ -180,12 +179,10 @@ data:
           When zero-copy reads are used, the DFSClient keeps a cache of recently used
           memory mapped regions.  This parameter controls the maximum number of
           entries that we will keep in that cache.
-  
           The larger this number is, the more file descriptors we will potentially
           use for memory-mapped files.  mmaped files also use virtual address space.
           You may need to increase your ulimit virtual address space limits before
           increasing the client mmap cache size.
-  
           Note that you can still do zero-copy reads when this size is set to 0.
         </description>
       </property>
@@ -196,7 +193,6 @@ data:
           If true, set TCP_NODELAY to sockets for transferring data from DFS client.
         </description>
       </property>
-  
       <property>
         <name>dfs.data.transfer.server.tcpnodelay</name>
         <value>true</value>
@@ -211,12 +207,10 @@ data:
           Interval in seconds for Datanodes for lazy persist writes.
         </description>
       </property>
-
       <property>  
         <name>dfs.datanode.readahead.bytes</name>  
         <value>4193404</value>  
       </property>
-
       <property>
         <name>dfs.datanode.data.dir</name>
         <value>file:///root/hdfs/datanode</value>
