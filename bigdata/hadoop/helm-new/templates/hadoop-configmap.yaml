@@ -140,25 +140,12 @@ data:
       </property>
       <property>
         <name>dfs.blocksize</name>
-        <value>256m</value>
+        <value>134217728</value>
         <description>
             The default block size for new files, in bytes.
             You can use the following suffix (case insensitive):
             k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa) to specify the size (such as 128k, 512m, 1g, etc.),
             Or provide complete size in bytes (such as 134217728 for 128 MB).
-        </description>
-      </property>
-      <property>
-        <name>dfs.datanode.balance.bandwidthPerSec</name>
-        <value>20m</value>
-        <description>
-           Specifies the maximum amount of bandwidth that each datanode
-           can utilize for the balancing purpose in term of
-           the number of bytes per second. You can use the following
-           suffix (case insensitive):
-           k(kilo), m(mega), g(giga), t(tera), p(peta), e(exa)to specify the size
-           (such as 128k, 512m, 1g, etc.).
-           Or provide complete size in bytes (such as 134217728 for 128 MB).
         </description>
       </property>
       <property>
@@ -181,10 +168,6 @@ data:
           increasing the client mmap cache size.
           Note that you can still do zero-copy reads when this size is set to 0.
         </description>
-      </property>
-      <property>  
-        <name>dfs.datanode.readahead.bytes</name>  
-        <value>4193404</value>  
       </property>
       <property>
         <name>dfs.datanode.data.dir</name>
