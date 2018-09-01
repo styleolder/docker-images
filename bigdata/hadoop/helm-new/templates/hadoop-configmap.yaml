@@ -242,7 +242,7 @@ data:
         <value>org.apache.hadoop.io.compress.Lz4Codec</value>
       </property>
       <property>
-        <name>io.sort.mb</name>
+        <name>mapreduce.task.io.sort.mb</name>
         <value>800</value>
       </property>
 
