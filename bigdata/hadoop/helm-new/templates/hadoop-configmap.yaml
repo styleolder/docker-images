@@ -220,30 +220,30 @@ data:
       </property>
 
       <property>
-        <name>mapred.job.reuse.jvm.num.tasks</name>
+        <name>mapreduce.job.reuse.jvm.num.tasks</name>
         <value>-1</value>
       </property>
 
       <property>
-        <name>mapred.max.split.size</name>
+        <name>mapreduce.max.split.size</name>
         <value>268435456</value>
       </property>
 
       <property>
-        <name>mapred.min.split.size</name>
+        <name>mapreduce.min.split.size</name>
         <value>134217728</value>
       </property>
       <property>
-        <name>mapred.compress.map.output</name>
+        <name>mapreduce.compress.map.output</name>
         <value>true</value>
       </property>
       <property>
-        <name>mapred.map.output.compression.codec</name>
+        <name>mapreduce.map.output.compression.codec</name>
         <value>org.apache.hadoop.io.compress.Lz4Codec</value>
       </property>
       <property>
         <name>mapreduce.task.io.sort.mb</name>
-        <value>800</value>
+        <value>400</value>
       </property>
 
     </configuration>
