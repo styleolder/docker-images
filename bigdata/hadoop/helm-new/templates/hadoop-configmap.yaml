@@ -161,10 +161,6 @@ data:
            Or provide complete size in bytes (such as 134217728 for 128 MB).
         </description>
       </property>
-      <property>  
-        <name>dfs.client.cache.readahead</name>  
-        <value>4193404</value>  
-      </property>  
       <property>
         <name>dfs.client.mmap.enabled</name>
         <value>true</value>
