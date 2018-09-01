@@ -351,7 +351,6 @@ RUN /usr/local/bin/install-plugins.sh       \
   oic-auth:latest                \
   openid:latest                  \
   openshift-login:latest         \
-  openshift-pipeline:latest      \
   pam-auth:latest                \
   parameterized-trigger:latest   \
   performance:latest             \
