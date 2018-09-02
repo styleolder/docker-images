@@ -16,4 +16,5 @@ sed -i s/^brokerName=.*$/brokerName=$BROKER_NAME/ /opt/rocketmq/conf/broker.conf
 
 if [[ $BROKER_ROLE == slave ]]; then 
 sed -i s/^brokerId=.*$/brokerId=1/ /opt/rocketmq/conf/broker.conf
+sed -i s/^brokerRole=.*$/brokerRole=SLAVE/ /opt/rocketmq/conf/broker.conf
 fi
