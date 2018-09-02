@@ -16,9 +16,9 @@ data:
     #在发送消息时，自动创建服务器不存在的topic，默认创建的队列数
     defaultTopicQueueNums=4
     #是否允许 Broker 自动创建Topic，建议线下开启，线上关闭
-    autoCreateTopicEnable=false
+    autoCreateTopicEnable=true
     #是否允许 Broker 自动创建订阅组，建议线下开启，线上关闭
-    autoCreateSubscriptionGroup=false
+    autoCreateSubscriptionGroup=true
     #Broker 对外服务的监听端口
     listenPort=10911
     #删除文件时间点，默认凌晨 4点
@@ -32,7 +32,7 @@ data:
     #destroyMapedFileIntervalForcibly=120000
     #redeleteHangedFileInterval=120000
     #检测物理文件磁盘空间
-    diskMaxUsedSpaceRatio=88
+    diskMaxUsedSpaceRatio=80
     #存储路径
     storePathRootDir=/opt/rocketmq/store
     #commitLog 存储路径
