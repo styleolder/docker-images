@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: rocketmq-nameserver
+  name: rocketmqcluster-nameserver
   labels:
-    app: rocketmq-nameserver
+    app: rocketmqcluster-nameserver
 spec:
-  serviceName: rocketmq-nameserver
+  serviceName: rocketmqcluster-nameserver
   replicas: 2
   selector:
     matchLabels:
-      app: rocketmq-nameserver
+      app: rocketmqcluster-nameserver
   template:
     metadata:
       labels:
-        name: rocketmq-nameserver
-        app: rocketmq-nameserver
+        name: rocketmqcluster-nameserver
+        app: rocketmqcluster-nameserver
       annotations:
         #disable istio sidecar injection
         sidecar.istio.io/inject: "false"
@@ -36,7 +36,7 @@ spec:
         command:
         - sh
         - -c
-        - rkGenConfig.sh && mqnamesrv 2>&1
+        - ./mqnamesrv 2>&1
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:

@@ -1,7 +1,7 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: rocketmqcluser-nameserver
+  name: rocketmqcluster-nameserver
   labels:
       app: rocketmqcluster-nameserver
 spec:

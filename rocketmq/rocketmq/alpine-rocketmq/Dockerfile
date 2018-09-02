@@ -150,6 +150,7 @@ RUN \
 
 USER rocketmq
 COPY runbroker.sh /opt/rocketmq/bin/runbroker.sh
+COPY runserver.sh /opt/rocketmq/bin/runserver.sh
 COPY rkGenConfig.sh /opt/rocketmq/bin/rkGenConfig.sh
 WORKDIR /opt/rocketmq/bin
 EXPOSE 9876 10909 10911

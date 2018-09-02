@@ -36,7 +36,7 @@ spec:
         command:
         - sh
         - -c
-        - rkGenConfig.sh && mqbroker -n $ROCKETMQ_NAMESERVER 2>&1
+        - ./rkGenConfig.sh && ./mqbroker -n $ROCKETMQ_NAMESERVER 2>&1
         env:
         - name : ROCKETMQ_NAMESERVER
           value: "rocketmqcluster-nameserver:9876"
