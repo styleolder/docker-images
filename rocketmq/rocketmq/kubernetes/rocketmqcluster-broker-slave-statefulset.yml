@@ -36,10 +36,10 @@ spec:
         command:
         - sh
         - -c
-        - ./rkGenConfig.sh && ./mqbroker -n $ROCKETMQ_NAMESERVER 2>&1
+        - ./rkGenConfig.sh && ./mqbroker -c ../conf/broker.conf -n $ROCKETMQ_NAMESERVER 2>&1
         env:
         - name : ROCKETMQ_NAMESERVER
-          value: "rocketmqcluster-nameserver:9876"
+          value: "rocketmqcluster-nameserver-0.rocketmqcluster-nameserver:9876,rocketmqcluster-nameserver-1.rocketmqcluster-nameserver:9876"
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
