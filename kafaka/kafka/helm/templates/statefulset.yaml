@@ -43,19 +43,19 @@ spec:
             command:
               - ./bin/kafka-topics.sh
               - --zookeeper
-              - "{{ .Release.Name }}-zookeeper:2181/kafka"
+              - "{{ .Release.Name }}-zookeeper:2181"
               - --list
           initialDelaySeconds: 30
-          timeoutSeconds: 20
+          timeoutSeconds: 10
         readinessProbe:
           exec:
             command:
               - ./bin/kafka-topics.sh
               - --zookeeper
-              - "{{ .Release.Name }}-zookeeper:2181/kafka"
+              - "{{ .Release.Name }}-zookeeper:2181"
               - --list
           initialDelaySeconds: 30
-          timeoutSeconds: 20
+          timeoutSeconds: 10
         ports:
         - containerPort: 9092
           name: kafka
@@ -66,7 +66,7 @@ spec:
         - -c
         - "exec ./bin/kafka-server-start.sh config/server.properties --override broker.id=${HOSTNAME##*-} \
           --override listeners=PLAINTEXT://:9092 \
-          --override zookeeper.connect={{ .Release.Name }}-zookeeper:2181/kafka \
+          --override zookeeper.connect={{ .Release.Name }}-zookeeper:2181 \
           --override auto.create.topics.enable=true \
           --override auto.leader.rebalance.enable=true \
           --override background.threads=10 \
