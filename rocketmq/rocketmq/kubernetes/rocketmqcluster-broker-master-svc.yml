@@ -2,6 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: rocketmqcluster-broker-master
+  namespace: default
   labels:
       app: rocketmqcluster-broker-master
 spec:

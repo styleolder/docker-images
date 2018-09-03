@@ -5,6 +5,7 @@ metadata:
   labels:
       app: rocketmq
   name: rocketmq-svc
+  namespace: default
 spec:
   ports:
   - port: 9876
@@ -23,6 +24,7 @@ metadata:
   labels:
     app: rocketmq
   name: rocketmq
+  namespace: default
 spec:
   replicas: 1
   selector:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: rocketmqcluster-broker-master
+  namespace: default
   labels:
     app: rocketmqcluster-broker-master
 spec:

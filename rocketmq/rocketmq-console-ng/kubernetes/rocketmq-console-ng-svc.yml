@@ -4,6 +4,7 @@ metadata:
   labels:
       app: rocketmq-console-ng
   name: rocketmq-console-ng-svc
+  namespace: default
 spec:
   ports:
   - port: 8080
