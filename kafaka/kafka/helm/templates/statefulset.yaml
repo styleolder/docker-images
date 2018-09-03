@@ -46,7 +46,7 @@ spec:
               - "{{ .Release.Name }}-zookeeper:2181/kafka"
               - --list
           initialDelaySeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 20
         readinessProbe:
           exec:
             command:
@@ -55,7 +55,7 @@ spec:
               - "{{ .Release.Name }}-zookeeper:2181/kafka"
               - --list
           initialDelaySeconds: 30
-          timeoutSeconds: 5
+          timeoutSeconds: 20
         ports:
         - containerPort: 9092
           name: kafka
