@@ -9,5 +9,3 @@ spec:
     port: 8080
     targetPort: 8080
   type: NodePort
-  selector:
-    app: tomcat8
